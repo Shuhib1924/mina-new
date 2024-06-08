@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+    </head>
+
+    <body>
+        <h1>{{product.name}}</h1>
+        <h2>{{product.price}} $</h2>
+        <form
+            action="{% url 'update' product.id %}"
+            method="POST"
+        >
+            {% csrf_token %}
+            {% for product_variation in product.variation.all %}
+            <input
+                type="hidden"
+                name="product_id"
+                value="{{ product_variation.id }}"
+            >
+            <input
+                type="checkbox"
+                id="{{product_variation.id}}_variations"
+                data-price="{{product_variation.name}}"
+                name="variations"
+                value="{{ product_variation.name }}"
+            >{{ product_variation.name}}
+            | +$<span class="price">{{ product_variation.price }}</span> <br>
+            {% endfor %}
+
+            <button type="submit">Add to Cart</button>
+        </form>
+
+        <script>
+            const form = document.querySelector('form');
+            //var payload = {}
+            //var product_id = {{product.id}}
+
+            form.onsubmit = function (e) {
+                e.preventDefault();
+                var formObj = new FormData(form);
+                //var variations = formObj.getAll("variations")
+                // console.log(new FormData(form));
+                console.log('product: ' + formObj.get("product_id"))
+                // console.log(formObj.value());
+                // console.log(formObj.get("product_id"))
+                console.log('variations: ' + formObj.getAll("variations"));
+                const dict = JSON.stringify(
+                    {
+                        "product_id": formObj.get("product_id"),
+                        "variations": formObj.getAll("variations")
+                    });
+                // console.log(dict)
+                fetch(form.action, {
+                    method: 'POST',
+                    body: dict,
+                    headers: {
+                        'X-CSRFToken': form.querySelector('[name="csrfmiddlewaretoken"]').value,
+                    },
+                }).then(response => response.json())
+                    .then(data => console.log(data.message));
+            };
+
+            // Listen for cstate change on checkboxes
+            document.onclick = function (event) {
+                checkbox_we_clicked_on = event.target;
+                //console.log(checkbox_we_clicked_on.getAttribute("data-price"));
+            };
+
+        </script>
+    </body>
+
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+    </head>
+
+    <body>
+        <form action="">
+            {{product.name}} - EUR {{product.price}} <br>
+            {% for variation in product.variations.all %}
+            {{variation.name}}
+            variations: <input
+                id="variations"
+                type="checkbox"
+                value=""
+            >{{variation.name}} + EUR {{variation.price}}</input><br>
+            {% endfor %}
+            <input
+                type="submit"
+                id="submitForm"
+                value="add cart"
+            >
+            <hr>
+            <form id="myForm">
+                {% csrf_token %}
+                Product Name: <input
+                    type="text"
+                    id="product_name"
+                ><br>
+                Variations: <input
+                    type="text"
+                    id="variations"
+                ><br>
+                Quantity: <input
+                    type="number"
+                    id="quantity"
+                ><br>
+                <button
+                    type="submit"
+                    id="submitForm"
+                >Submit</button>
+            </form>
+        </form>
+        <script>
+            $(document).ready(function () {
+                $('#submitForm').on('click', function (e) {
+                    console.log('clicked')
+                    e.preventDefault();
+
+                    var formData = {
+                        'product_name': $('#product_name').val(),
+                        'variations': $('#variations').val(),
+                        'quantity': $('#quantity').val(),
+                        // Add more fields as needed
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/save_request/',
+                        data: formData,
+                        success: function (response) {
+                            console.log(response);
+                            alert('Request saved successfully!');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('Error saving request. Please try again.');
+                        }
+                    });
+                });
+            });
+
+        </script>
+    </body>
+
+</html>

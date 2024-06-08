@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+</head>
+<body>
+    <h1>Cart:</h1>
+    <ul>
+        {% for item in cart_contents %}
+            <li>
+                <h2>{{ item.product.name }}</h2>
+                <p>{{ item.product.price }}</p>
+                <ul>
+                    {% for variation in item.variations %}
+                        <li>{{ variation.variation_name }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <button onclick="window.location.href='{% url 'delete_session' %}'">delete</button>
+</body>
+</html>

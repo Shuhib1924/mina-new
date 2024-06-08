@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+
+        <title>Navbar Hover</title>
+    </head>
+
+    <body>
+        <div
+            class="parent"
+            x-data="{ open: false }"
+        >
+            <div class="space-x-8 mx-auto my-3 p-2 border rounded-full w-2/4 text-center navbar">
+                <a
+                    href=""
+                    @mouseover="open = true"
+                    @mouseleave="open = false"
+                >Home</a>
+                <a href="">About</a>
+                <a href="">Blog</a>
+                <a href="">Contact</a>
+            </div>
+            <div
+                class=""
+                x-show="open"
+            >
+                <ul class="text-center navbar">
+                    <li>
+                        <a
+                            href=""
+                            class="block"
+                        >Lorem</a>
+                        <a
+                            href=""
+                            class="block"
+                        >Lorem</a>
+                        <a
+                            href=""
+                            class="block"
+                        >Lorem</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+
+</html>

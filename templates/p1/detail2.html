@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>{{ product.name }}</title>
+        <script src="https://unpkg.com/htmx.org"></script>
+    </head>
+
+    <body>
+        <form
+            hx-post="{% url 'add_cart' %}"
+            hx-swap="outerHTML"
+            hx-trigger="submit"
+            hx-target="#s1"
+        >
+            {% csrf_token %}
+            <h1>{{ product.name }} - ${{product.price}}</h1>
+            <input
+                type="hidden"
+                name="product"
+                value="{{product.id}}"
+                id="{{product.id}}"
+            >
+            {% for variation in product.variations.all %}
+            <input
+                type="checkbox"
+                id="{{variation.id}}"
+                name="variations[]"
+                value="{{variation.id}}"
+            >
+            <label for="{{variation.id}}">{{ variation.name }} - $ <span
+                    name="{{variation.name}}"
+                    value="{{variation.price}}"
+                >{{ variation.price }}</span></label><br>
+            {% endfor %}
+            <input type="submit">
+        </form>
+        <h2 id="s1"></h2>
+    </body>
+    <script>
+        /*function checkSelected() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                                const selectedCheckboxes = [];
+
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                                    selectedCheckboxes.push(checkbox.id);
+                }
+            });
+
+                                console.log("Selected Checkboxes: " + selectedCheckboxes.join(', '));
+        }*/
+    </script>
+
+</html>

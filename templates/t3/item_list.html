@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Selected Related Objects</title>
+</head>
+<body>
+    <h1>Selected Related Objects</h1>
+
+    {% for item in items %}
+        <h2>{{ item.name }}</h2>
+        <ul>
+            {% for related_obj in item.related_objects.all %}
+                {% if related_obj.selected %}
+                    <li class="text-secondary">{{ related_obj.name }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>

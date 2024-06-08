@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+    </head>
+
+    <body>
+
+    </body>
+    <script>
+        const user1 = {
+            name: "John",
+            years: 30
+        };
+        fetch("https://reqres.in/api/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user1)
+        })
+            .then(res => {
+                if (!res.ok) {
+                    console.log("problem");
+                    return;
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    </script>
+
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+    </head>
+
+    <body>
+        <form
+            action=""
+            class="form"
+        >
+            <input
+                type="text"
+                name="username"
+            >
+            <input
+                type="password"
+                name="password"
+            >
+            <input
+                type="checkbox"
+                name="check"
+            >
+            <button type="submit">submit</button>
+        </form>
+        <script>
+            const formEl = document.querySelector('.form');
+            formEl.addEventListener('submit', event => {
+                event.preventDefault();
+                const formData = new FormData(formEl);
+                const data = Object.fromEntries(formData);
+
+                fetch('https://reqres.in/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.log(error));
+            });
+        </script>
+
+    </body>
+
+</html>\
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+    </head>
+
+    <body>
+        <form
+            id="form"
+            action=""
+        >
+            <input
+                name="username"
+                type="text"
+            >
+            <input
+                name="password"
+                type="text"
+            >
+            <button type="submit">value</button>
+        </form>
+        <script>
+            const form = document.getElementById('form');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const prePayload = new FormData(form);
+                const payload = new URLSearchParams(prePayload);
+                console.log([...payload]);
+
+                fetch('http://httpbin.org/post', {
+                    method: 'POST',
+                    body: payload
+                })
+                    .then(res => res.json())
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err));
+            })
+        </script>
+    </body>
+
+</html>
