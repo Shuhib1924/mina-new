@@ -1,10 +1,15 @@
 from math import e
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
-from .models import Product, Variation, Category, CartItem
+from .models import Product, Variation, Category, CartItem, Order
 from django.http import JsonResponse, HttpResponse
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ObjectDoesNotExist
 import json
+from .forms import OrderForm
+
+from escpos.printer import Network
+
+
 
 def home(request):
     products = Product.objects.all().order_by('-created_date')[:4]
@@ -29,15 +34,6 @@ def category(request, cid):
         'product_count': product_count,
     }
     return render(request,'p1/category.html', context)
-
-def listing_product(request):
-    products = Product.objects.all()
-    return render(request, 'p1/list.html', {'products': products})
-
-
-def listing_product(request):
-    products = Product.objects.all()
-    return render(request, 'p1/list.html', {'products': products})
 
 def detail(request, pid):
     if request.session.session_key:
@@ -164,3 +160,102 @@ def delete_item(request, id):
     item.delete()
     # return HttpResponse(f'CartItem ID: {item.id}<hr>Product: {item.product.name} <hr> items count: {len(cart)}<hr> key: {sk} <hr> all objects: {objects}<hr>')
     return redirect('cart')
+
+
+def checkout(request):
+    form = OrderForm()
+    data= request.session.get('cart', [])
+    print("data", data)
+    items = []
+    if data:
+        for el in data:
+            obj = get_object_or_404(CartItem, id=el['cart_item'])
+            print("obj", obj)
+            items.append(obj)
+    print("ITEMS",items)
+    cart_sum = 0
+    for ci in items:
+        cart_sum = cart_sum + ci.pro_var_sum()
+    print("cart_sum", cart_sum)
+    if request.session.session_key:
+        print(Session.objects.get(pk=request.session.session_key).get_decoded(), request.session.session_key)
+    return render(request, 'p1/checkout.html', {'form': form})
+
+def printing(request):
+    if request.session.session_key:
+        print(Session.objects.get(pk=request.session.session_key).get_decoded(), request.session.session_key)
+    data = request.session.get('cart', [])
+    print("data", data)
+    items = []
+    if data:
+        for el in data:
+            obj = get_object_or_404(CartItem, id=el['cart_item'])
+            print("obj", obj)
+            items.append(obj)
+    print("ITEMS",items)
+    cart_sum = 0
+    for ci in items:
+        cart_sum = cart_sum + ci.pro_var_sum()
+    # print("cart_sum", cart_sum)
+    netto = cart_sum *81 /100
+    tax = cart_sum *19 /100
+
+    if request.method == 'POST':
+        print(request.POST)
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        pickup_time = request.POST.get('pickup_time')
+        order = Order.objects.create(name=name, phone=phone, pickup_time=pickup_time)
+        # order.total = request.session
+        # Set the IP address of the printer
+        printer_ip = '192.168.178.177'
+        # Initialize the network connection to the printer
+        epson = Network(printer_ip)
+
+        # Send data to the printer
+        epson.text(f'{order.pickup_time}\n')
+        epson.text(f'{order.id}\n')
+        for el in data:
+            obj = get_object_or_404(CartItem, id=el['cart_item'])
+            print("obj", obj)
+            epson.text(f'{obj.product}\n')
+            for vl in obj.variations.all():
+                epson.text(f'{vl}\n')
+
+        epson.cut()
+
+
+        # if order.daily_id.last() == None:
+        #     order.daily_id =1
+        # else:
+        #     order.daily_id = order.daily_id + 1
+        # order.save()
+        context = {'order': order}
+
+        # form = OrderForm(request.POST)
+        # if form.is_valid():
+
+        #     form.save(commit=False)
+
+        #     form.daily_id +=1
+        #     form.save()
+
+        #     print('DID', form.daily_id)
+        #     return HttpResponse('works')
+        # else:
+        #     return HttpResponse('error')
+        # pickup_time = request.POST.get('pickup_time')
+        # name = request.POST.get('name')
+        # tel = request.POST.get('phone')
+
+        # ! ganz am ende!!!!
+        # request.session.flush()
+    if request.method == "GET":
+        return redirect('failed')
+    return render(request, "p1/payment_success.html", context)
+
+def payment_success(request):
+    return HttpResponse('success')
+
+def failed(request):
+    return render(request, 'p1/failed.html')

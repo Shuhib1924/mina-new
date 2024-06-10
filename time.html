@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+    </head>
+
+    <body>
+        <label for="appt-time">Choose an appointment time: </label>
+        <input
+            id="appt-time"
+            type="time"
+            name="appt-time"
+            value="13:30"
+        />
+
+        <script>
+            const timeControl = document.querySelector('input[type="time"]');
+            timeControl.value = "15:30";
+        </script>
+    </body>
+
+</html>

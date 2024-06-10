@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+  Bezahlung
+{% endblock title %}
+{% block body %}
+<div class="form-layout container p-5 bg-white shadow-md">
+
+    <div class="text-center">
+
+        <i class="text-success fa fa-credit-card-alt fa-3x" aria-hidden="true"></i>
+
+        <br> <br>
+
+
+        <h3> <strong> Bestellung war erfolgreich! </strong> </h3>
+
+        <hr>
+        <h1> <strong> Deine Bestell-Nr: <b>{{order.id}}</b> </strong> </h1>
+        <br>
+        <h2> Um <strong>{{order.pickup_time}}</strong> kannst du es abholen </h2>
+        <br>
+        <h3> bis gleich :) </h3>
+
+
+    </div>
+
+
+</div>
+{% endblock body %}

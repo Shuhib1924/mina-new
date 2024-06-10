@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 'livereload',
     'p1',
     'whitenoise.runserver_nostatic',
+     'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -112,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -125,17 +126,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-print("STATIC_URL", STATIC_URL)
+# print("STATIC_URL", STATIC_URL)
 STATIC_ROOT = BASE_DIR/'static/'
-print("STATIC_ROOT", STATIC_ROOT)
+# print("STATIC_ROOT", STATIC_ROOT)
 # STATICFILES_DIRS = [BASE_DIR/'core/static/']
 # print("STATICFILES_DIRS", STATICFILES_DIRS)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = 'media/'
-print("MEDIA_URL", MEDIA_URL)
+# print("MEDIA_URL", MEDIA_URL)
 MEDIA_ROOT = BASE_DIR/'static/media/'
-print("MEDIA_ROOT", MEDIA_ROOT)
+# print("MEDIA_ROOT", MEDIA_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
