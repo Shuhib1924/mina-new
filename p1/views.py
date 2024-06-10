@@ -21,7 +21,14 @@ def all_categories(request):
 
 def category(request, cid):
     category = Category.objects.get(id=cid)
-    return render(request,'p1/category.html', {'category':category})
+    products = Product.objects.filter(category=category)
+    product_count = products.count()
+    context = {
+        'category': category,
+        'products': products,
+        'product_count': product_count,
+    }
+    return render(request,'p1/category.html', context)
 
 def listing_product(request):
     products = Product.objects.all()
@@ -81,7 +88,9 @@ def add_cart(request):
         cart_item = CartItem.objects.create(product=selected_product)
         # $ set the variations
         variations = Variation.objects.filter(id__in=get_variation_list)
+
         cart_item.variations.set(variations)
+        # variations.update(selected=True)
 
         #  add into cart and save it into session
         cart_session.append({'cart_item': cart_item.id})
@@ -111,7 +120,6 @@ def add_cart(request):
     # return redirect('cart')
     return JsonResponse({'message': 'success'})
 
-
 def cart(request):
     data = request.session.get('cart', [])
     print("data", data)
@@ -121,25 +129,23 @@ def cart(request):
             obj = get_object_or_404(CartItem, id=el['cart_item'])
             print("obj", obj)
             items.append(obj)
-    print(items)
+    print("ITEMS",items)
+    cart_sum = 0
+    for ci in items:
+        cart_sum = cart_sum + ci.pro_var_sum()
+    # print("cart_sum", cart_sum)
+    netto = cart_sum *81 /100
+    tax = cart_sum *19 /100
 
     # if request.session.session_key:
     #         print(Session.objects.get(pk=request.session.session_key).get_decoded(), request.session.session_key)
-    return render(request, 'p1/cart.html', {'items':items})
-
-# def cart(request):
-#     data = request.session.get('cart', [])
-#     items = []
-#     if data:
-#         for el in data:
-#             obj = get_object_or_404(CartItem, id=el['cart_item'])
-#             selected_variations = obj.variations.all()
-#             items.append({
-#                 'cart_item': obj,
-#                 'selected_variations': selected_variations
-#             })
-
-#     return render(request, 'p1/cart.html', {'items': items})
+    context = {
+        'cart_sum': cart_sum,
+        'netto': netto,
+        'tax': tax,
+        'items':items,
+        }
+    return render(request, 'p1/cart.html', context)
 
 def delete_item(request, id):
     item = get_object_or_404(CartItem, id=id)

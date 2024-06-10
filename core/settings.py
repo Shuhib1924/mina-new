@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-n)sr&_b1xiyz3!-&f+*w+_p=gpmc3dzna$1!8&8vgkt-wpvxtd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,17 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'livereload',
     'p1',
-    't1',
-    't2',
-    't3',
-    # 'whitenoise.runserver_nostatic',
-    'mathfilters',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware'
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -59,12 +55,7 @@ MIDDLEWARE = [
     # 'livereload.middleware.LiveReloadScript',
 ]
 
-# STORAGES = {
-#     # ...
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+
 
 ROOT_URLCONF = 'core.urls'
 
@@ -134,11 +125,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR/'static'
-STATICFILES_DIRS = [BASE_DIR/'core/static/']
+print("STATIC_URL", STATIC_URL)
+STATIC_ROOT = BASE_DIR/'static/'
+print("STATIC_ROOT", STATIC_ROOT)
+# STATICFILES_DIRS = [BASE_DIR/'core/static/']
+# print("STATICFILES_DIRS", STATICFILES_DIRS)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR/'media/'
+print("MEDIA_URL", MEDIA_URL)
+MEDIA_ROOT = BASE_DIR/'static/media/'
+print("MEDIA_ROOT", MEDIA_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

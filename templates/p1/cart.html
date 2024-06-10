@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load mathfilters %}
 {% block title %}
   Warenkorb
 {% endblock title %}
@@ -47,13 +46,13 @@
                                     <label class="form-check-label" for="exampleCheckbox1"></label>
                                 </td>
                                 {% endcomment %}
-                                <td class="image product-thumbnail pt-40 pl-20"><img src="{{item.product.image.url}}" alt="#"></td>
+                                <td class="image product-thumbnail pt-40 pl-20"><a href="{% url 'detail' item.product.id %}"><img src="{{item.product.image.url}}" alt="#"></a></td>
                                 <td class="product-des product-name">
-                                    <h6 class="mb-5"><a class="product-name text-heading mb-10" href="{{product.get_absolute_url}}">{{item.product.name}}</a></h6>
+                                    <h6 class="mb-5"><a class="product-name text-heading mb-10" href="{% url 'detail' item.product.id%}">{{item.product.name}}</a></h6>
 
                                 </td>
                                 <td class="product-des product-name" data-title="Stock">
-                                {% for var in item.product.variations.filter %}
+                                {% for var in item.variations.all %}
 
                                     <ul>
                                         <li class="text-secondary">+{{var.name}}</li>
@@ -65,7 +64,7 @@
                                     <h4 class="text-body">{{product.price}} €</h4>
                                 </td> {% endcomment %}
                                 <td class="price" data-title="Price">
-                                    <h4 class="text-brand"> {{item.product.price}} €</h4>
+                                    <h4 class="text-brand"> {{item.pro_var_sum}} €</h4>
                                 </td>
                                 <td class="action text-center">
                                 <a href="{% url 'delete' item.id %}" class="text-body delete-button"><i class="fi-rs-trash"></i></a>
@@ -97,12 +96,12 @@
                                         <h6 class="text-muted">Netto:</h6>
                                     </td>
                                     <td class="cart_total_amount">
-                                        <h5 class="text-heading text-end">{{cart.get_total|mul:"0.81"|floatformat:"2"}} €</h4</td> </tr> <tr>
+                                        <h5 class="text-heading text-end">{{netto}} €</h4</td> </tr> <tr>
                                     <td class="cart_total_label">
                                         <h6 class="text-muted">19% Mwst.:</h6>
                                     </td>
                                     <td class="cart_total_amount">
-                                        <h5 class="text-heading text-end">{{cart.get_total|mul:"0.19"|floatformat:"2"}} €</h4</td> </tr> <tr>
+                                        <h5 class="text-heading text-end">{{tax}} €</h4</td> </tr> <tr>
                                     <td scope="col" colspan="2">
                                         <div class="divider-2 mt-10 mb-10"></div>
                                     </td>
@@ -112,7 +111,7 @@
                                         <h6 class="text-muted">Brutto</h6>
                                     </td>
                                     <td class="cart_total_amount">
-                                        <h4 class="text-brand text-end">{{cart.get_total}} €</h4>
+                                        <h4 class="text-brand text-end">{{cart_sum}} €</h4>
                                     </td>
                                 </tr>
                             </tbody>

@@ -59,26 +59,60 @@
     </head>
 
     <body>
-        <header class="header-area header-style-1 header-height-2">
-            <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+        <header class="header-area header-height-2 header-style-1">
+            <div class="d-lg-block d-none header-middle header-middle-ptb-1">
                 <div class="container">
                     <div class="header-wrap">
-                        <div class="logo logo-width-1">
+                        <div class="logo-width-1 logo">
                             <a href="{% url 'home' %}"><img
                                     src="{% static 'assets/logo.png' %}"
                                     alt="logo"
                                 /></a>
                         </div>
                         <div class="header-right">
-                            <div class="search-style-2">
-                                {% comment %} <form action="#">
+                            <div class="pl-40 search-style-2">
+                                <div class="mobile-social-icon">
+                                    <h6>Follow Us</h6>
+                                    <a href="#"><img
+                                            src="{% static 'assets/imgs/theme/icons/icon-facebook-white.svg' %}"
+                                            alt=""
+                                        /></a>
+                                    <a href="#"><img
+                                            src="{% static 'assets/imgs/theme/icons/icon-twitter-white.svg' %}"
+                                            alt=""
+                                        /></a>
+                                    <a href="#"><img
+                                            src="{% static 'assets/imgs/theme/icons/icon-instagram-white.svg' %}"
+                                            alt=""
+                                        /></a>
+                                    <a href="#"><img
+                                            src="{% static 'assets/imgs/theme/icons/icon-pinterest-white.svg' %}"
+                                            alt=""
+                                        /></a>
+                                    <a href="#"><img
+                                            src="{% static 'assets/imgs/theme/icons/icon-youtube-white.svg' %}"
+                                            alt=""
+                                        /></a>
+                                </div>
+                                {% comment %}
+                                <form action="#">
                                     <input
                                         type="text"
                                         placeholder="leckeres finden ..."
                                     />
-                                </form> {% endcomment %}
+                                </form>
+                                {% endcomment %}
                             </div>
-                            <div class="header-action-right">
+                            <a href="tel:+494030236968">
+                                <div class="d-lg-inline-flex mr-30 hotline">
+                                    <img
+                                        src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}"
+                                        alt="hotline"
+                                    />
+                                    <p>040 / 30236968<span>Öffnungszeiten 8:00 - 20:00</span></p>
+                                </div>
+                            </a>
+                            <div class="header-action-right pr-30">
                                 <div class="header-action-2">
                                     <div class="header-action-icon-2">
                                         <a
@@ -89,62 +123,20 @@
                                                 alt="Mina"
                                                 src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}"
                                             />
-                                            <span class="pro-count blue" id="cart-qty">
+                                            <span
+                                                class="blue pro-count"
+                                                id="cart-qty"
+                                            >
                                                 {% with qty_amount=cart|length %}
                                                 {% if qty_amount > 0 %}
-                                                  {{qty_amount}}
+                                                {{qty_amount}}
                                                 {%else%}
 
                                                 {% endif %}
-                                            {% endwith %}</span>
+                                                {% endwith %}</span>
                                         </a>
                                         <a href="{% url 'cart' %}"><span class="lable">Korb</span></a>
-                                        <!-- <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                            <ul>
-                                                <li>
-                                                    <div class="shopping-cart-img">
-                                                        <a href="shop-product-right.html"><img
-                                                                alt="Mina"
-                                                                src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}"
-                                                            /></a>
-                                                    </div>
-                                                    <div class="shopping-cart-title">
-                                                        <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                                        <h4><span>1 × </span>$800.00</h4>
-                                                    </div>
-                                                    <div class="shopping-cart-delete">
-                                                        <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="shopping-cart-img">
-                                                        <a href="shop-product-right.html"><img
-                                                                alt="Mina"
-                                                                src="{% static 'assets/imgs/shop/thumbnail-2.jpg' %}"
-                                                            /></a>
-                                                    </div>
-                                                    <div class="shopping-cart-title">
-                                                        <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                                        <h4><span>1 × </span>$3200.00</h4>
-                                                    </div>
-                                                    <div class="shopping-cart-delete">
-                                                        <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <div class="shopping-cart-footer">
-                                                <div class="shopping-cart-total">
-                                                    <h4>Total <span>$4000.00</span></h4>
-                                                </div>
-                                                <div class="shopping-cart-button">
-                                                    <a
-                                                        href="shop-cart.html"
-                                                        class="outline"
-                                                    >View cart</a>
-                                                    <a href="shop-checkout.html">Checkout</a>
-                                                </div>
-                                            </div>
-                                        </div> -->
+
                                     </div>
                                     {% comment %} <div class="header-action-icon-2">
                                         {% if user.is_authenticated %}
@@ -155,19 +147,21 @@
                                                 src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}"
                                             />
                                         </a>
-                                        <a href="page-account.html"><span class="lable ml-0">Account</span></a>
-                                         <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <a href="page-account.html"><span class="ml-0 lable">Account</span></a>
+                                        <div class="account-dropdown cart-dropdown-hm2 cart-dropdown-wrap">
                                             <ul>
-                                                <li><a href="{% url 'manage_shipping' %}"><i class="fi fi-rs-user mr-10"></i>Mein
+                                                <li><a href="{% url 'manage_shipping' %}"><i
+                                                            class="mr-10 fi fi-rs-user"></i>Mein
                                                         Account</a></li>
                                                 <li><a href="{% url 'track_orders' %}"><i
-                                                            class="fi fi-rs-location-alt mr-10"></i>Bestellungen</a>
+                                                            class="mr-10 fi fi-rs-location-alt"
+                                                        ></i>Bestellungen</a>
                                                 </li>
                                                 <li><a href="{% url 'profile_management' %}"><i
-                                                            class="fi fi-rs-settings-sliders mr-10"
+                                                            class="mr-10 fi fi-rs-settings-sliders"
                                                         ></i>Einstellungen</a></li>
                                                 <li><a href="{% url 'user_logout' %}"><i
-                                                            class="fi fi-rs-sign-out mr-10"></i>Abmelden</a></li>
+                                                            class="mr-10 fi fi-rs-sign-out"></i>Abmelden</a></li>
                                             </ul>
                                         </div>
                                         {% else %}
@@ -178,7 +172,7 @@
                                                 src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}"
                                             />
                                         </a>
-                                        <a href="{% url 'register' %}"><span class="lable ml-0">Register</span></a>
+                                        <a href="{% url 'register' %}"><span class="ml-0 lable">Register</span></a>
                                         <div class="header-action-icon-2">
                                             <a href="page-account.html">
                                                 <img
@@ -187,104 +181,60 @@
                                                     src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}"
                                                 />
                                             </a>
-                                        <a href="{% url 'my_login' %}"><span class="lable ml-0">Login</span></a>
-                                        {% endif %}
-                                    </div> {% endcomment %}
+                                            <a href="{% url 'my_login' %}"><span class="ml-0 lable">Login</span></a>
+                                            {% endif %}
+                                        </div> {% endcomment %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="header-bottom header-bottom-bg-color sticky-bar">
-                <div class="container">
-                    <div class="header-wrap header-space-between position-relative">
-                        <div class="logo logo-width-1 d-block d-lg-none">
-                            <a href="{% url 'home' %}"><img
-                                    src="{% static 'assets/logo.png' %}"
-                                    alt="logo"
-                                /></a>
-                        </div>
-                        <div class="header-action-icon-2 d-block d-lg-none">
-                            <div class="burger-icon burger-icon-white">
-                                <span class="burger-icon-top"></span>
-                                <span class="burger-icon-mid"></span>
-                                <span class="burger-icon-bottom"></span>
+                <div class="header-bottom header-bottom-bg-color sticky-bar">
+                    <div class="container">
+                        <div class="position-relative header-space-between header-wrap">
+                            <div class="d-block logo-width-1 d-lg-none logo">
+                                <a href="{% url 'home' %}">
+                                    <img
+                                        src="{% static 'assets/logo.png' %}"
+                                        alt="logo"
+                                    />
+                                </a>
                             </div>
-                        </div>
-                        <div class="header-action-right d-block d-lg-none">
-                            <div class="header-action-2">
-                                <!-- <div class="header-action-icon-2">
-                                    <a href="shop-wishlist.html">
-                                        <img
-                                            alt="Mina"
-                                            src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}"
-                                        />
-                                        <span class="pro-count white">4</span>
-                                    </a>
-                                </div> -->
-                                <div class="header-action-icon-2">
-                                    <a
-                                        class="mini-cart-icon"
-                                        href="{% url 'cart'%}"
-                                    >
-                                        <img
-                                            alt="Mina"
-                                            src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}"
-                                        />
-                                        <span class="pro-count white" id="cart-qty">
-                                            {% with qty_amount=cart|length %}
-                                            {% if qty_amount > 0 %}
-                                            {{qty_amount}}
-                                            {%else%}
+                            <div class="d-block d-lg-none header-action-icon-2">
+                                <div class="burger-icon burger-icon-white">
+                                    <span class="burger-icon-top"></span>
+                                    <span class="burger-icon-mid"></span>
+                                    <span class="burger-icon-bottom"></span>
+                                </div>
+                            </div>
+                            <div class="d-block header-action-right d-lg-none">
+                                <div class="header-action-2">
 
-                                            {% endif %}
-                                            {% endwith %}
-                                        </span>
-                                    </a>
-                                    <!-- <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                        <ul>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img
-                                                            alt="Mina"
-                                                            src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}"
-                                                        /></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
-                                                    <h3><span>1 × </span>$800.00</h3>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img
-                                                            alt="Mina"
-                                                            src="{% static 'assets/imgs/shop/thumbnail-4.jpg' %}"
-                                                        /></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
-                                                    <h3><span>1 × </span>$3500.00</h3>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-footer">
-                                            <div class="shopping-cart-total">
-                                                <h4>Total <span>$383.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-button">
-                                                <a href="shop-cart.html">View cart</a>
-                                                <a href="shop-checkout.html">Checkout</a>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                    <div class="header-action-icon-2">
+                                        <a
+                                            class="mini-cart-icon"
+                                            href="{% url 'cart'%}"
+                                        >
+                                            <img
+                                                alt="Mina"
+                                                src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}"
+                                            />
+                                            <span
+                                                class="pro-count white"
+                                                id="cart-qty"
+                                            >
+                                                {% with qty_amount=cart|length %}
+                                                {% if qty_amount > 0 %}
+                                                {{qty_amount}}
+                                                {%else%}
+
+                                                {% endif %}
+                                                {% endwith %}
+                                            </span>
+                                        </a>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -301,15 +251,15 @@
                                 alt="logo"
                             /></a>
                     </div>
-                    <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
-                        <button class="close-style search-close">
+                    <div class="close-style-position-inherit close-style-wrap mobile-menu-close">
+                        <button class="search-close close-style">
                             <i class="icon-top"></i>
                             <i class="icon-bottom"></i>
                         </button>
                     </div>
                 </div>
                 <div class="mobile-header-content-area">
-                    <div class="mobile-search search-style-3 mobile-header-border">
+                    <div class="mobile-header-border search-style-3 mobile-search">
                         <form action="#">
                             <input
                                 type="text"
@@ -318,33 +268,15 @@
                             <button type="submit"><i class="fi-rs-search"></i></button>
                         </form>
                     </div>
-                    <div class="mobile-menu-wrap mobile-header-border">
+                    <div class="mobile-header-border mobile-menu-wrap">
                     </div>
-                    <!-- <div class="mobile-header-info-wrap">
-                    <div class="single-mobile-header-info">
-                        <a href="page-contact.html"><i class="fi-rs-marker"></i> Our location </a>
-                    </div>
-                    <div class="single-mobile-header-info">
-                        <a href="page-login.html"><i class="fi-rs-user"></i>Log In / Sign Up </a>
-                    </div>
-                    <div class="single-mobile-header-info">
-                        <a href="#"><i class="fi-rs-headphones"></i>(+01) - 2345 - 6789 </a>
-                    </div>
-                </div>
-                <div class="mobile-social-icon mb-50">
-                    <h6 class="mb-15">Follow Us</h6>
-                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-facebook-white.svg' %}" alt="" /></a>
-                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-twitter-white.svg' %}" alt="" /></a>
-                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-instagram-white.svg' %}" alt="" /></a>
-                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-pinterest-white.svg' %}" alt="" /></a>
-                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-youtube-white.svg' %}" alt="" /></a>
-                </div>
-                <div class="site-copyright">Copyright 2022 © Mina. All rights reserved. Powered by AliThemes.</div> -->
+
                 </div>
             </div>
         </div>
-        {% block body %} {% endblock body %} <footer class="main">
-            <section class="newsletter mb-15">
+        {% block body %} {% endblock body %}
+        <footer class="main">
+            <section class="mb-15 newsletter">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
@@ -362,19 +294,20 @@
                     </div>
                 </div>
             </section>
-            <section class="section-padding footer-mid">
-                <div class="pt-15 container pb-20">
+            <section class="footer-mid section-padding">
+                <div class="pt-15 pb-20 container">
                     <div class="row">
                         <div class="col">
-                            <div class="widget-about font-md mb-md-3 mb-lg-3 mb-xl-0">
-                                <div class="logo mb-30">
+                            <div class="mb-lg-3 mb-md-3 mb-xl-0 font-md widget-about">
+                                <div class="mb-30 logo">
                                     <a
                                         href="{% url 'home' %}"
                                         class="mb-15"
                                     ><img
                                             src="{% static 'assets/logo.png' %}"
                                             alt="logo"
-                                        /></a>
+                                        />
+                                    </a>
                                     <p class="font-lg text-heading">Nur für Schmecker</p>
                                 </div>
                                 <ul class="contact-infor">
@@ -402,49 +335,14 @@
                                 </ul>
                             </div>
                         </div>
-                        <!-- <div class="footer-link-widget col">
-                            <h4 class="widget-title">Company</h4>
-                            <ul class="footer-list mb-sm-5 mb-md-0">
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Delivery Information</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms &amp; Conditions</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Support Center</a></li>
-                                <li><a href="#">Careers</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-link-widget col">
-                            <h4 class="widget-title">Account</h4>
-                            <ul class="footer-list mb-sm-5 mb-md-0">
-                                <li><a href="#">Sign In</a></li>
-                                <li><a href="#">View Cart</a></li>
-                                <li><a href="#">My Wishlist</a></li>
-                                <li><a href="#">Track My Order</a></li>
-                                <li><a href="#">Help Ticket</a></li>
-                                <li><a href="#">Shipping Details</a></li>
-                                <li><a href="#">Compare products</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-link-widget col">
-                            <h4 class="widget-title">Popular</h4>
-                            <ul class="footer-list mb-sm-5 mb-md-0">
-                                <li><a href="#">Milk & Flavoured Milk</a></li>
-                                <li><a href="#">Butter and Margarine</a></li>
-                                <li><a href="#">Eggs Substitutes</a></li>
-                                <li><a href="#">Marmalades</a></li>
-                                <li><a href="#">Sour Cream and Dips</a></li>
-                                <li><a href="#">Tea & Kombucha</a></li>
-                                <li><a href="#">Cheese</a></li>
-                            </ul>
-                        </div> -->
-                        <div class="footer-link-widget widget-install-app col">
+
+                        <div class="col footer-link-widget widget-install-app">
                             <h4 class="widget-title">Installiere unsere App</h4>
-                            <p class="wow fadeIn animated">In App Store oder Google Play</p>
+                            <p class="animated fadeIn wow">In App Store oder Google Play</p>
                             <div class="download-app">
                                 <a
                                     href="#"
-                                    class="hover-up mb-sm-2 mb-lg-0"
+                                    class="mb-lg-0 mb-sm-2 hover-up"
                                 ><img
                                         class="active"
                                         src="{% static 'assets/imgs/theme/app-store.jpg' %}"
@@ -452,7 +350,7 @@
                                     /></a>
                                 <a
                                     href="#"
-                                    class="hover-up mb-sm-2"
+                                    class="mb-sm-2 hover-up"
                                 ><img
                                         src="{% static 'assets/imgs/theme/google-play.jpg' %}"
                                         alt=""
@@ -460,7 +358,7 @@
                             </div>
                             <p class="mb-20">Secured Payment Gateways</p>
                             <img
-                                class="wow fadeIn animated"
+                                class="animated fadeIn wow"
                                 src="{% static 'assets/imgs/theme/payment-method.png' %}"
                                 alt=""
                             />
@@ -469,28 +367,27 @@
                 </div>
             </section>
             <div class="pb-30 container">
-                <div class="row align-items-center">
-                    <div class="col-12 mb-30">
+                <div class="align-items-center row">
+                    <div class="mb-30 col-12">
                         <div class="footer-bottom"></div>
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <p class="font-sm mb-0">&copy; 2024, <strong class="text-brand">Mina</strong> - einfach nur
+                    <div class="col-lg-6 col-md-6 col-xl-4">
+                        <p class="mb-0 font-sm">&copy; 2024, <strong class="text-brand">Mina</strong> - einfach nur
                             lecker <br />Alle Rechte sind vorbehalten</p>
                     </div>
-                    <div class="col-xl-4 col-lg-6 d-none d-xl-block text-center">
-                        <div class="hotline d-lg-inline-flex mr-30">
-                            <img
-                                src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}"
-                                alt="hotline"
-                            />
-                            <p>040 / 30236968<span>Öffnungszeiten 8:00 - 20:00</span></p>
-                        </div>
-                        <!-- <div class="hotline d-lg-inline-flex">
-                        <img src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}" alt="hotline" />
-                        <p>1900 - 8888<span>24/7 Support Center</span></p>
-                    </div> -->
+                    <div class="d-xl-block text-center col-lg-6 col-xl-4 d-none">
+                        <a href="tel:+494030236968">
+                            <div class="d-lg-inline-flex mr-30 hotline">
+                                <img
+                                    src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}"
+                                    alt="hotline"
+                                />
+                                <p>040 / 30236968<span>Öffnungszeiten 8:00 - 20:00</span></p>
+                            </div>
+                        </a>
+
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 text-end d-none d-md-block">
+                    <div class="d-md-block text-end col-lg-6 col-md-6 col-xl-4 d-none">
                         <div class="mobile-social-icon">
                             <h6>Follow Us</h6>
                             <a href="#"><img

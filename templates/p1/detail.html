@@ -49,7 +49,7 @@
                                     id="{{product.id}}"
                                 >
                                 <div class="p-5 card col-xl-9">
-                                    <h5 class="mb-30">Variation</h5>
+                                    <h5 class="mb-30 text-3xl">Variation</h5>
                                     {% for variation in product.variations.all %}
                                     <div class="d-flex">
                                         <div class="mr-80 custome-checkbox">
@@ -80,30 +80,7 @@
                                             <p class="font-lg">{{product.description}}</p>
                                         </div>
                                         <div class="mb-50 detail-extralink">
-                                            {% comment %} <div class="border detail-qty radius">
-                                                <select
-                                                    name="</a>"
-                                                    id="select"
-                                                >
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                </select>
-                                                <!-- <a
-                                                    href="#"
-                                                    class="qty-down"
-                                                ><i class="fi-rs-angle-small-down"></i></a>
-                                                <span class="qty-val">1</span>
-                                                <a
-                                                    href="#"
-                                                    class="qty-up"
-                                                ><i class="fi-rs-angle-small-up"></i></a> -->
-                                            </div> {% endcomment %}
+
                                             <div class="product-extra-link2">
                                                 <div x-data="{ showNotification: false }">
                                                     <button
@@ -123,7 +100,7 @@
                                                         x-transition:leave-end="opacity-0 translate-x-4"
                                                         class="top-4 right-4 fixed bg-green-500 shadow-md px-4 py-3 rounded-md text-white"
                                                     >
-                                                        This is a notification!
+                                                        Hinzugefügt!
                                                     </div>
                                                 </div>
 

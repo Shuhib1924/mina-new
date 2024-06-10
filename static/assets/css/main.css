@@ -7419,11 +7419,11 @@ h6.post-title {
 }
 
 .header-action-right {
-    display: none;
+    display: block;
 }
 
 .header-action-right .search-location {
-    display: none;
+    display: block;
 }
 
 .search-style-1 {
@@ -11875,12 +11875,7 @@ footer .hotline img {
     .main-menu.main-menu-padding-1.hm3-menu-padding>nav>ul>li {
         padding: 0 6px;
     }
-    .search-style-1 {
-        margin-right: 15px;
-    }
-    .search-style-1 form {
-        width: 170px;
-    }
+
     .header-action.header-action-hm3 .header-action-icon {
         margin-right: 15px;
     }
@@ -11896,9 +11891,7 @@ footer .hotline img {
     .hotline p {
         font-size: 15px;
     }
-    .search-popup-wrap .search-popup-content form input {
-        width: 820px;
-    }
+
     .header-height-1 {
         min-height: 157px;
     }
