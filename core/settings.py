@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'livereload',
     'p1',
+    'd1',
     'whitenoise.runserver_nostatic',
      'crispy_forms',
 ]
