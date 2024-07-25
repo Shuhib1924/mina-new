@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 'livereload',
+    "livereload",
     "p1",
     "d1",
     "whitenoise.runserver_nostatic",
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # 'livereload.middleware.LiveReloadScript',
+    "livereload.middleware.LiveReloadScript",
 ]
 
 
@@ -72,6 +72,9 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "p1.views.all_categories",
+                "p1.views.notification",
+                "p1.views.cart_count",
+                "p1.views.random_item",
             ],
         },
     },
@@ -131,7 +134,7 @@ STATIC_URL = "static/"
 # print("STATIC_ROOT", STATIC_ROOT)
 STATICFILES_DIRS = [BASE_DIR / "static/"]
 # print("STATICFILES_DIRS", STATICFILES_DIRS)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_URL = "media/"
 # print("MEDIA_URL", MEDIA_URL)

@@ -1,0 +1,41 @@
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <link
+            rel="shortcut icon"
+            href="{% static 'mina/fav.svg' %}"
+            type="image/x-icon"
+        >
+        <link
+            rel="stylesheet"
+            href="{% static 'mina/style.min.css' %}"
+        >
+        <script
+            defer
+            src="{% static 'mina/alpine.min.js' %}"
+        ></script>
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title class="font-bold">{% block title %} {% endblock title %}</title>
+
+    </head>
+    {% include "p1/header.html" %}
+
+    <body class="px-6 py-4">
+        {% block main %} {% endblock main %}
+    </body>
+    {% include "p1/footer.html" %}
+
+</html>

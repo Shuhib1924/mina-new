@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Warenkorb
+{% endblock title %}
+{% block body %}
+<main class="main">
+
+    <div class="mb-80 mt-50 container">
+        <div class="row">
+            <div class="col-lg-8 mb-40">
+                <h1 class="heading-2 mb-10">Dein Warenkorb</h1>
+                <div class="d-flex justify-content-between">
+                    <!-- <h6 class="text-body">There are <span class="text-brand">3</span> products in your cart</h6>
+                    <h6 class="text-body"><a href="#" class="text-muted"><i class="fi-rs-trash mr-5"></i>Clear Cart</a></h6> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="table-responsive shopping-summery">
+                    <table class="table-wishlist table">
+                        <thead>
+                            <tr class="main-heading">
+                                {% comment %}
+                                <th class="custome-checkbox start pl-30">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="">
+                                    <label class="form-check-label" for="exampleCheckbox11"></label>
+                                </th>
+                                {% endcomment %}
+                                <th scope="col" colspan="2">Product</th>
+                                <th scope="col" >Extra</th>
+                                {% comment %} <th scope="col">Einzelpreis</th> {% endcomment %}
+                                <th scope="col">Gesamtpreis</th>
+                                <th scope="col" class="end">Entfernen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+
+                            <tr class="pt-30">
+                                {% comment %}
+                                <td class="custome-checkbox pl-30">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                    <label class="form-check-label" for="exampleCheckbox1"></label>
+                                </td>
+                                {% endcomment %}
+                                <td class="image product-thumbnail pt-40 pl-20"><a href="{% url 'detail' item.product.id %}"><img src="{{item.product.image.url}}" alt="#"></a></td>
+                                <td class="product-des product-name">
+                                    <h6 class="mb-5"><a class="product-name text-heading mb-10" href="{% url 'detail' item.product.id%}">{{item.product.name}}</a></h6>
+
+                                </td>
+                                <td class="product-des product-name" data-title="Stock">
+                                {% for var in item.variations.all %}
+
+                                    <ul>
+                                        <li class="text-secondary">+{{var.name}}</li>
+                                    </ul>
+
+                                {% endfor %}
+                                </td>
+                                {% comment %} <td class="price" data-title="Price">
+                                    <h4 class="text-body">{{product.price}} €</h4>
+                                </td> {% endcomment %}
+                                <td class="price" data-title="Price">
+                                    <h4 class="text-brand"> {{item.pro_var_sum}} €</h4>
+                                </td>
+                                <td class="action text-center">
+                                <a href="{% url 'delete' item.id %}" class="text-body delete-button"><i class="fi-rs-trash"></i></a>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="divider-2 mb-30"></div>
+                <div class="cart-action d-flex justify-content-between">
+                    <a href="{% url 'home' %}" class="btn "><i class="fi-rs-arrow-left mr-10"></i>was vergessen?</a>
+
+                </div>
+                <div class="row mt-50">
+                    <div class="col-lg-7">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="p-md-4 cart-totals ml-30 border">
+                    <div class="table-responsive">
+                        <table class="no-border table">
+                            <tbody>
+
+                                <tr>
+                                    <td class="cart_total_label">
+                                        <h6 class="text-muted">Netto:</h6>
+                                    </td>
+                                    <td class="cart_total_amount">
+                                        <h5 class="text-heading text-end">{{netto}} €</h4</td> </tr> <tr>
+                                    <td class="cart_total_label">
+                                        <h6 class="text-muted">19% Mwst.:</h6>
+                                    </td>
+                                    <td class="cart_total_amount">
+                                        <h5 class="text-heading text-end">{{tax}} €</h4</td> </tr> <tr>
+                                    <td scope="col" colspan="2">
+                                        <div class="divider-2 mt-10 mb-10"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cart_total_label">
+                                        <h6 class="text-muted">Brutto</h6>
+                                    </td>
+                                    <td class="cart_total_amount">
+                                        <h4 class="text-brand text-end">{{cart_sum}} €</h4>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="{% url 'checkout' %}" class="btn w-100 mb-20">Bestellung abschließen<i class="fi-rs-sign-out ml-15"></i></a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+
+
+{% endblock body %}

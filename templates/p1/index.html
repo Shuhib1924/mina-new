@@ -1,169 +1,114 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'p1/base.html' %}
 {% block title %}
-Mina Restaurant
-{% endblock title %}
-{% block body %} <main class="main">
-
-    <div class="mb-30 container">
-        <div class="flex-row-reverse row">
-            <div class="col-lg-4-5">
-                <section class="position-relative mb-30 home-slider">
-                    <div class="mt-30 home-slide-cover">
-                        <div class="dot-style-1 dot-style-1-position-1 hero-slider-1 style-4">
-                            <div
-                                class="single-animation-wrap single-hero-slider"
-                                style="background-image: url({% static 'assets/imgs/slider/slider-1.jpg' %})"
-                            >
-                                <div class="slider-content">
-                                    <h1 class="mb-40 display-2"> Verpasse nicht unsere<br /> Angebote </h1>
-                                    <!-- <p class="mb-65">Sign up for the daily newsletter</p>
-                                            <form class="d-flex form-subcriber">
-                                                <input
-                                                    type="email"
-                                                    placeholder="Your emaill address"
-                                                />
-                                                <button
-                                                    class="btn"
-                                                    type="submit"
-                                                >Subscribe</button>
-                                            </form> -->
-                                </div>
-                            </div>
-                            <div
-                                class="single-animation-wrap single-hero-slider"
-                                style="background-image: url({% static 'assets/imgs/slider/slider-2.jpg' %})"
-                            >
-                                <div class="slider-content">
-                                    <h1 class="mb-40 display-2"> Leckere Burger<br /> nur für Dich! </h1>
-                                    <p class="mb-65">Spare dir deine</p>
-                                    <!-- <form class="d-flex form-subcriber">
-                                                <input
-                                                    type="email"
-                                                    placeholder="Your emaill address"
-                                                />
-                                                <button
-                                                    class="btn"
-                                                    type="submit"
-                                                >Subscribe</button>
-                                            </form> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hero-slider-1-arrow slider-arrow"></div>
-                    </div>
-                </section>
-                <!--End hero-->
-                <section class="position-relative product-tabs section-padding">
-                    <div class="section-title style-2">
-                        <h3>Unsere Speisen</h3>
-
-                    </div>
-                    <!--End nav-tabs-->
-                    <div
-                        class="tab-content"
-                        id="myTabContent"
-                    >
-                        <div
-                            class="active fade show tab-pane"
-                            id="tab-one"
-                            role="tabpanel"
-                            aria-labelledby="tab-one"
+Mina Luna!
+{% endblock %}
+{% block main %}
+<main>
+    <div class="md:flex-row md:space-x-10 flex flex-col">
+        {% include "p1/category_bar.html"%}
+        <div class="md:order-last md:w-3/4 order-first my-10 space-y-12">
+            <div
+                x-data="{
+                                    state: 0,
+                                    list: [
+                                                {% for i in screens %}
+                                                    {'path' : '{{i.image.url}}', 'message' : '{{i.message}}'},
+                                                {% endfor %}
+                                    ],
+                                    }"
+                x-init="()=>{setInterval(()=>state===(list.length-1) ? state=0 : state++, 2000)}"
+                class="object-cover"
+            >
+                <div class="bg-black/20 rounded-2xl relative flex items-center justify-center m-4 overflow-hidden">
+                    <template x-for="i,j in list">
+                        <img
+                            :src="i.path"
+                            class="-z-10 h-96 object-cover w-full"
+                            x-show="state === j"
                         >
-                            <div class="product-grid-4 row">
-                                {% for product in products %}
-                                <div class="col-sm-6 col-12 col-lg-1-5 col-md-4">
-                                    <div class="mb-30 product-cart-wrap">
-                                        <div class="product-img-action-wrap">
-                                            <div class="product-img product-img-zoom">
-                                                <a href="{% url 'detail' product.id%}">
-                                                    <img
-                                                        class="default-img"
-                                                        src="{{product.image.url}}"
-                                                        alt=""
-                                                    />
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                        <div class="product-content-wrap">
-                                            <div class="product-category">
-                                                <a
-                                                    href="{% url 'category' product.category.id %}">{{product.category}}</a>
-                                            </div>
-                                            <h2><a href="{% url 'detail' product.id %}">{{product.name}}</a></h2>
-                                            <div class="product-card-bottom">
-                                                <div class="product-price">
-                                                    <span>{{product.price}}€</span>
-                                                </div>
-                                                <div class="add-cart">
-                                                    <select
-                                                        id="select"
-                                                        style="display: none;"
-                                                    >
-                                                        <option
-                                                            value="1"
-                                                            selected
-                                                        >1</option>
-                                                    </select>
-                                                    <a href="{%url 'detail' product.id%}">
-                                                        <button
-                                                            class="border-0 add"
-                                                            id="add-button"
-                                                        >Bestellen! </button>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                                <!--end product card-->
-                            </div>
-                            <!--End product-grid-4-->
-                        </div>
-
+                    </template>
+                    <div
+                        class="left-2 absolute cursor-pointer"
+                        @click="state===0? state=0 : state--"
+                    ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            class="hover:text-green-400 size-8 text-white"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm10.25.75a.75.75 0 0 0 0-1.5H6.56l1.22-1.22a.75.75 0 0 0-1.06-1.06l-2.5 2.5a.75.75 0 0 0 0 1.06l2.5 2.5a.75.75 0 1 0 1.06-1.06L6.56 8.75h4.69Z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </div>
+                    <div
+                        class="right-2 absolute cursor-pointer"
+                        @click="state === (list.length-1) ? state=0 : state++"
+                    ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            class="hover:text-green-400 size-8 text-white"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M15 8A7 7 0 1 0 1 8a7 7 0 0 0 14 0ZM4.75 7.25a.75.75 0 0 0 0 1.5h4.69L8.22 9.97a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 0 0-1.06 1.06l1.22 1.22H4.75Z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
 
                     </div>
-                    <!--End tab-content-->
-                </section>
-
-            </div>
-            <div class="sticky-sidebar pt-30 col-lg-1-5 primary-sidebar">
-                <div class="mb-30 sidebar-widget widget-category-2">
-                    <h5 class="mb-30 section-title style-1">Kategorien</h5>
-                    <ul>
-                        {% for category in categories %}
-
-                        <li>
-                            <a href="{% url 'category' category.id %}"> <img
-                                    src="{{category.image.url}}"
-                                    alt=""
-                                />{{category.name}}</a><span class="count">+</span>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="bottom-2 absolute flex space-x-1 cursor-pointer">
+                        <template x-for="i,j in list">
+                            <div
+                                class="size-3 rounded-full"
+                                :class="state === j? 'bg-green-500': 'bg-gray-400'"
+                                @click="state = j"
+                            ></div>
+                        </template>
+                    </div>
+                    <template x-for="i,j in list">
+                        <h1
+                            x-show="state === j"
+                            x-text="i.message"
+                            class="absolute w-5/6 text-4xl font-bold text-center text-white"
+                        >
+                        </h1>
+                    </template>
                 </div>
-
             </div>
 
-        </div>
-    </div>
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="d-flex justify-content-center align-items-center preloader">
-            <div class="position-relative preloader-inner">
-                <div class="text-center">
-                    <img
-                        src="{% static 'assets/logo.png' %}"
-                        alt=""
-                    />
+            <h1 class="text-4xl font-bold text-gray-600">Unsere neuen Gerichte</h1>
+            <div class="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid grid-cols-1 gap-3">
+                {% for p in products %}
+                <div
+                    class="hover:border-2 hover:shadow-2xl rounded-xl group hover:boder-gray-700 p-4 border border-gray-200">
+                    <a href="{%url 'detail' p.slug%}">
+                        <img
+                            src="{{p.image.url}}"
+                            alt=""
+                            class="group-hover:scale-110 rounded-xl object-contain h-24 mx-auto my-3 duration-500 ease-in-out"
+                        >
+                    </a>
+                    <div class="text-sm text-gray-400">{{p.category}}</div>
+                    <div class="text-slate-700 text-xl font-bold">{{p.name}}</div>
+                    <div class="flex items-center justify-between gap-1">
+                       {% if p.price == 0.00 %}
+                             <div class="invisible font-bold text-green-400">{{p.price}}€</div>
+                       {% else %}
+                             <div class="font-bold text-green-400">{{p.price}}€</div>
+                       {% endif %}
+                        <a
+                            href="{%url 'detail' p.slug%}"
+                            class="hover:bg-green-500 hover:text-white hover:-translate-y-2 px-3 py-2 font-bold text-green-700 duration-500 ease-in-out bg-green-200 rounded-lg"
+                        >Ansehen</a>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 </main>
-
-
-
-{% endblock body %}
+{% endblock %}

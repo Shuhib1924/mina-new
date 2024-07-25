@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Mina Restaurant
+{% endblock title %}
+{% block body %} <main class="main">
+
+    <div class="mb-30 container">
+        <div class="flex-row-reverse row">
+            <div class="col-lg-4-5">
+                <section class="position-relative mb-30 home-slider">
+                    <div class="mt-30 home-slide-cover">
+                        <div class="dot-style-1 dot-style-1-position-1 hero-slider-1 style-4">
+                            <div
+                                class="single-animation-wrap single-hero-slider"
+                                style="background-image: url({% static 'assets/imgs/slider/slider-1.jpg' %})"
+                            >
+                                <div class="slider-content">
+                                    <h1 class="mb-40 display-2"> Verpasse nicht unsere<br /> Angebote </h1>
+                                    <!-- <p class="mb-65">Sign up for the daily newsletter</p>
+                                            <form class="d-flex form-subcriber">
+                                                <input
+                                                    type="email"
+                                                    placeholder="Your emaill address"
+                                                />
+                                                <button
+                                                    class="btn"
+                                                    type="submit"
+                                                >Subscribe</button>
+                                            </form> -->
+                                </div>
+                            </div>
+                            <div
+                                class="single-animation-wrap single-hero-slider"
+                                style="background-image: url({% static 'assets/imgs/slider/slider-2.jpg' %})"
+                            >
+                                <div class="slider-content">
+                                    <h1 class="mb-40 display-2"> Leckere Burger<br /> nur für Dich! </h1>
+                                    <p class="mb-65">Spare dir deine</p>
+                                    <!-- <form class="d-flex form-subcriber">
+                                                <input
+                                                    type="email"
+                                                    placeholder="Your emaill address"
+                                                />
+                                                <button
+                                                    class="btn"
+                                                    type="submit"
+                                                >Subscribe</button>
+                                            </form> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-slider-1-arrow slider-arrow"></div>
+                    </div>
+                </section>
+                <!--End hero-->
+                <section class="position-relative product-tabs section-padding">
+                    <div class="section-title style-2">
+                        <h3>Unsere Speisen</h3>
+
+                    </div>
+                    <!--End nav-tabs-->
+                    <div
+                        class="tab-content"
+                        id="myTabContent"
+                    >
+                        <div
+                            class="active fade show tab-pane"
+                            id="tab-one"
+                            role="tabpanel"
+                            aria-labelledby="tab-one"
+                        >
+                            <div class="product-grid-4 row">
+                                {% for product in products %}
+                                <div class="col-sm-6 col-12 col-lg-1-5 col-md-4">
+                                    <div class="mb-30 product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="{% url 'detail' product.id%}">
+                                                    <img
+                                                        class="default-img"
+                                                        src="{{product.image.url}}"
+                                                        alt=""
+                                                    />
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a
+                                                    href="{% url 'category' product.category.id %}">{{product.category}}</a>
+                                            </div>
+                                            <h2><a href="{% url 'detail' product.id %}">{{product.name}}</a></h2>
+                                            <div class="product-card-bottom">
+                                                <div class="product-price">
+                                                    <span>{{product.price}}€</span>
+                                                </div>
+                                                <div class="add-cart">
+                                                    <select
+                                                        id="select"
+                                                        style="display: none;"
+                                                    >
+                                                        <option
+                                                            value="1"
+                                                            selected
+                                                        >1</option>
+                                                    </select>
+                                                    <a href="{%url 'detail' product.id%}">
+                                                        <button
+                                                            class="border-0 add"
+                                                            id="add-button"
+                                                        >Bestellen! </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!--end product card-->
+                            </div>
+                            <!--End product-grid-4-->
+                        </div>
+
+
+                    </div>
+                    <!--End tab-content-->
+                </section>
+
+            </div>
+            <div class="sticky-sidebar pt-30 col-lg-1-5 primary-sidebar">
+                <div class="mb-30 sidebar-widget widget-category-2">
+                    <h5 class="mb-30 section-title style-1">Kategorien</h5>
+                    <ul>
+                        {% for category in categories %}
+
+                        <li>
+                            <a href="{% url 'category' category.id %}"> <img
+                                    src="{{category.image.url}}"
+                                    alt=""
+                                />{{category.name}}</a><span class="count">+</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="d-flex justify-content-center align-items-center preloader">
+            <div class="position-relative preloader-inner">
+                <div class="text-center">
+                    <img
+                        src="{% static 'assets/logo.png' %}"
+                        alt=""
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock body %}

@@ -1,130 +1,99 @@
-{% extends "base.html" %}
+{% extends "p1/base.html" %}
 {% load static %}
 {% block title %}
-  Warenkorb
+    Warenkorb
 {% endblock title %}
-{% block body %}
-<main class="main">
-
-    <div class="mb-80 mt-50 container">
-        <div class="row">
-            <div class="col-lg-8 mb-40">
-                <h1 class="heading-2 mb-10">Dein Warenkorb</h1>
-                <div class="d-flex justify-content-between">
-                    <!-- <h6 class="text-body">There are <span class="text-brand">3</span> products in your cart</h6>
-                    <h6 class="text-body"><a href="#" class="text-muted"><i class="fi-rs-trash mr-5"></i>Clear Cart</a></h6> -->
+{% block main %}
+        <main>
+        {% if cart_count == 0 %}
+            <h1 class="place-items-center grid h-screen text-4xl font-black text-gray-600">Es befindet sich noch nichts in Ihrem Wagen</h1>
+        {% else %}
+            <div class="bg-gray-50 rounded-xl sm:flex-row sm:space-x-4 sm:mx-5 sm:my-10 flex flex-col">
+            <div class="sm:w-3/4 sm:space-y-4">
+                <div class="sm:block hidden">
+                    <div class="flex w-full px-3 py-2 text-xl font-bold text-center text-white bg-gray-600 rounded-lg">
+                        <div class="div w-3/12">Bild</div>
+                        <div class="div w-3/12">Produkt</div>
+                        <div class="div w-4/12">Variation</div>
+                        <div class="div w-2/12">Preis</div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="table-responsive shopping-summery">
-                    <table class="table-wishlist table">
-                        <thead>
-                            <tr class="main-heading">
-                                {% comment %}
-                                <th class="custome-checkbox start pl-30">
-                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="">
-                                    <label class="form-check-label" for="exampleCheckbox11"></label>
-                                </th>
-                                {% endcomment %}
-                                <th scope="col" colspan="2">Product</th>
-                                <th scope="col" >Extra</th>
-                                {% comment %} <th scope="col">Einzelpreis</th> {% endcomment %}
-                                <th scope="col">Gesamtpreis</th>
-                                <th scope="col" class="end">Entfernen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in items %}
-
-                            <tr class="pt-30">
-                                {% comment %}
-                                <td class="custome-checkbox pl-30">
-                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
-                                    <label class="form-check-label" for="exampleCheckbox1"></label>
-                                </td>
-                                {% endcomment %}
-                                <td class="image product-thumbnail pt-40 pl-20"><a href="{% url 'detail' item.product.id %}"><img src="{{item.product.image.url}}" alt="#"></a></td>
-                                <td class="product-des product-name">
-                                    <h6 class="mb-5"><a class="product-name text-heading mb-10" href="{% url 'detail' item.product.id%}">{{item.product.name}}</a></h6>
-
-                                </td>
-                                <td class="product-des product-name" data-title="Stock">
-                                {% for var in item.variations.all %}
-
-                                    <ul>
-                                        <li class="text-secondary">+{{var.name}}</li>
-                                    </ul>
-
-                                {% endfor %}
-                                </td>
-                                {% comment %} <td class="price" data-title="Price">
-                                    <h4 class="text-body">{{product.price}} €</h4>
-                                </td> {% endcomment %}
-                                <td class="price" data-title="Price">
-                                    <h4 class="text-brand"> {{item.pro_var_sum}} €</h4>
-                                </td>
-                                <td class="action text-center">
-                                <a href="{% url 'delete' item.id %}" class="text-body delete-button"><i class="fi-rs-trash"></i></a>
-                                </td>
-                            </tr>
-
+                {% for ci in cart_items %}
+                <div
+                    class="sm:flex-row hover:bg-green-50 sm:items-center sm:space-x-4 sm:shadow-2xl sm:m-0 sm:p-2 sm:border-none rounded-xl flex flex-col p-4 m-4 space-y-3 bg-white border-4 border-gray-300">
+                    <img
+                        class="rounded-xl sm:w-3/12 hover:scale-90 duration-1000"
+                        src="{{ci.1.product.image.url}}"
+                        alt=""
+                    >
+                    <div class="sm:w-3/12 space-y-1">
+                       {% if ci.0.user %}
+                             <div class="rounded-xl w-min px-3 py-1 text-lg font-bold text-green-500 bg-green-200">{{ci.0.user}}</div>
+                       {% else %}
+                       {% endif %}
+                        <a href="{% url 'detail' ci.1.product.slug %}">
+                        <div class="text-2xl font-bold text-gray-600">{{ci.1.product.name}}</div>
+                        </a>
+                    </div>
+                        <div class="sm:w-4/12">
+                            {% for q in ci.2.queries %}
+                                <div class="flex">
+                                <div class="mr-1 font-bold text-gray-500">{{q.name}}: </div>
+                                <span class="italic font-normal text-gray-400">
+                                    {% for v in ci.3.variations %}
+                                            {% if q in v.query_variation.all  %}
+                                                {{v.name}}
+                                                {% if v.price != 0.00 %}
+                                                    <span class=" text-green-300">+{{v.price}}€</span>, <br>
+                                                {% endif %}
+                                            {% endif %}
+                                    {% endfor %}
+                                </span>
+                                </div>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="divider-2 mb-30"></div>
-                <div class="cart-action d-flex justify-content-between">
-                    <a href="{% url 'home' %}" class="btn "><i class="fi-rs-arrow-left mr-10"></i>was vergessen?</a>
+                        </div>
+                    <div class="sm:w-2/12 flex flex-col items-center justify-center space-y-2">
+                        <div class="sm:self-center text-xl font-bold text-green-600">{{ci.4.item_price}}€</div>
+                        <a href="{% url 'delete' forloop.counter0 %}">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 16 16"
+                                fill="currentColor"
+                                class="hover:bg-green-400 size-12 self-center p-2 text-white bg-green-200 rounded-full cursor-pointer"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </a>
+                    </div>
 
                 </div>
-                <div class="row mt-50">
-                    <div class="col-lg-7">
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-            <div class="col-lg-4">
-                <div class="p-md-4 cart-totals ml-30 border">
-                    <div class="table-responsive">
-                        <table class="no-border table">
-                            <tbody>
-
-                                <tr>
-                                    <td class="cart_total_label">
-                                        <h6 class="text-muted">Netto:</h6>
-                                    </td>
-                                    <td class="cart_total_amount">
-                                        <h5 class="text-heading text-end">{{netto}} €</h4</td> </tr> <tr>
-                                    <td class="cart_total_label">
-                                        <h6 class="text-muted">19% Mwst.:</h6>
-                                    </td>
-                                    <td class="cart_total_amount">
-                                        <h5 class="text-heading text-end">{{tax}} €</h4</td> </tr> <tr>
-                                    <td scope="col" colspan="2">
-                                        <div class="divider-2 mt-10 mb-10"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="cart_total_label">
-                                        <h6 class="text-muted">Brutto</h6>
-                                    </td>
-                                    <td class="cart_total_amount">
-                                        <h4 class="text-brand text-end">{{cart_sum}} €</h4>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <a href="{% url 'checkout' %}" class="btn w-100 mb-20">Bestellung abschließen<i class="fi-rs-sign-out ml-15"></i></a>
+            <div
+                class="top-4 sm:border-2 sm:border-gray-300 sm:shadow-none sm:p-6 rounded-xl sm:w-1/4 h-min sticky p-4 m-4 space-y-3 text-lg text-gray-600 bg-white shadow-2xl">
+                <div class="flex justify-between">
+                    <div>Netto:</div>
+                    <div>81,00€</div>
+                </div>
+                <div class="flex justify-between">
+                    <div>19% Mwst.:</div>
+                    <div>19,00€</div>
+                </div>
+                <hr>
+                <div class="flex justify-between font-bold">
+                    <div>Brutto:</div>
+                    <div class="">100,00€</div>
+                </div>
+                <div
+                    class="hover:bg-green-600 rounded-xl px-4 py-2 text-xl font-bold text-center text-white bg-green-400">
+                    Bestellung abschließen
                 </div>
             </div>
         </div>
-
-
-    </div>
-</main>
-
-
-{% endblock body %}
+        {% endif %}
+        </main>
+{% endblock main %}

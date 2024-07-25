@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script src="https://unpkg.com/alpinejs"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>alpine</title>
+    </head>
+
+    <body>
+        <div
+            x-data="{show:true}"
+            class="flex justify-center items-center h-screen"
+        >
+            <button
+                @click="show = !show"
+                class="bg-blue-400 px-4 py-2 rounded-md text-white"
+            >test</button>
+            <div
+                x-show="show"
+                class="fixed inset-0 place-items-center grid bg-black/50"
+            >
+                <div
+                    @click.away="show = false"
+                    class="relative place-content-center grid bg-white rounded-xl w-1/2 h-1/2"
+                >
+                    <div
+                        class="top-1 right-2 absolute cursor-pointer"
+                        @click="show = false"
+                    >X</div>
+                    <div>test</div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

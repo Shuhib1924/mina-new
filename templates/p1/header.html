@@ -1,0 +1,106 @@
+{% load static%}
+{% for i in notifications%}
+<section class="py-2 my-4 -mx-6 -mt-4 text-xl font-bold text-center text-white bg-green-500">{{i.message}}
+</section>
+{%endfor%}
+<header class="relative flex justify-between">
+    <a
+        href="{% url 'home'%}"
+        class="hover:scale-110 duration-300 cursor-pointer"
+    >
+        <img
+            class="h-20"
+            src="{% static 'mina/logo.png' %}"
+            alt="logo"
+        >
+    </a>
+    <div class="md:block hidden">
+        <div class="text-slate-600">Follow us</div>
+        <div class="flex space-x-2">
+            <a href="https://facebook.com">
+                <svg
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 50 50"
+                >
+                    <path
+                        d="M25,3C12.85,3,3,12.85,3,25c0,11.03,8.125,20.137,18.712,21.728V30.831h-5.443v-5.783h5.443v-3.848 c0-6.371,3.104-9.168,8.399-9.168c2.536,0,3.877,0.188,4.512,0.274v5.048h-3.612c-2.248,0-3.033,2.131-3.033,4.533v3.161h6.588 l-0.894,5.783h-5.694v15.944C38.716,45.318,47,36.137,47,25C47,12.85,37.15,3,25,3z"
+                    ></path>
+                </svg>
+            </a>
+            <a href="https://twitter.com">
+                <svg
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 50 50"
+                >
+                    <path
+                        d="M 50.0625 10.4375 C 48.214844 11.257813 46.234375 11.808594 44.152344 12.058594 C 46.277344 10.785156 47.910156 8.769531 48.675781 6.371094 C 46.691406 7.546875 44.484375 8.402344 42.144531 8.863281 C 40.269531 6.863281 37.597656 5.617188 34.640625 5.617188 C 28.960938 5.617188 24.355469 10.21875 24.355469 15.898438 C 24.355469 16.703125 24.449219 17.488281 24.625 18.242188 C 16.078125 17.8125 8.503906 13.71875 3.429688 7.496094 C 2.542969 9.019531 2.039063 10.785156 2.039063 12.667969 C 2.039063 16.234375 3.851563 19.382813 6.613281 21.230469 C 4.925781 21.175781 3.339844 20.710938 1.953125 19.941406 C 1.953125 19.984375 1.953125 20.027344 1.953125 20.070313 C 1.953125 25.054688 5.5 29.207031 10.199219 30.15625 C 9.339844 30.390625 8.429688 30.515625 7.492188 30.515625 C 6.828125 30.515625 6.183594 30.453125 5.554688 30.328125 C 6.867188 34.410156 10.664063 37.390625 15.160156 37.472656 C 11.644531 40.230469 7.210938 41.871094 2.390625 41.871094 C 1.558594 41.871094 0.742188 41.824219 -0.0585938 41.726563 C 4.488281 44.648438 9.894531 46.347656 15.703125 46.347656 C 34.617188 46.347656 44.960938 30.679688 44.960938 17.09375 C 44.960938 16.648438 44.949219 16.199219 44.933594 15.761719 C 46.941406 14.3125 48.683594 12.5 50.0625 10.4375 Z"
+                    ></path>
+                </svg>
+            </a>
+            <a href="https://instagram.com">
+                <svg
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 50 50"
+                >
+                    <path
+                        d="M 16 3 C 8.83 3 3 8.83 3 16 L 3 34 C 3 41.17 8.83 47 16 47 L 34 47 C 41.17 47 47 41.17 47 34 L 47 16 C 47 8.83 41.17 3 34 3 L 16 3 z M 37 11 C 38.1 11 39 11.9 39 13 C 39 14.1 38.1 15 37 15 C 35.9 15 35 14.1 35 13 C 35 11.9 35.9 11 37 11 z M 25 14 C 31.07 14 36 18.93 36 25 C 36 31.07 31.07 36 25 36 C 18.93 36 14 31.07 14 25 C 14 18.93 18.93 14 25 14 z M 25 16 C 20.04 16 16 20.04 16 25 C 16 29.96 20.04 34 25 34 C 29.96 34 34 29.96 34 25 C 34 20.04 29.96 16 25 16 z"
+                    ></path>
+                </svg>
+            </a>
+            <a href="https://tiktok.com">
+                <svg
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 50 50"
+                >
+                    <path
+                        d="M41,4H9C6.243,4,4,6.243,4,9v32c0,2.757,2.243,5,5,5h32c2.757,0,5-2.243,5-5V9C46,6.243,43.757,4,41,4z M37.006,22.323 c-0.227,0.021-0.457,0.035-0.69,0.035c-2.623,0-4.928-1.349-6.269-3.388c0,5.349,0,11.435,0,11.537c0,4.709-3.818,8.527-8.527,8.527 s-8.527-3.818-8.527-8.527s3.818-8.527,8.527-8.527c0.178,0,0.352,0.016,0.527,0.027v4.202c-0.175-0.021-0.347-0.053-0.527-0.053 c-2.404,0-4.352,1.948-4.352,4.352s1.948,4.352,4.352,4.352s4.527-1.894,4.527-4.298c0-0.095,0.042-19.594,0.042-19.594h4.016 c0.378,3.591,3.277,6.425,6.901,6.685V22.323z"
+                    ></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <!-- !cart -->
+    <a
+        href="{% url 'cart'%}"
+        class="hover:-translate-x-3 flex items-center space-x-2 duration-300"
+    >
+        <div class="size-12 relative">
+            <svg
+                class="stroke-gray-500"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+            <div class="-top-3 -right-3 absolute">
+                <div class="relative">
+                    <div class="animate-ping size-8 bg-green-400 rounded-full"></div>
+                    <div
+                        class="size-8 absolute inset-0 flex items-center justify-center h-full text-lg text-white bg-green-500 rounded-full">
+                        <div>{{cart_count}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-2xl font-semibold text-gray-500">Korb</p>
+    </a>
+</header>
+<hr class="border-slate-300 my-2 border-t-2">

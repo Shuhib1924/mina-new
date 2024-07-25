@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>PayPal Integration</title>
+        <script
+            src="https://cdn.jsdelivr.net/npm/alpinejs"
+            defer
+        ></script>
+        <script src="https://www.paypal.com/sdk/js?client-idAfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY"></script>
+    </head>
+
+    <body>
+
+        <div x-data="paypalComponent()">
+            <label for="amount">Enter Amount:</label>
+            <input
+                type="number"
+                id="amount"
+                x-model="amount"
+                @input="calculatePayPalAmount()"
+            />
+
+            <h2>Total PayPal Amount: $<span x-text="totalAmount.toFixed(2)"></span></h2>
+
+            <div id="paypal-button-container"></div>
+        </div>
+
+        <script>
+            function paypalComponent() {
+                return {
+                    amount: 0,
+                    totalAmount: 0,
+                    paypalFee: 0.029,
+                    fixedFee: 0.30,
+
+                    calculatePayPalAmount() {
+                        const feePercentage = this.paypalFee;
+                        const fixedFee = this.fixedFee;
+                        const totalAmount = parseFloat(this.amount);
+
+                        this.totalAmount = totalAmount + (totalAmount * feePercentage) + fixedFee;
+                        this.renderPayPalButton();
+                    },
+
+                    renderPayPalButton() {
+                        // Remove existing buttons if any
+                        const container = document.getElementById('paypal-button-container');
+                        container.innerHTML = '';
+
+                        // Render PayPal button
+                        paypal.Buttons({
+                            createOrder: (data, actions) => {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            value: this.totalAmount.toFixed(2)
+                                        }
+                                    }]
+                                });
+                            },
+                            onApprove: (data, actions) => {
+                                return actions.order.capture().then(function (details) {
+                                    alert('Transaction completed by ' + details.payer.name.given_name);
+                                });
+                            },
+                            onError: (err) => {
+                                console.error(err);
+                                alert('An error occurred during the transaction.');
+                            }
+                        }).render(container);
+                    }
+                }
+            }
+        </script>
+
+    </body>
+
+</html>

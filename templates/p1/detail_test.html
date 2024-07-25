@@ -1,0 +1,428 @@
+
+{% block body %}
+ <script src="https://cdn.tailwindcss.com"></script>
+<script
+            defer
+            src="https://unpkg.com/alpinejs"
+        ></script>
+<body>
+        <div
+            id="data"
+            x-cloak
+            x-data="{
+                        showModal: true,
+                        state: -1,
+                    }"
+        >
+            <form
+                action=""
+                method="POST"
+                x-data="userManagement()"
+                class="max-h-screen overflow-auto"
+            >
+                {%csrf_token%}
+                <input
+                    type="hidden"
+                    name="product"
+                    value="{{product.id}}"
+                >
+                <div
+                    x-show="showModal"
+                    class="top-0 left-0 z-10 fixed flex justify-center items-center bg-black/50 w-full h-full max-h-screen overflow-auto"
+                >
+                    <div
+                        x-show="showModal"
+                        x-transition
+                        @keyup.escape.window="showModal = false"
+                        @click.outside="showModal = false"
+                        class="relative z-20 bg-white p-8 rounded-2xl max-h-screen overflow-auto"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            @click="showModal=false"
+                            class="top-2 right-2 absolute font-black text-green-600 cursor-pointer size-12"
+                        >
+                            <path
+                                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                            />
+                        </svg>
+                        <div class="justify-center">
+                            <h1
+                                class="my-4 p-2 max-w-2xl h-min max-h-screen font-bold text-3xl text-slate-600 overflow-auto"
+                                x-text="selectedUsers.length > 0? `Für: ${selectedUsers}`:``"
+                            ></h1>
+                            <!-- <h2 x-text="state"></h2> -->
+                            <!-- <h3>{{variation_categories|length}}</h3> -->
+                        </div>
+                        <hr class="mx-auto my-5 rounded h-2">
+                        <!-- ? user -->
+                        <div id="user">
+                            <div
+                                id="user-1"
+                                x-show="state==-1"
+                            >
+                                <h1 class="font-bold text-4xl text-center text-slate-600">Gruppenbestellung?</h1>
+                                <hr class="mx-auto my-5 rounded h-2">
+                                <div class="flex justify-center my-6">
+                                    <div class="w-2/3 text-lg text-slate-600 italic">Hier kannst für mehrere Personen
+                                        gleichzeitig bestellen und für jeden einen Namen vergeben</div>
+                                </div>
+                            </div>
+                            <div
+                                id="user_0"
+                                x-transition
+                                x-show="state==0"
+                            >
+                                <div>
+                                    <div>
+                                        <h2 class="font-bold text-2xl text-center text-slate-600">User auswählen</h2>
+                                        <hr class="mx-auto my-5 rounded h-2">
+                                        <div class="flex justify-between items-center space-x-24">
+                                            <div class="space-x-2">
+                                                <input
+                                                    x-model="newUser"
+                                                    @keydown.enter.prevent
+                                                    @keyup.enter.prevent
+                                                    @keydown.enter="addUser()"
+                                                    type="text"
+                                                    class="border-2 border-gray-500 px-4 py-2 rounded-lg"
+                                                >
+                                                <button
+                                                    type="button"
+                                                    @click="addUser()"
+                                                    class="border-2 border-green-200 hover:border-green-600 bg-green-600 hover:bg-green-400 px-4 py-2 rounded-lg text-white"
+                                                >Hinzufügen</button>
+                                            </div>
+                                            <div
+                                                x-text="`Ausgewählt: ${selectedUsers.length}/${users.length}`"
+                                                class="text-gray-600 text-xl"
+                                            ></div>
+                                        </div>
+                                        <!-- # hidden input user data -->
+                                        <div
+                                            class="gap-3 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-8 alignment-center">
+                                            <!-- <template x-if="selectedUsers.length > 0"> -->
+                                            <input
+                                                type="hidden"
+                                                name="users"
+                                                :value="JSON.stringify(selectedUsers)"
+                                            >
+                                            <!-- </template> -->
+                                            <template
+                                                x-for="(item, index) in paginatedUsers"
+                                                :key="(currentPage*1000)+index"
+                                            >
+                                                <div
+                                                    class="relative"
+                                                    x-transition
+                                                >
+                                                    <label>
+                                                        <input
+                                                            type="checkbox"
+                                                            :value="item"
+                                                            :checked="selectedUsers.includes(item)"
+                                                            @change="toggleUser(item)"
+                                                            class="hidden peer/a"
+                                                            :id="(currentPage*1000)+index"
+                                                        >
+                                                        <div
+                                                            class="flex justify-center items-center border-green-600 bg-green-100 peer-checked/a:bg-green-600 p-8 border rounded-lg h-full text-2xl text-center text-green-600 peer-checked/a:text-white">
+                                                            <input
+                                                                type="checkbox"
+                                                                :value="item"
+                                                                :checked="selectedUsers.includes(item)"
+                                                                @change="toggleUser(item)"
+                                                                class="hidden peer/a"
+                                                                :id="(currentPage*1000)+index"
+                                                            >
+                                                            <span x-text="`${item}`"></span>
+                                                            <!-- <span x-text="`| ${(currentPage*1000)+index}`"></span> -->
+                                                        </div>
+                                                    </label>
+                                                    <svg
+                                                        @click="deleteUser(item)"
+                                                        class="top-1 right-1 absolute text-green-600 cursor-pointer size-6"
+                                                        :class="selectedUsers.includes(item) ? 'text-white' : 'text-green-600'"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 16 16"
+                                                        fill="currentColor"
+                                                    >
+                                                        <path
+                                                            d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div
+                                            x-show="totalPages > 1"
+                                            id="showUser"
+                                        >
+                                            <hr class="my-5">
+                                            <div class="flex justify-between items-center">
+                                                <div
+                                                    @click="prevPage()"
+                                                    class="border-2 border-slate-600 hover:border-green-600 ml-5 px-4 py-2 rounded-lg text-slate-600 hover:text-green-600 cursor-pointer"
+                                                    :disabled="currentPage === 1"
+                                                    :class="{ 'text-white border-white hover:text-white hover:border-white': currentPage === 1 }"
+                                                    x-text="`Seite ${currentPage-1}`"
+                                                ></div>
+                                                <span
+                                                    x-text="`Seite ${currentPage} von ${totalPages}`"
+                                                    class="font-bold text-center text-lg text-slate-600"
+                                                ></span>
+                                                <div
+                                                    x-text="`Seite ${currentPage+1}`"
+                                                    @click="nextPage()"
+                                                    :class="{'text-white border-white hover:text-white hover:border-white': currentPage === totalPages }"
+                                                    class="border-2 border-slate-600 hover:border-green-600 ml-5 px-4 py-2 rounded-lg text-slate-600 hover:text-green-600 cursor-pointer"
+                                                    :disabled="currentPage === totalPages"
+                                                ></div>
+                                            </div>
+                                            <hr class="my-5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                function userManagement() {
+                                    //console.log('test');
+                                    return {
+                                        newUser: '',
+                                        users: [],
+                                        currentPage: 1,
+                                        usersPerPage: 6,
+                                        paginatedUsers: [],
+                                        selectedUsers: [],
+
+                                        init() {
+                                            this.loadUsersFromCookie();
+                                            this.updatePaginatedUsers();
+                                        },
+                                        // chceckbox
+                                        toggleUser(user) {
+                                            const index = this.selectedUsers.indexOf(user);
+                                            if (index === -1) {
+                                                this.selectedUsers.push(user);
+                                            } else {
+                                                this.selectedUsers.splice(index, 1);
+                                            }
+                                        },
+                                        selectCheckbox(event) {
+                                            if (event.target.checked) {
+                                                this.selectedCheckboxes.push(event.target.value);
+                                            } else {
+                                                const index = this.selectedCheckboxes.indexOf(event.target.value);
+                                                if (index > -1) {
+                                                    this.selectedCheckboxes.splice(index, 1);
+                                                }
+                                            }
+                                        },
+
+                                        updateSelectedCheckboxes() {
+                                            const currentPageItems = this.paginatedUsers.map(item => item.toString());
+                                            this.selectedCheckboxes = this.selectedCheckboxes.filter(value => currentPageItems.includes(value));
+                                        },
+                                        //@ create and delete
+                                        addUser() {
+                                            if (this.newUser.trim() !== '') {
+                                                this.users.push(this.newUser);
+                                                this.saveUsersToCookie();
+                                                this.newUser = '';
+                                                this.updatePagination();
+                                                this.updatePaginatedUsers();
+                                                this.saveUsersToCookie();
+                                            }
+                                        },
+                                        deleteUser(item) {
+                                            const usersIndex = this.users.indexOf(item);
+                                            console.log("usersIndex", usersIndex);
+                                            const selectedUsersIndex = this.selectedUsers.indexOf(item);
+                                            console.log("selectedUsersIndex", selectedUsersIndex);
+                                            this.users.splice(usersIndex, 1);
+                                            this.selectedUsers.splice(selectedUsersIndex, 1);
+                                            this.saveUsersToCookie();
+                                            this.updatePagination();
+                                            this.updatePaginatedUsers();
+                                            this.saveUsersToCookie();
+                                        },
+                                        // save and load
+                                        loadUsersFromCookie() {
+                                            const cookieUsers = this.getCookie('users');
+                                            if (cookieUsers) {
+                                                this.users = JSON.parse(cookieUsers);
+                                            }
+                                            this.updatePagination();
+                                            this.updatePaginatedUsers();
+                                        },
+
+                                        saveUsersToCookie() {
+                                            this.setCookie('users', JSON.stringify(this.users), 30);
+                                        },
+                                        // set and get cookie
+                                        setCookie(name, value, days) {
+                                            const date = new Date();
+                                            date.setTime(date.getTime() + (days * 365 * 24 * 60 * 60 * 1000));
+                                            const expires = "expires=" + date.toUTCString();
+                                            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+                                        },
+
+                                        getCookie(name) {
+                                            const cookieName = name + "=";
+                                            const decodedCookie = decodeURIComponent(document.cookie);
+                                            const cookieArray = decodedCookie.split(';');
+                                            for (let i = 0; i < cookieArray.length; i++) {
+                                                let cookie = cookieArray[i];
+                                                while (cookie.charAt(0) === ' ') {
+                                                    cookie = cookie.substring(1);
+                                                }
+                                                if (cookie.indexOf(cookieName) === 0) {
+                                                    return cookie.substring(cookieName.length, cookie.length);
+                                                }
+                                            }
+                                            return "";
+                                        },
+                                        // page length
+                                        get totalPages() {
+                                            console.log(Math.ceil(this.users.length / this.usersPerPage));
+                                            return Math.ceil(this.users.length / this.usersPerPage);
+                                        },
+
+                                        // pagination function
+                                        updatePaginatedUsers() {
+                                            const start = (this.currentPage - 1) * this.usersPerPage;
+                                            const end = start + this.usersPerPage;
+                                            this.paginatedUsers = this.users.slice(start, end);
+                                            //console.log("paginatedUsers", this.paginatedUsers.length);
+                                        },
+
+                                        nextPage() {
+                                            if (this.currentPage < this.totalPages) {
+                                                this.currentPage++;
+                                                this.updatePaginatedUsers();
+                                            }
+                                        },
+
+                                        prevPage() {
+                                            if (this.currentPage > 1) {
+                                                this.currentPage--;
+                                                this.updatePaginatedUsers();
+                                            }
+                                        },
+
+                                        updatePagination() {
+                                            if (this.currentPage > this.totalPages) {
+                                                this.currentPage = this.totalPages || 1;
+                                            }
+                                            this.updatePaginatedUsers();
+                                        },
+                                    }
+                                }
+                            </script>
+                        </div>
+                        {% for vc in variation_categories %}
+                        <div
+                            x-show="state=={{forloop.counter}}"
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-end="opacity-100 scale-100"
+                        >
+                            <h1 class="mb-6 ml-8 font-extrabold text-2xl text-gray-700">name: {{vc.name}}
+                            </h1>
+                            <input
+                                type="hidden"
+                                name="variation_category"
+                                value="{{vc.id}}"
+                            >
+                            <div class="m-4">
+                                <div class="mx-2 px-2">
+                                    <div
+                                        class="justify-center justify-items-center items-center place-items-center content-center place-content-center gap-4 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                        {% for v in vc.variation_category.all %}
+                                        <div class="rounded-xl max-h-screen overflow-hidden">
+                                            <input
+                                                id="{{v.id}}"
+                                                name="variations"
+                                                value="{{v.id}}"
+                                                type="checkbox"
+                                                class="hidden peer/a"
+                                            >
+                                            <label
+                                                for="{{v.id}}"
+                                                class="flex peer-checked/a:border-4 peer-checked/a:border-green-600 rounded-xl overflow-hidden"
+                                            >
+                                                <div class="relative w-32 h-24">
+                                                    {% if v.image %}
+                                                    <img
+                                                        class="object-contain"
+                                                        src="{{v.image.url}}"
+                                                        alt="
+                                                                                                    no-image"
+                                                    >
+                                                    {% endif %}
+                                                    <div class="absolute inset-0 bg-black/40 rounded-xl object-contain">
+                                                    </div>
+                                                    <div
+                                                        class="absolute inset-0 flex justify-center items-center mx-auto text-center text-white text-xl break-word">
+                                                        <div>
+                                                            <h3 class="font-semibold"> {{v.name}} </h3>
+                                                            {% if v.price != 0.00 %}
+                                                            <h3 class="italic">+{{v.price}}</h3>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <div
+                            id="buttons"
+                            class="flex justify-between items-center mx-10"
+                        >
+                            <div
+                                @click="state===-1? state++ : state--"
+                                x-text="state===-1 ? `Ja` : `Zurück`"
+                                class="border-2 border-green-200 hover:border-green-600 bg-green-500 hover:bg-green-400 ml-5 px-4 py-2 rounded-lg text-white cursor-pointer"
+                            ></div>
+                            <h2
+                                class="mx-4 font-bold text-gray-600 text-xl"
+                                x-text="`${state+1}/${ {{variation_categories|length}} +1}`"
+                            ></h2>
+                            <div
+                                @click="state===-1 ? state+=2 : state++"
+                                x-text="state===-1 ? `Nein`: `Weiter`"
+                                class="border-2 border-green-200 hover:border-green-600 bg-green-500 hover:bg-green-400 ml-5 px-4 py-2 rounded-lg text-white cursor-pointer"
+                                :class="{'hidden':state >= {{variation_categories|length}}, 'bg-gray-500 cursor-not-allowed' : state===-1}"
+                            ></div>
+                            <button
+                                type="submit"
+                                x-show="state >= {{variation_categories|length}}"
+                                class="border-2 border-green-200 hover:border-green-600 bg-green-500 hover:bg-green-400 ml-5 px-4 py-2 rounded-lg text-white cursor-pointer"
+                            >Warenkorb</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% if product.image %}
+            <img
+                class="size-10"
+                src="{{product.image.url}}"
+                alt=""
+            >
+            {% endif %}
+            <button
+                @click="showModal = true"
+                class="bg-gray-700 px-4 py-2 rounded text-white"
+            >Bestellen</button>
+        </div>
+    </body>
+
+{% endblock body %}
