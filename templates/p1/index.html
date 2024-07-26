@@ -4,9 +4,9 @@ Mina Luna!
 {% endblock %}
 {% block main %}
 <main>
-    <div class="md:flex-row md:space-x-10 flex flex-col">
+    <div class="flex md:flex-row flex-col md:space-x-10">
         {% include "p1/category_bar.html"%}
-        <div class="md:order-last md:w-3/4 order-first my-10 space-y-12">
+        <div class="space-y-12 order-first md:order-last my-10 md:w-3/4">
             <div
                 x-data="{
                                     state: 0,
@@ -19,12 +19,15 @@ Mina Luna!
                 x-init="()=>{setInterval(()=>state===(list.length-1) ? state=0 : state++, 2000)}"
                 class="object-cover"
             >
-                <div class="bg-black/20 rounded-2xl relative flex items-center justify-center m-4 overflow-hidden">
+                <div class="relative flex justify-center items-center bg-black/20 m-4 rounded-2xl overflow-hidden">
                     <template x-for="i,j in list">
                         <img
                             :src="i.path"
-                            class="-z-10 h-96 object-cover w-full"
+                            class="-z-10 w-full h-96 object-cover"
                             x-show="state === j"
+                            x-transition:enter="transition ease-in-out duration-1000 transform"
+                            x-transition:enter-start="-translate-x-5 opacity-0"
+                            x-transition:enter-end="translate-x-0 opacity-100"
                         >
                     </template>
                     <div
@@ -34,7 +37,7 @@ Mina Luna!
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 16 16"
                             fill="currentColor"
-                            class="hover:text-green-400 size-8 text-white"
+                            class="text-white hover:text-green-400 size-8"
                         >
                             <path
                                 fill-rule="evenodd"
@@ -50,7 +53,7 @@ Mina Luna!
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 16 16"
                             fill="currentColor"
-                            class="hover:text-green-400 size-8 text-white"
+                            class="text-white hover:text-green-400 size-8"
                         >
                             <path
                                 fill-rule="evenodd"
@@ -63,7 +66,7 @@ Mina Luna!
                     <div class="bottom-2 absolute flex space-x-1 cursor-pointer">
                         <template x-for="i,j in list">
                             <div
-                                class="size-3 rounded-full"
+                                class="rounded-full size-3"
                                 :class="state === j? 'bg-green-500': 'bg-gray-400'"
                                 @click="state = j"
                             ></div>
@@ -73,36 +76,36 @@ Mina Luna!
                         <h1
                             x-show="state === j"
                             x-text="i.message"
-                            class="absolute w-5/6 text-4xl font-bold text-center text-white"
+                            class="absolute w-5/6 font-bold text-4xl text-center text-white"
                         >
                         </h1>
                     </template>
                 </div>
             </div>
 
-            <h1 class="text-4xl font-bold text-gray-600">Unsere neuen Gerichte</h1>
-            <div class="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid grid-cols-1 gap-3">
+            <h1 class="font-bold text-4xl text-gray-600">Unsere neuen Gerichte</h1>
+            <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {% for p in products %}
                 <div
-                    class="hover:border-2 hover:shadow-2xl rounded-xl group hover:boder-gray-700 p-4 border border-gray-200">
+                    class="border-gray-200 hover:border-2 hover:shadow-2xl rounded-xl group hover:boder-gray-700 p-4 border">
                     <a href="{%url 'detail' p.slug%}">
                         <img
                             src="{{p.image.url}}"
                             alt=""
-                            class="group-hover:scale-110 rounded-xl object-contain h-24 mx-auto my-3 duration-500 ease-in-out"
+                            class="group-hover:scale-110 mx-auto my-3 rounded-xl h-24 duration-500 ease-in-out object-contain"
                         >
                     </a>
-                    <div class="text-sm text-gray-400">{{p.category}}</div>
-                    <div class="text-slate-700 text-xl font-bold">{{p.name}}</div>
-                    <div class="flex items-center justify-between gap-1">
-                       {% if p.price == 0.00 %}
-                             <div class="invisible font-bold text-green-400">{{p.price}}€</div>
-                       {% else %}
-                             <div class="font-bold text-green-400">{{p.price}}€</div>
-                       {% endif %}
+                    <div class="text-gray-400 text-sm">{{p.category}}</div>
+                    <div class="font-bold text-slate-700 text-xl">{{p.name}}</div>
+                    <div class="flex justify-between items-center gap-1">
+                        {% if p.price == 0.00 %}
+                        <div class="font-bold text-green-400 invisible">{{p.price}}€</div>
+                        {% else %}
+                        <div class="font-bold text-green-400">{{p.price}}€</div>
+                        {% endif %}
                         <a
                             href="{%url 'detail' p.slug%}"
-                            class="hover:bg-green-500 hover:text-white hover:-translate-y-2 px-3 py-2 font-bold text-green-700 duration-500 ease-in-out bg-green-200 rounded-lg"
+                            class="bg-green-200 hover:bg-green-500 px-3 py-2 rounded-lg font-bold text-green-700 hover:text-white hover:-translate-y-2 duration-500 ease-in-out"
                         >Ansehen</a>
                     </div>
                 </div>

@@ -12,6 +12,13 @@ class Random(models.Model):
     def __str__(self):
         return f"{self.message}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.background.path)
+        if img.height > 400 or img.width > 400:
+            img.thumbnail((400, 400), Image.LANCZOS)
+            img.save(self.background.path)
+
 
 class Notification(models.Model):
     message = models.CharField(max_length=300)

@@ -4,21 +4,21 @@
 {{product.name}}
 {% endblock title %}
 {% block main %}
-<main class="md:flex-row md:space-x-10 flex flex-col py-4">
-    <div class="md:p-6 rounded-2xl md:w-3/4 p-2 mb-6 space-y-10">
+<main class="flex md:flex-row flex-col md:space-x-10 py-4">
+    <div class="space-y-10 mb-6 p-2 md:p-6 rounded-2xl md:w-3/4">
         <img
-            class="rounded-xl w-full border border-gray-300"
+            class="border-gray-300 border rounded-xl w-full"
             src="{{product.image.url}}"
             alt="{product.name}"
         >
-        <div class="md:flex-row md:px-5 flex flex-col items-center justify-between space-y-5">
+        <div class="flex md:flex-row flex-col justify-between items-center space-y-5 md:px-5">
             <div class="space-y-6">
-                <h1 class="text-5xl font-black text-gray-700">{{product.name}}</h1>
+                <h1 class="font-black text-5xl text-gray-700">{{product.name}}</h1>
                 {% if product.price == 0.00 %}
-                <h2 class="md:text-start invisible text-3xl font-bold text-center text-green-600">{{product.price}}€
+                <h2 class="font-bold text-3xl text-center text-green-600 md:text-start invisible">{{product.price}}€
                 </h2>
                 {% else %}
-                <h2 class="md:text-start text-3xl font-bold text-center text-green-600">{{product.price}}€</h2>
+                <h2 class="font-bold text-3xl text-center text-green-600 md:text-start">{{product.price}}€</h2>
                 {% endif %}
             </div>
             <div
@@ -43,46 +43,57 @@
                     >
                     <div
                         x-show="showModal"
-                        class="bg-black/50 fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full max-h-screen overflow-auto"
+                        class="top-0 left-0 z-10 fixed flex justify-center items-center bg-black/50 w-full h-full max-h-screen overflow-auto"
                     >
                         <div
                             x-show="showModal"
-                            x-transition
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-end="opacity-100 scale-100"
                             @keyup.escape.window="showModal = false"
                             @click.outside="showModal = false"
-                            class="rounded-2xl relative z-20 max-h-full p-4 overflow-auto bg-white"
+                            class="relative z-20 bg-white p-4 rounded-2xl max-h-full overflow-auto"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
                                 fill="currentColor"
                                 @click="showModal=false"
-                                class="top-2 right-2 size-12 absolute font-black text-green-500 cursor-pointer"
+                                class="top-2 right-2 absolute font-black text-green-500 cursor-pointer size-12"
                             >
                                 <path
                                     d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
                                 />
                             </svg>
-                            <div class="justify-center">
+                            <div
+                                x-show="selectedUsers.length > 0"
+                                x-transition:enter-start="opacity-0 scale-90"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                class="justify-center"
+                            >
                                 <h1
-                                    class=" text-slate-600 p-2 overflow-auto text-3xl font-bold"
-                                    x-text="selectedUsers.length > 0? `Für: ${selectedUsers}`:``"
+                                    class="p-2 font-bold text-3xl text-slate-600 overflow-auto"
+                                    x-text="`Für: ${selectedUsers}`"
                                 ></h1>
                                 <!-- <h2 x-text="state"></h2> -->
                                 <!-- <h3>{{queries|length}}</h3> -->
+                                <hr class="mx-auto my-3">
                             </div>
-                            <hr class="mx-auto my-3">
                             <!-- ? user -->
                             <div id="user">
                                 <div
-                                    id="user-1"
+                                    id="user_-1"
                                     x-show="state==-1"
+                                    x-transition:enter="transition ease-in-out duration-1000"
+                                    x-transition:enter-start="-ml-5 opacity-0"
+                                    x-transition:enter-end="ml-0 opacity-100"
                                 >
-                                    <h1 class="text-slate-600 text-3xl font-bold text-center">
+                                    <h1 class="font-bold text-3xl text-center text-slate-600">
                                         Gruppenbestellung?</h1>
-                                    <hr class="h-2 mx-auto my-3 rounded">
+                                    <hr class="mx-auto my-3 rounded h-2">
                                     <div class="flex justify-center my-6">
-                                        <div class="text-slate-600 w-2/3 text-lg italic">
+                                        <div class="w-2/3 text-lg text-slate-600 italic">
                                             Hier kannst für mehrere Personen
                                             gleichzeitig bestellen und für jeden
                                             einen Namen vergeben</div>
@@ -90,15 +101,17 @@
                                 </div>
                                 <div
                                     id="user_0"
-                                    x-transition
                                     x-show="state==0"
+                                    x-transition:enter-start="opacity-0 scale-90"
+                                    x-transition:enter="transition ease-out duration-300"
+                                    x-transition:enter-end="opacity-100 scale-100"
                                 >
                                     <div>
                                         <div>
-                                            <h2 class="text-slate-600 text-2xl font-bold text-center">
+                                            <h2 class="font-bold text-2xl text-center text-slate-600">
                                                 User auswählen</h2>
-                                            <hr class="h-2 mx-auto my-3 rounded">
-                                            <div class="flex items-center justify-between">
+                                            <hr class="mx-auto my-3 rounded h-2">
+                                            <div class="flex justify-between items-center sm:space-x-3">
                                                 <div class="sm:space-x-2">
                                                     <input
                                                         x-model="newUser"
@@ -106,22 +119,22 @@
                                                         @keyup.enter.prevent
                                                         @keydown.enter="addUser()"
                                                         type="text"
-                                                        class="w-40 px-4 py-2 border-2 border-gray-500 rounded-lg"
+                                                        class="border-2 border-gray-500 px-4 py-2 rounded-lg w-40"
                                                     >
                                                     <button
                                                         type="button"
                                                         @click="addUser()"
-                                                        class="hover:border-green-600 hover:bg-green-400 px-4 py-2 my-3 text-white bg-green-600 border-2 border-green-200 rounded-lg"
+                                                        class="border-2 border-green-200 hover:border-green-600 bg-green-600 hover:bg-green-400 my-3 px-4 py-2 rounded-lg text-white"
                                                     >Hinzufügen</button>
                                                 </div>
                                                 <div
                                                     x-text="`Ausgewählt: ${selectedUsers.length}/${users.length}`"
-                                                    class="text-end text-xl text-gray-600"
+                                                    class="text-end text-gray-600 text-xl"
                                                 ></div>
                                             </div>
                                             <!-- # hidden input user data -->
                                             <div
-                                                class="sm:grid-cols-2 lg:grid-cols-3 alignment-center grid grid-cols-1 gap-3 m-4">
+                                                class="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 m-4 alignment-center">
                                                 <!-- <template x-if="selectedUsers.length > 0"> -->
                                                 <input
                                                     type="hidden"
@@ -143,17 +156,17 @@
                                                                 :value="item"
                                                                 :checked="selectedUsers.includes(item)"
                                                                 @change="toggleUser(item)"
-                                                                class="peer/a hidden"
+                                                                class="hidden peer/a"
                                                                 :id="(currentPage*1000)+index"
                                                             >
                                                             <div
-                                                                class="peer-checked/a:bg-green-600 peer-checked/a:text-white flex items-center justify-center h-full p-8 text-2xl text-center text-green-600 bg-green-100 border border-green-600 rounded-lg">
+                                                                class="flex justify-center items-center border-green-600 bg-green-100 peer-checked/a:bg-green-600 p-8 border rounded-lg h-full text-2xl text-center text-green-600 peer-checked/a:text-white">
                                                                 <input
                                                                     type="checkbox"
                                                                     :value="item"
                                                                     :checked="selectedUsers.includes(item)"
                                                                     @change="toggleUser(item)"
-                                                                    class="peer/a hidden"
+                                                                    class="hidden peer/a"
                                                                     :id="(currentPage*1000)+index"
                                                                 >
                                                                 <span x-text="`${item}`"></span>
@@ -162,7 +175,7 @@
                                                         </label>
                                                         <svg
                                                             @click="deleteUser(item)"
-                                                            class="top-1 right-1 size-6 absolute text-green-600 cursor-pointer"
+                                                            class="top-1 right-1 absolute text-green-600 cursor-pointer size-6"
                                                             :class="selectedUsers.includes(item) ? 'text-white' : 'text-green-600'"
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 16 16"
@@ -177,26 +190,29 @@
                                             </div>
                                             <div
                                                 x-show="totalPages > 1"
+                                                x-transition:enter-start="opacity-0 scale-90"
+                                                x-transition:enter="transition ease-out duration-300"
+                                                x-transition:enter-end="opacity-100 scale-100"
                                                 id="showUser"
                                             >
                                                 <hr class="my-3">
-                                                <div class=" flex items-center justify-between">
+                                                <div class="flex justify-between items-center">
                                                     <div
                                                         @click="prevPage()"
-                                                        class="border-slate-600 hover:border-green-600 text-slate-600 hover:text-green-600 px-4 py-2 border-2 rounded-lg cursor-pointer"
+                                                        class="border-2 border-slate-600 hover:border-green-600 px-4 py-2 rounded-lg text-slate-600 hover:text-green-600 cursor-pointer"
                                                         :disabled="currentPage === 1"
                                                         :class="{ 'text-white border-white hover:text-white hover:border-white': currentPage === 1 }"
                                                         x-text="`Seite ${currentPage-1}`"
                                                     ></div>
                                                     <span
                                                         x-text="`${currentPage} von ${totalPages}`"
-                                                        class="text-slate-600 text-lg font-bold text-center"
+                                                        class="font-bold text-center text-lg text-slate-600"
                                                     ></span>
                                                     <div
                                                         x-text="`Seite ${currentPage+1}`"
                                                         @click="nextPage()"
                                                         :class="{'text-white border-white hover:text-white hover:border-white': currentPage === totalPages }"
-                                                        class="border-slate-600 hover:border-green-600 text-slate-600 hover:text-green-600 px-4 py-2 ml-5 border-2 rounded-lg cursor-pointer"
+                                                        class="border-2 border-slate-600 hover:border-green-600 ml-5 px-4 py-2 rounded-lg text-slate-600 hover:text-green-600 cursor-pointer"
                                                         :disabled="currentPage === totalPages"
                                                     ></div>
                                                 </div>
@@ -214,7 +230,7 @@
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-end="opacity-100 scale-100"
                             >
-                                <h1 class="mb-6 ml-8 text-2xl font-extrabold text-gray-700">
+                                <h1 class="mb-6 ml-8 font-extrabold text-2xl text-gray-700">
                                     name: {{q.name}}
                                 </h1>
                                 <input
@@ -223,9 +239,9 @@
                                     value="{{q.id}}"
                                 >
                                 <div class="m-4">
-                                    <div class="px-2 mx-2">
+                                    <div class="mx-2 px-2">
                                         <div
-                                            class="justify-items-center place-items-center place-content-center md:grid-cols-3 xl:grid-cols-4 grid items-center content-center justify-center grid-cols-2 gap-4">
+                                            class="justify-center justify-items-center items-center place-items-center content-center place-content-center gap-4 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                                             {% for v in q.query_variation.all %}
                                             <div class="rounded-xl max-h-screen overflow-hidden">
                                                 <input
@@ -233,11 +249,11 @@
                                                     name="variations"
                                                     value="{{v.id}}"
                                                     type="checkbox"
-                                                    class="peer/a hidden"
+                                                    class="hidden peer/a"
                                                 >
                                                 <label
                                                     for="{{v.id}}"
-                                                    class="peer-checked/a:border-green-600 rounded-xl flex overflow-hidden border-4 border-white"
+                                                    class="flex border-4 border-gray-200 peer-checked/a:border-green-600 rounded-xl overflow-hidden"
                                                 >
                                                     <div class="relative w-32 h-24">
                                                         {% if v.image %}
@@ -249,10 +265,10 @@
                                                         >
                                                         {% endif %}
                                                         <div
-                                                            class="bg-black/40 rounded-xl absolute inset-0 object-contain">
+                                                            class="absolute inset-0 bg-black/40 rounded-xl object-contain">
                                                         </div>
                                                         <div
-                                                            class="absolute inset-0 flex items-center justify-center mx-auto text-xl text-center text-white break-normal">
+                                                            class="absolute inset-0 flex justify-center items-center mx-auto text-center text-white text-xl break-normal">
                                                             <div>
                                                                 <h3 class="font-semibold">
                                                                     {{v.name}}
@@ -275,27 +291,30 @@
                             {% endfor %}
                             <div
                                 id="buttons"
-                                class="flex items-center justify-between mx-5"
+                                class="flex justify-between items-center mx-5"
                             >
                                 <div
                                     @click="state===-1? state++ : state--"
                                     x-text="state===-1 ? `Ja` : `Zurück`"
-                                    class="hover:border-green-600 hover:bg-green-400 px-4 py-2 text-white bg-green-500 border-2 border-green-200 rounded-lg cursor-pointer"
+                                    class="border-2 border-green-200 hover:border-green-600 bg-green-500 hover:bg-green-400 px-4 py-2 rounded-lg text-white cursor-pointer"
                                 ></div>
                                 <h2
-                                    class="mx-4 text-xl font-bold text-gray-600"
+                                    class="mx-4 font-bold text-gray-600 text-xl"
                                     x-text="`${state+1}/${ {{queries|length}} +1}`"
                                 ></h2>
                                 <div
                                     @click="state===-1 ? state+=2 : state++"
                                     x-text="state===-1 ? `Nein`: `Weiter`"
-                                    class="hover:border-green-600 hover:bg-green-400 px-4 py-2 ml-5 text-white bg-green-500 border-2 border-green-200 rounded-lg cursor-pointer"
+                                    class="border-2 border-green-200 hover:border-green-600 bg-green-500 hover:bg-green-400 ml-5 px-4 py-2 rounded-lg text-white cursor-pointer"
                                     :class="{'hidden':state >= {{queries|length}}, 'bg-gray-500 border-gray-300' : state===-1}"
                                 ></div>
                                 <button
                                     type="submit"
                                     x-show="state >= {{queries|length}}"
-                                    class="hover:border-green-600 hover:bg-green-400 px-4 py-2 ml-5 text-white bg-green-700 border-2 border-green-200 rounded-lg cursor-pointer"
+                                    x-transition:enter="transition ease-in-out duration-1000"
+                                    x-transition:enter-start="-ml-5 opacity-0"
+                                    x-transition:enter-end="ml-0 opacity-100"
+                                    class="border-2 border-green-200 hover:border-green-600 bg-green-700 hover:bg-green-400 ml-5 px-4 py-2 rounded-lg text-white cursor-pointer"
                                 >Warenkorb</button>
                             </div>
                         </div>
@@ -305,7 +324,7 @@
                     @click="showModal = true"
                     type="button"
                     id="add-button"
-                    class="hover:border-2 hover:border-green-700 hover:bg-white hover:text-green-700 hover:scale-105 px-6 py-3 text-3xl font-bold text-white duration-500 bg-green-400 rounded-lg"
+                    class="hover:border-2 hover:border-green-700 bg-green-400 hover:bg-white hover:text-green-700 hover:scale-105 px-6 py-3 rounded-lg font-bold text-3xl text-white duration-500"
                 >
                     Jetzt holen</button>
             </div>
