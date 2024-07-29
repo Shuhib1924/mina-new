@@ -11,13 +11,20 @@
             p_mail: $persist(''),
             p_phone: $persist(''),
             time: '',
+            warn: false,
             init(){
                 const now = new Date()
                 this.time = `${now.getHours()}:${now.getMinutes()}`
             },
-            get hours(){
-                return this.time.split(':')[0]
+            check(){
+                const hours = this.time.split(':')[0];
+                if(hours < 7 || hours > 19){
+                    this.warn = true;
+                    this.time = '';
+                } else{
+                    this.warn = false;
                 }
+            }
         }"
         action="{%url 'order'%}"
         method="POST"
@@ -44,6 +51,7 @@
                 <input
                     :value="time"
                     x-model="time"
+                    @change="check()"
                     type="time"
                     name="pickup-time"
                     id="pickup-time"
@@ -56,7 +64,7 @@
                 class="font-bold text-gray-500"
             ></div>
             <div
-                x-show="time.value < '07:00' || time.value > '20:00'"
+                x-show="warn"
                 x-text="`Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich`"
                 class="font-bold text-gray-500"
             ></div>

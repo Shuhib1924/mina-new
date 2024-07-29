@@ -23,8 +23,36 @@
     </head>
 
     <body>
+        <div x-data="timeChecker()">
+            <input
+                type="time"
+                x-model="time"
+                @change="checkTime"
+            />
+            <div
+                x-show="warning"
+                style="color: red;"
+            >Warning: Time must be between 7 AM and 8 PM!</div>
+        </div>
 
+        <script>
+            function timeChecker() {
+                return {
+                    time: '',
+                    warning: false,
+                    checkTime() {
+                        const hours = this.time.split(':')[0];
 
+                        if (hours < 7 || hours > 20) {
+                            this.warning = true;
+                            this.time = '';
+                        } else {
+                            this.warning = false;
+                        }
+                    }
+                }
+            }
+        </script>
     </body>
 
 </html>
