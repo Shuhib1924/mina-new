@@ -1,11 +1,11 @@
 {% load static%}
-<div class="md:w-1/4 min-w-min justify-center order-2">
+<div class="md:w-1/4 sm:order-1 sm:my-0 justify-center order-2 my-6">
     <div
-        class="top-4 sticky [&::-webkit-scrollbar]:hidden bg-gray-50 shadow-xl mx-auto sm:mt-8 border rounded-xl w-80 sm:w-full sm:h-[500px] [-ms-overflow-style:none] overflow-x-auto sm:overflow-y-auto [scrollbar-width:none]">
+        class="top-4 sticky [&::-webkit-scrollbar]:hidden bg-gray-50 shadow-xl mx-auto sm:mt-8 border rounded-xl w-full sm:w-auo sm:h-[500px] [-ms-overflow-style:none] overflow-x-auto sm:overflow-y-auto [scrollbar-width:none]">
         <h3 class="text-slate-600 px-2 pt-6 pb-3 mx-4 text-2xl font-bold text-center border-b-2 border-gray-300">
             Unsere
             Kategorien</h3>
-        <div class="sm:flex-col sm:p-8 flex p-3 space-x-4 space-y-4">
+        <div class="sm:flex-col sm:p-8 sm:space-x-0 flex p-3 space-x-4 space-y-4">
             {% for c in all_categories %}
             <div
                 class="hover:border-2 hover:shadow-2xl rounded-xl min-w-52 sm:min-w-5/6 hover:scale-105 hover:boder-gray-700 p-4 duration-500 ease-in-out bg-white border border-gray-200 cursor-pointer">

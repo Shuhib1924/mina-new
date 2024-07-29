@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script
+            src="https://www.paypal.com/sdk/js?client-id=AfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY&currency=EUR"
+        ></script>
+        <script>console.log('test2')</script>
+
+        <title>Document</title>
+    </head>
+
+    <body>
+        n3
+
+
+        <h2>PayPal Payment</h2>
+
+        <label for="input1">Input 1:</label>
+        <input
+            type="text"
+            id="input1"
+            required
+        ><br><br>
+
+        <label for="input2">Input 2:</label>
+        <input
+            type="text"
+            id="input2"
+            required
+        ><br><br>
+
+        <div id="paypal-button-container"></div>
+
+        <script>
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '10.00' // Specify the amount here
+                            }
+                        }]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        // Transaction code can be found in details.id
+                        const transactionData = {
+                            orderID: data.orderID,
+                            transactionID: details.id,
+                            status: details.status,
+                            payer: {
+                                name: {
+                                    given_name: details.payer.name.given_name,
+                                    surname: details.payer.name.surname
+                                },
+                                email_address: details.payer.email_address,
+                                payer_id: details.payer.payer_id
+                            },
+                            purchase_units: details.purchase_units.map(unit => ({
+                                reference_id: unit.reference_id,
+                                amount: {
+                                    currency_code: unit.amount.currency_code,
+                                    value: unit.amount.value,
+                                    breakdown: unit.amount.breakdown // Include breakdown if available
+                                }
+                            })),
+                            create_time: details.create_time,
+                            update_time: details.update_time,
+                            links: details.links // Include links if necessary
+                        };
+                        console.log('Transaction completed by ' + details.payer.name.given_name);
+                        console.log('Transaction ID: ' + details.id); // This is your transaction code
+
+                        const input1 = document.getElementById('input1').value;
+                        const input2 = document.getElementById('input2').value;
+                        // You can also send the transaction ID to your backend if needed
+                        fetch('{% url "order"%}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({
+                                transactionData: transactionData,
+                                input1: input1,
+                                input2: input2,
+                            }),
+                        }).then(response => response.json())
+                            .then(result => {
+                                if (result.success) {
+                                    window.location.href = "{% url 'success' %}";
+                                } else {
+                                    window.location.href = "{% url 'failed' %}";
+                                }
+                            });
+                    });
+                },
+                onError: function (err) {
+                    console.error(err);
+                }
+            }).render('#paypal-button-container');
+        </script>
+    </body>
+
+
+
+</html>

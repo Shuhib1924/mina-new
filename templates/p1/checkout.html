@@ -1,0 +1,218 @@
+{% extends 'p1/base.html' %}
+{% load static %}
+{% block title %}Bestellung{% endblock %}
+
+{% block main %}
+<script src="{% static 'mina/persist.min.js'%}"></script>
+<main class="flex flex-col items-center py-12">
+    <form
+        x-data="{
+            p_name: $persist(''),
+            p_mail: $persist(''),
+            p_phone: $persist(''),
+            time: '',
+            init(){
+                const now = new Date()
+                this.time = `${now.getHours()}:${now.getMinutes()}`
+            },
+            get hours(){
+                return this.time.split(':')[0]
+                }
+        }"
+        action="{%url 'order'%}"
+        method="POST"
+        class="space-y-6 border-2 border-gray-300 p-4 rounded-xl text-gray-600"
+    >
+        {%csrf_token%}
+        <div class="space-y-2">
+            <h1 class="font-bold text-4xl text-gray-700">Bestellung</h1>
+            <h3 class="text-gray-500 text-xl">vervollständigen Sie folgende Informationenen</h3>
+        </div>
+        <h2 class="text-green-700 text-xl">1. Wer und wann holen Sie es ab?</h2>
+        <hr class="border-gray-400">
+        <div class="space-y-2">
+            <div class="flex space-x-4">
+                <input
+                    x-model="p_name"
+                    name="name"
+                    type="text"
+                    id="name"
+                    placeholder="Name..."
+                    class="border-2 border-gray-300 px-3 py-2 rounded-lg w-full text-lg"
+                    required
+                >
+                <input
+                    :value="time"
+                    x-model="time"
+                    type="time"
+                    name="pickup-time"
+                    id="pickup-time"
+                    required
+                    class="border-2 border-gray-300 bg-green-200 px-2 py-1 rounded-lg text-gray-500"
+                >
+            </div>
+            <div
+                x-text="hours < 7 || hours > 20 ? `Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich` : ''"
+                class="font-bold text-gray-500"
+            ></div>
+            <div
+                x-show="time.value < '07:00' || time.value > '20:00'"
+                x-text="`Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich`"
+                class="font-bold text-gray-500"
+            ></div>
+
+        </div>
+        <h2 class="text-green-700 text-xl">2. Mail, damit wir die Quitting versenden</h2>
+        <hr class="border-gray-400">
+        <input
+            type="email"
+            id="email"
+            name="email"
+            x-model="p_mail"
+            placeholder="Rechnungsmail"
+            class="border-2 border-gray-300 px-3 py-3 rounded-lg w-full text-xl"
+            required
+        >
+        <h2 class="text-green-700 text-xl">3. Nummer, damit wir Sie erreichen</h2>
+        <hr class="border-gray-400">
+        <input
+            x-model="p_phone"
+            type="tel"
+            name="phone"
+            id="phone"
+            placeholder="Format: 017612345678*"
+            class="border-2 border-gray-300 px-3 py-3 rounded-lg w-full text-xl"
+            required
+        >
+        <br>
+        <button
+            type="submit"
+            class="border-2 bg-green-500 px-3 py-3 rounded-lg w-full text-white"
+            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 }"
+            click="window.location.href='order.html'"
+        >OHNE Paypal</button>
+        <div
+            id="paypal-button-container"
+            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 }"
+        >
+            <script
+                src="https://www.paypal.com/sdk/js?client-id=AfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY&currency=EUR"
+            ></script>
+            <script>
+                brutto = '{{brutto}}'.replace(",", ".");
+                /*
+                function collectFormData() {
+                    return {
+                        name: document.getElementById('name').value,
+                        pickupTime: document.getElementById('pickup-time').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value
+                    };
+                };
+                */
+
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: brutto // Set your payment amount here
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then((details) => {
+                            const transactionData = {
+                                orderID: data.orderID,
+                                transactionID: details.id,
+                                status: details.status,
+                                payer: {
+                                    name: {
+                                        given_name: details.payer.name.given_name,
+                                        surname: details.payer.name.surname
+                                    },
+                                    email_address: details.payer.email_address,
+                                    payer_id: details.payer.payer_id
+                                },
+                                purchase_units: details.purchase_units.map(unit => ({
+                                    reference_id: unit.reference_id,
+                                    amount: {
+                                        currency_code: unit.amount.currency_code,
+                                        value: unit.amount.value,
+                                        breakdown: unit.amount.breakdown // Include breakdown if available
+                                    }
+                                })),
+                                create_time: details.create_time,
+                                update_time: details.update_time,
+                                links: details.links // Include links if necessary
+                            };
+                            //const formData = collectFormData();
+                            console.log('Transaction completed by ' + details.payer.name.given_name);
+                            console.log('Transaction ID: ' + details.id);
+                            // Collect form data
+                            fetch('{% url "order"%}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify({
+                                    transactionData: transactionData,
+                                    name: document.getElementById('name').value,
+                                    pickupTime: document.getElementById('pickup-time').value,
+                                    email: document.getElementById('email').value,
+                                    phone: document.getElementById('phone').value
+                                }),
+                            }).then(response => response.json())
+                                .then(result => {
+                                    if (result.success) {
+                                        console.log('ok')
+                                        window.location.href = "{% url 'success' %}";
+                                    } else {
+                                        console.log('error')
+                                        window.location.href = "{% url 'failed' %}";
+                                    }
+                                });
+                            // Combine PayPal details and form data
+                            // const postData = {
+                            //     paypalDetails: details,
+                            //     formData: formData
+                            // };
+
+                            // Create a form element
+                            // const form = document.createElement('form');
+                            // form.method = 'POST';
+                            // form.action = "{% url 'order' %}";
+
+                            // Create input for CSRF token
+                            // const csrfInput = document.createElement('input');
+                            // csrfInput.type = 'hidden';
+                            // csrfInput.name = 'csrfmiddlewaretoken';
+                            // csrfInput.value = '{% csrf_token %}';
+                            // form.appendChild(csrfInput);
+
+                            // Create input for data
+                            // const dataInput = document.createElement('input');
+                            // dataInput.type = 'hidden';
+                            // dataInput.name = 'data';
+                            // dataInput.value = JSON.stringify(postData);
+                            // form.appendChild(dataInput);
+
+                            // Append form to body, submit it, and remove it
+                            // document.body.appendChild(form);
+                            // form.submit();
+                            // document.body.removeChild(form);
+                        });
+                    },
+                    onError: (err) => {
+                        console.error('An error occurred during the transaction', err);
+                        //window.location.href = "{% url 'failed' %}"; // Redirect to failed page
+                    }
+                }).render('#paypal-button-container'); // Display PayPal button
+            </script>
+        </div>
+    </form>
+</main>
+
+{% endblock %}

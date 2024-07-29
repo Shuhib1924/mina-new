@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://unpkg.com/alpinejs"
+            defer
+        ></script>
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div
+            x-data="{
+            checkedOptions: [],
+            dispatchEvent() {
+                this.$dispatch('option-selected', { options: this.checkedOptions });
+            }
+        }"
+            class="bg-white shadow-md p-6 rounded w-min"
+        >
+            <h2 class="mb-4 font-bold text-xl">Select Options</h2>
+
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input
+                        type="checkbox"
+                        value="1"
+                        x-model="checkedOptions"
+                        class="mr-2"
+                        @change="dispatchEvent()"
+                    >
+                    Option 1
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input
+                        type="checkbox"
+                        value="2"
+                        x-model="checkedOptions"
+                        class="mr-2"
+                        @change="dispatchEvent()"
+                    >
+                    Option 2
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input
+                        type="checkbox"
+                        value="3"
+                        x-model="checkedOptions"
+                        class="mr-2"
+                        @change="dispatchEvent()"
+                    >
+                    Option 3
+                </label>
+            </div>
+
+            <p x-text="checkedOptions"></p>
+        </div>
+
+        <button
+            x-data="{ isDisabled: true }"
+            @option-selected.window="isDisabled = $event.detail.options.length === 0"
+            :disabled="isDisabled"
+            :class="{ 'opacity-50 ': isDisabled }"
+            class="bg-blue-500 px-4 py-2 rounded text-white"
+        >
+            Continue
+        </button>
+    </body>
+
+</html>

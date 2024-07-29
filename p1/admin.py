@@ -28,12 +28,13 @@ class VariationInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    inlines = [QueryInline]
+    # inlines = [QueryInline]
 
 
-@admin.register(Query)
-class QueryAdmin(admin.ModelAdmin):
-    inlines = [VariationInline]
+# @admin.register(Query)
+# class QueryAdmin(admin.ModelAdmin):
+#     inlines = [VariationInline]
+admin.site.register(Query)
 
 
 admin.site.register(Variation)

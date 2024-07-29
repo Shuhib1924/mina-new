@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Alpine.js Form Validation</title>
+        <script
+            src="https://cdn.jsdelivr.net/npm/alpinejs"
+            defer
+        ></script>
+    </head>
+
+    <body>
+
+        <div x-data="formData()">
+            <form @submit.prevent="submitForm">
+                <div>
+                    <label for="name">Name:</label>
+                    <input
+                        type="text"
+                        id="name"
+                        x-model="name"
+                        required
+                    >
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        x-model="email"
+                        required
+                    >
+                </div>
+                <div>
+                    <label for="message">Message:</label>
+                    <textarea
+                        id="message"
+                        x-model="message"
+                        required
+                    ></textarea>
+                </div>
+                <button :disabled="!isFormValid()">Submit</button>
+            </form>
+
+            <script>
+                function formData() {
+                    return {
+                        name: '',
+                        email: '',
+                        message: '',
+                        isFormValid() {
+                            return this.name.trim() !== '' && this.email.trim() !== '' && this.message.trim() !== '';
+                        },
+                        submitForm() {
+                            alert('Form submitted!');
+                            // Handle form submission logic here
+                        }
+                    }
+                }
+            </script>
+        </div>
+
+    </body>
+
+</html>

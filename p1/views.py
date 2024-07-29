@@ -1,4 +1,3 @@
-# from math import e
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from .models import (
     Product,
@@ -12,7 +11,7 @@ from .models import (
 )
 from django.http import JsonResponse, HttpResponse
 from django.contrib.sessions.models import Session
-
+from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from .forms import OrderForm
@@ -29,7 +28,7 @@ def notification(request):
 
 def home(request):
     screens = Screen.objects.order_by("rank")
-    products = Product.objects.all().order_by("-created_date")[:6]
+    products = Product.objects.all().filter(active=True).order_by("-created_date")[:6]
     context = {
         "products": products,
         "screens": screens,
@@ -62,8 +61,8 @@ def detail(request, pslug):
     # print("queries", queries)
     variations = Variation.objects.filter(
         query_variation__name__in=[i.name for i in queries]
-    ).distinct()
-    # print("variations", variations)
+    )
+    print("variations", variations)
 
     context = {
         "product": product,
@@ -131,6 +130,7 @@ def cart(request):
 
     # $ get modeldata from request.session
     cart_items = []
+    cart_price = []
     # print(json.dumps(sorted_cart_session, indent=4))
     for item in request.session["cart"]:
         try:
@@ -158,18 +158,22 @@ def cart(request):
         try:
             variations = {
                 "variations": get_list_or_404(
-                    Variation, id__in=item["item"][3]["variations"]
+                    Variation,
+                    id__in=item["item"][3]["variations"],
                 )
             }
         except:
             variations = {"variations": ""}
         # print("Q - variations", variations)
         try:
-            item_price = product["product"].price + sum(
-                [vp.price for vp in variations["variations"]]
+            item_price = round(
+                product["product"].price
+                + sum([vp.price for vp in variations["variations"]]),
+                2,
             )
         except:
-            item_price = product["product"].price
+            item_price = round(product["product"].price, 2)
+        cart_price.append(item_price)
         # print("item_price", item_price)
         if not any("item_price" in el for el in item["item"]):
             item["item"].append({"item_price": float(item_price)})
@@ -178,21 +182,31 @@ def cart(request):
         cart_items.append(
             [user, product, queries, variations, {"item_price": item_price}]
         )
+    # print(sum(cart_price))
+    brutto = sum(cart_price)
+    # print("brutto", brutto)
+    netto = round(sum(cart_price) * 81 / 100, 2)
+    # print("netto", netto)
+    mwst = round(sum(cart_price) * 19 / 100, 2)
+    # print("mwst", mwst)
+    request.session["cart_price"] = {"brutto": float(brutto)}
+    print('request.session["cart_price"]', request.session["cart_price"])
     request.session.modified = True
-    print("cart_items", cart_items)
-    context = {"cart_items": cart_items}
+    # print("cart_items", cart_items)
+    context = {
+        "cart_items": cart_items,
+        "brutto": brutto,
+        "netto": netto,
+        "mwst": mwst,
+    }
     return render(request, "p1/cart.html", context)
 
 
 def cart_count(request):
-    item_list = []
-    if request.session.session_key:
+    try:
         cart_count = len(request.session["cart"])
-        for i in request.session["cart"]:
-            item_list.append(i)
-    else:
+    except:
         cart_count = 0
-        item_list = []
     # return HttpResponse(f"{cart_count}")
     return {"cart_count": cart_count}
 
@@ -213,32 +227,33 @@ def delete(request, index):
     return redirect("cart")
 
 
-# def cart(request):
-#     data = request.session.get("cart", [])
-#     print("data", data)
-#     items = []
-#     if data:
-#         for el in data:
-#             obj = get_object_or_404(CartItem, id=el["cart_item"])
-#             print("obj", obj)
-#             items.append(obj)
-#     print("ITEMS", items)
-#     cart_sum = 0
-#     for ci in items:
-#         cart_sum = cart_sum + ci.pro_var_sum()
-#     # print("cart_sum", cart_sum)
-#     netto = cart_sum * 81 / 100
-#     tax = cart_sum * 19 / 100
+def checkout(request):
+    try:
+        brutto = request.session["cart_price"]["brutto"]
+    except:
+        brutto = 0
+    return render(
+        request,
+        "p1/checkout.html",
+        {"brutto": brutto},
+    )
 
-#     # if request.session.session_key:
-#     #         print(Session.objects.get(pk=request.session.session_key).get_decoded(), request.session.session_key)
-#     context = {
-#         "cart_sum": cart_sum,
-#         "netto": netto,
-#         "tax": tax,
-#         "items": items,
-#     }
-#     return render(request, "p1/cart.html", context)
+
+def order(request):
+    decoded_json = json.loads(request.body.decode("utf-8"))
+    print("decoded_json", decoded_json)
+
+    return JsonResponse({"success": "success"})
+
+
+def success(request):
+    print(request.POST)
+    return HttpResponse("success")
+
+
+def failed(request):
+    print(request.POST)
+    return HttpResponse("failed")
 
 
 # def checkout(request):
@@ -338,11 +353,3 @@ def delete(request, index):
 #     if request.method == "GET":
 #         return redirect("failed")
 #     return render(request, "p1/payment_success.html", context)
-
-
-def payment_success(request):
-    return HttpResponse("success")
-
-
-def failed(request):
-    return render(request, "p1/failed.html")

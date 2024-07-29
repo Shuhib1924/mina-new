@@ -146,3 +146,5 @@ MEDIA_ROOT = BASE_DIR / "static/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_COOKIE_AGE = 1800
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

@@ -34,6 +34,9 @@
                         <a href="{% url 'detail' ci.1.product.slug %}">
                         <div class="text-2xl font-bold text-gray-600">{{ci.1.product.name}}</div>
                         </a>
+                        {% if ci.1.product.price != 0.00 %}
+                        <div class="text-xl font-bold text-gray-400">{{ci.1.product.price}}€</div>
+                        {% endif %}
                     </div>
                         <div class="sm:w-4/12">
                             {% for q in ci.2.queries %}
@@ -77,19 +80,20 @@
                 class="top-4 sm:border-2 sm:border-gray-300 sm:shadow-none sm:p-6 rounded-xl sm:w-1/4 h-min sticky p-4 m-4 space-y-3 text-lg text-gray-600 bg-white shadow-2xl">
                 <div class="flex justify-between">
                     <div>Netto:</div>
-                    <div>81,00€</div>
+                    <div>{{netto}}€</div>
                 </div>
                 <div class="flex justify-between">
                     <div>19% Mwst.:</div>
-                    <div>19,00€</div>
+                    <div>{{mwst}}€</div>
                 </div>
                 <hr>
                 <div class="flex justify-between font-bold">
                     <div>Brutto:</div>
-                    <div class="">100,00€</div>
+                    <div class="">{{brutto}}€</div>
                 </div>
                 <div
-                    class="hover:bg-green-600 rounded-xl px-4 py-2 text-xl font-bold text-center text-white bg-green-400">
+                    onclick="window.location.href='{%url 'checkout'%}'"
+                    class="hover:bg-green-600 rounded-xl px-4 py-2 text-xl font-bold text-center text-white bg-green-400 cursor-pointer">
                     Bestellung abschließen
                 </div>
             </div>

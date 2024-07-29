@@ -7,8 +7,9 @@ urlpatterns = [
     path("product/<slug:pslug>/", views.detail, name="detail"),
     path("cart/", views.cart, name="cart"),
     path("delete/<int:index>", views.delete, name="delete"),
-    path("cc/", views.cart_count),
-    # path("checkout/", views.checkout, name="checkout"),
+    path("checkout/", views.checkout, name="checkout"),
+    path("order/", views.order, name="order"),
+    path("success/", views.success, name="success"),
+    path("failed/", views.failed, name="failed"),
     # path("printing/", views.printing, name="printing"),
-    # path("failed/", views.failed, name="failed"),
 ]

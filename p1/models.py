@@ -59,6 +59,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    active = models.BooleanField(default=True)
     image = models.ImageField(upload_to="product/", default="default/logo.png")
     created_date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=200, unique=True)
@@ -79,6 +80,7 @@ class Query(models.Model):
     name = models.CharField(max_length=100)
     private = models.CharField(max_length=100, blank=True)
     product_query = models.ManyToManyField(Product, related_name="product_query")
+    required = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Queries"
@@ -91,6 +93,7 @@ class Query(models.Model):
 
 
 class Variation(models.Model):
+    # active = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
     private = models.CharField(max_length=100, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=6, default=0.00)

@@ -4,9 +4,10 @@
 {{category.name}}
 {% endblock title %}
 {% block main %}
-        <main class="mx-4 my-12">
-            <div class="sm:flex-row sm:space-x-4 flex flex-col space-y-6">
-                <div class="sm:w-3/4 space-y-8">
+        <main class="my-6">
+            <div class="sm:flex-row sm:gap-8 flex flex-col space-y-6">
+                {% include "p1/category_bar.html" %}
+                <div class="sm:w-3/4 sm:order-2 order-1 space-y-8">
                     <div
                         class="-z-20 rounded-3xl relative flex items-center justify-end h-56 pr-10 bg-green-100"
                         style="background-image: url({% static 'mina/img/banner-10.png' %})"
@@ -47,7 +48,6 @@
                         {% endfor %}
                     </div>
                 </div>
-                {% include "p1/category_bar.html" %}
             </div>
         </main>
 {% endblock main %}

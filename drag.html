@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Drag and Drop with Alpine.js and Tailwind CSS</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://unpkg.com/alpinejs"
+            defer
+        ></script>
+    </head>
+
+    <body>
+        <div class="flex justify-center items-center bg-gray-100 h-screen">
+            <div
+                x-data="dragDrop()"
+                class="flex space-x-8"
+            >
+                <div
+                    class="flex justify-center items-center rounded-lg w-64 h-64 transition-colors duration-300"
+                    :class="{ 'bg-blue-200': dropZone !== 'left', 'bg-green-200': dropZone === 'left' }"
+                    @dragover.prevent="dragOver('left')"
+                    @dragleave.prevent="dragLeave('left')"
+                    @drop.prevent="onDrop($event, 'left')"
+                >
+                    <div
+                        x-show="elementPosition !== 'left'"
+                        class="text-gray-500"
+                    >
+                        Drag here
+                    </div>
+                    <div
+                        x-show="elementPosition === 'left'"
+                        id="draggable"
+                        class="flex justify-center items-center bg-red-500 rounded-lg w-32 h-32 font-bold text-white cursor-move"
+                        draggable="true"
+                        @dragstart="dragStart($event)"
+                        @dragend="dragEnd()"
+                    >
+                        Drag me
+                    </div>
+                </div>
+
+                <div
+                    class="flex justify-center items-center rounded-lg w-64 h-64 transition-colors duration-300"
+                    :class="{ 'bg-yellow-200': dropZone !== 'right', 'bg-green-200': dropZone === 'right' }"
+                    @dragover.prevent="dragOver('right')"
+                    @dragleave.prevent="dragLeave('right')"
+                    @drop.prevent="onDrop($event, 'right')"
+                >
+                    <div
+                        x-show="elementPosition !== 'right'"
+                        class="text-gray-500"
+                    >
+                        Drag here
+                    </div>
+                    <div
+                        x-show="elementPosition === 'right'"
+                        id="draggable"
+                        class="flex justify-center items-center bg-red-500 rounded-lg w-32 h-32 font-bold text-white cursor-move"
+                        draggable="true"
+                        @dragstart="dragStart($event)"
+                        @dragend="dragEnd()"
+                    >
+                        Drag me
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function dragDrop() {
+                    return {
+                        dropZone: '',
+                        elementPosition: 'left',
+                        dragStart(event) {
+                            event.dataTransfer.setData('text/plain', event.target.id);
+                            event.target.classList.add('opacity-50');
+                        },
+                        dragEnd() {
+                            const element = document.getElementById('draggable');
+                            element.classList.remove('opacity-50');
+                        },
+                        dragOver(zone) {
+                            this.dropZone = zone;
+                        },
+                        dragLeave(zone) {
+                            if (this.dropZone === zone) {
+                                this.dropZone = '';
+                            }
+                        },
+                        onDrop(event, zone) {
+                            const id = event.dataTransfer.getData('text');
+                            const draggableElement = document.getElementById(id);
+                            this.elementPosition = zone;
+                            this.dropZone = zone;
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </body>
+
+</html>
