@@ -16,7 +16,7 @@ printer_ip = "192.168.178.177"
 
 
 # Function to create a printer connection with retry logic
-def create_printer_connection(retries=1, delay=1):
+def create_printer_connection(retries=3, delay=1):
     for attempt in range(retries):
         try:
             return Network(printer_ip)
@@ -38,10 +38,11 @@ def print_message(message):
         if epson is None:
             epson = create_printer_connection()
         if epson:
-            print(message)
+            epson.text(message["date"])
+            epson.text(message["message"])
             # TODO
             # epson.text(message)
-            # epson.cut()
+            epson.cut()
             return True  # Return true if printed successfully
         else:
             return False  # Return false if printer connection failed
@@ -52,7 +53,7 @@ def print_message(message):
 
 
 try:
-    print("Confluent v7 is running")
+    print("Confluent v8 is running")
     while True:
         msg = consumer.poll(1.0)
         if msg is None:

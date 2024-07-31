@@ -347,17 +347,13 @@ def order(request):
 
 def success(request):
     producer = KafkaProducer(bootstrap_servers=["38.242.156.125:9092"], acks="all")
-    test = "message"
-    try:
-        producer.send(
-            "Mina",
-            f"""[
+    message = f"""{{
                 'date': {datetime.now()},
                 'message':'message'
-                ]""".encode(
-                "utf-8"
-            ),
-        )
+            }}"""
+    try:
+        print()
+        producer.send("Mina", value=message.encode("utf-8"))
         time.sleep(0.1)
     except Exception as e:
         print(f"Transmission Error: {e}")

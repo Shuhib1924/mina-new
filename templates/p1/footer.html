@@ -1,37 +1,37 @@
 {% load static%}
 <div
-    class="rounded-3xl h-80 relative flex items-center p-10 m-5 bg-green-100"
+    class="relative flex items-center bg-green-100 m-5 p-10 rounded-3xl h-80"
     style="background-image: url({% static 'mina/img/banner-10.png' %})"
 >
     {% if random_item %}
-            <div class="w-2/3 py-4 space-y-5">
-                <div class="w-2/3 text-3xl font-bold text-gray-700">{{random_item.message}}</div>
-                <div class="text-xl text-gray-500">Immer für euch da, euer <span class="text-green-600">Mina</span>
-                </div>
-            </div>
-            <div class="absolute bottom-0 right-0 w-1/3">
-                <img
-                    src="{{random_item.image.url}}"
-                    alt=""
-                    class="max-h-96 rounded-2xl overflow-hidden"
-                >
-            </div>
+    <div class="space-y-5 py-4 w-2/3">
+        <div class="w-2/3 font-bold text-3xl text-gray-700">{{random_item.message}}</div>
+        <div class="text-gray-500 text-xl">Immer für euch da, euer <span class="text-green-600">Mina</span>
+        </div>
+    </div>
+    <div class="right-0 bottom-0 absolute w-1/3">
+        <img
+            src="{{random_item.image.url}}"
+            alt=""
+            class="rounded-2xl max-h-96 overflow-hidden"
+        >
+    </div>
     {% endif %}
 </div>
 <footer>
-    <div class="md:flex-row flex flex-col items-center my-8">
-        <div class="basis-1/2 space-y-8">
+    <div class="flex md:flex-row flex-col items-center my-8">
+        <div class="space-y-8 basis-1/2">
             <img
                 src="{% static 'mina/logo.png' %}"
                 alt=""
             >
-            <div class="mx-3 my-4 space-y-3">
+            <div class="space-y-3 mx-3 my-4">
                 <div class="flex space-x-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
-                        class="size-5 text-green-400"
+                        class="text-green-400 size-5"
                     >
                         <path
                             fill-rule="evenodd"
@@ -46,7 +46,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
-                        class="size-5 text-green-400"
+                        class="text-green-400 size-5"
                     >
                         <path
                             fill-rule="evenodd"
@@ -61,7 +61,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
-                        class="size-5 text-green-400"
+                        class="text-green-400 size-5"
                     >
                         <path
                             d="M3 4a2 2 0 0 0-2 2v1.161l8.441 4.221a1.25 1.25 0 0 0 1.118 0L19 7.162V6a2 2 0 0 0-2-2H3Z"
@@ -77,7 +77,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
-                        class="size-5 text-green-400"
+                        class="text-green-400 size-5"
                     >
                         <path
                             fill-rule="evenodd"
@@ -89,30 +89,31 @@
                 </div>
             </div>
         </div>
-        <div class="basis-1/2 py-6 space-y-6">
-            <h2 class="text-3xl font-bold text-gray-600">Installiere unsere App</h2>
+        <div class="space-y-6 py-6 basis-1/2">
+            <h2 class="font-bold text-3xl text-gray-600">Installiere unsere App</h2>
             <h3 class="text-gray-500"> In AppStore oder GooglePlay</h3>
-            <div class="flex space-x-1">
+            <div class="flex justify-center space-x-1">
                 <img
-                    class="hover:-translate-y-1 h-10 duration-300 ease-in-out"
+                    class="h-10 hover:-translate-y-1 duration-300 ease-in-out"
                     src="{% static 'mina/img/as.jpg' %}"
                     alt=""
                 >
                 <img
-                    class="hover:-translate-y-1 h-10 duration-300 ease-in-out"
+                    class="h-10 hover:-translate-y-1 duration-300 ease-in-out"
                     src="{% static 'mina/img/gp.jpg' %}"
                     alt=""
                 >
             </div>
             <p class="text-gray-500"> Bezahlungsart: Kreditkarte</p>
             <img
+                class="mx-auto"
                 src="{% static 'mina/img/payment.png' %}"
                 alt=""
             >
         </div>
     </div>
     <hr class="border-slate-300 mx-5 my-2 border-t-2">
-    <div class="md:flex-row md:justify-between flex flex-col items-center justify-center my-4 space-y-5">
+    <div class="flex md:flex-row flex-col justify-center md:justify-between items-center space-y-5 my-4">
         <div>
             <div class="text-gray-600">Mina - einfach nur lecker</div>
             <div class="text-gray-600">Alle Rechte sind vorbehalten</div>
@@ -120,15 +121,15 @@
         <div>
             <div class="space-x-4">
                 <a
-                    class="hover:text-green-500 text-lg text-green-600"
+                    class="text-green-600 text-lg hover:text-green-500"
                     href=""
                 >Impressum</a>
                 <a
-                    class="hover:text-green-500 text-lg text-green-600"
+                    class="text-green-600 text-lg hover:text-green-500"
                     href=""
                 >AGB</a>
                 <a
-                    class="hover:text-green-500 text-lg text-green-600"
+                    class="text-green-600 text-lg hover:text-green-500"
                     href=""
                 >Datenschutz</a>
             </div>
@@ -138,7 +139,7 @@
             <div class="flex space-x-2">
                 <a href="https://facebook.com">
                     <svg
-                        class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                        class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
                         y="0px"
@@ -151,7 +152,7 @@
                 </a>
                 <a href="https://twitter.com">
                     <svg
-                        class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                        class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
                         y="0px"
@@ -164,7 +165,7 @@
                 </a>
                 <a href="https://instagram.com">
                     <svg
-                        class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                        class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
                         y="0px"
@@ -177,7 +178,7 @@
                 </a>
                 <a href="https://tiktok.com">
                     <svg
-                        class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
+                        class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
                         y="0px"
