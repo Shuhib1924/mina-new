@@ -115,12 +115,24 @@ class Variation(models.Model):
 
 
 class Order(models.Model):
-    daily_id = models.PositiveIntegerField(unique=False, null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True)
-    pickup_time = models.TimeField()
-    phone = models.IntegerField(null=True)
-    name = models.CharField(max_length=40, null=True)
+    daily_id = models.PositiveIntegerField(unique=False)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    orderID = models.CharField(max_length=40, null=True)
+    transactionID = models.CharField(max_length=40, null=True)
+    paypal_total = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0, null=True
+    )
+    href = models.URLField(max_length=100, null=True)
+
+    paypal_first_name = models.CharField(max_length=40, null=True)
+    paypal_last_name = models.CharField(max_length=40, null=True)
+    paypal_email = models.EmailField(max_length=40, null=True)
+    paypal_id = models.CharField(max_length=40, null=True)
+
+    form_name = models.CharField(max_length=40, null=True)
+    form_pickup_time = models.CharField(max_length=40, null=True)
+    form_email = models.EmailField(max_length=40, null=True)
+    form_phone = models.CharField(max_length=40, null=True)
 
     def __str__(self):
-        return f"ID: {self.id}: DailyID: {self.daily_id} Created:({self.created_date}) - {self.total} | {self.pickup_time}"
+        return f"DailyID: {self.daily_id} Created:({self.created_date}) - {self.paypal_total} | {self.form_pickup_time}"

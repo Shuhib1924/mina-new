@@ -1,0 +1,45 @@
+<form action="{% url 'order'%}">
+    {% csrf_token %}
+    <input
+        type="text"
+        value='{
+    "transactionData": {
+        "orderID": "93554698WH3489431",
+        "transactionID": "93554698WH3489431",
+        "status": "COMPLETED",
+        "payer": {
+            "name": {
+                "given_name": "John",
+                "surname": "Doe"
+            },
+            "email_address": "buyer@speed.codes",
+            "payer_id": "56NTW9BN78UR8"
+        },
+        "purchase_units": [
+            {
+                "reference_id": "default",
+                "amount": {
+                    "currency_code": "EUR",
+                    "value": "41.70"
+                }
+            }
+        ],
+        "create_time": "2024-07-29T17: 13: 26Z",
+        "update_time": "2024-07-29T17: 13: 34Z",
+        "links": [
+            {
+                "href": "https: //api.sandbox.paypal.com/v2/checkout/orders/93554698WH3489431",
+                "rel": "self",
+                "method": "GET"
+            }
+        ]
+    },
+    "name": "fdgdfg",
+    "pickupTime": "19:13",
+    "email": "dfgdfg@dfertert.com",
+    "phone": "sdfsdf"
+}'
+    >
+    <button type="submit">submit</button>
+
+</form>

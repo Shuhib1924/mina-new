@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/alpinejs"></script>
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div x-data="{show:false}">
+            <button @click="show=!show">toggle</button>
+            <div
+                class="bg-green-300 size-[3000px]"
+                x-show="show"
+                x-transition:enter.duration.1500ms.scale.0
+                x-transition:leave.duration.1000ms.scale.0
+            ></div>
+        </div>
+    </body>
+
+</html>

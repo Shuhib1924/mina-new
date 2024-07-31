@@ -97,7 +97,6 @@
             type="submit"
             class="border-2 bg-green-500 px-3 py-3 rounded-lg w-full text-white"
             :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 }"
-            click="window.location.href='order.html'"
         >OHNE Paypal</button>
         <div
             id="paypal-button-container"
@@ -155,7 +154,12 @@
                                 update_time: details.update_time,
                                 links: details.links // Include links if necessary
                             };
-                            //const formData = collectFormData();
+                            const formData = {
+                                name: document.getElementById('name').value,
+                                pickupTime: document.getElementById('pickup-time').value,
+                                email: document.getElementById('email').value,
+                                phone: document.getElementById('phone').value
+                            };
                             console.log('Transaction completed by ' + details.payer.name.given_name);
                             console.log('Transaction ID: ' + details.id);
                             // Collect form data
@@ -167,10 +171,7 @@
                                 },
                                 body: JSON.stringify({
                                     transactionData: transactionData,
-                                    name: document.getElementById('name').value,
-                                    pickupTime: document.getElementById('pickup-time').value,
-                                    email: document.getElementById('email').value,
-                                    phone: document.getElementById('phone').value
+                                    formData: formData,
                                 }),
                             }).then(response => response.json())
                                 .then(result => {

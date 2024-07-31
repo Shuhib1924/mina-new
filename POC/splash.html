@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://unpkg.com/alpinejs"
+            defer
+        ></script>
+        <title></title>
+
+
+    </head>
+
+    <body>
+        <div
+            x-data="{show:true}"
+            x-show="show"
+            x-init="setTimeout(() => show = false, 1000)"
+            x-transition:enter="transition ease-out duration-1000"
+            x-transition:enter-start="opacity-0 transform"
+            x-transition:enter-end="opacity-100 transform"
+            x-transition:leave="transition ease-in duration-1000"
+            x-transition:leave-start="opacity-100 transform"
+            x-transition:leave-end="opacity-0 transform"
+            class="z-50 fixed inset-0 place-content-center grid bg-white h-screen"
+        >
+            <img
+                src="https://dummyjson.com/icon/logo"
+                alt=""
+            >
+        </div>
+        <div class="place-items-center grid bg-green-300 h-screen"></div>
+    </body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script
+            defer
+            src="https://unpkg.com/alpinejs"
+        ></script>
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div x-data="{
+            currentTime: new Date().toLocaleString(),
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate(),
+            gmt: new Date().getTimezoneOffset(),
+            weekday: new Date().getDay(),
+            hour: new Date().getHours(),
+            minutes: new Date().getMinutes(),
+            seconds: new Date().getSeconds(),
+        }">
+            <p x-text="currentTime"></p>
+            <p x-text="year"></p>
+            <p x-text="month"></p>
+            <p x-text="day"></p>
+            <p x-text="gmt"></p>
+            <p x-text="weekday"></p>
+            <p x-text="hour"></p>
+            <p x-text="minutes"></p>
+            <p x-text="seconds"></p>
+        </div>
+    </body>
+
+</html>

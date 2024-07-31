@@ -4,10 +4,10 @@ from .models import (
     Variation,
     Category,
     Query,
-    Order,
     Notification,
     Screen,
     Random,
+    Order,
 )
 
 
@@ -17,24 +17,17 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ("rank",)
 
 
-class QueryInline(admin.TabularInline):
-    model = Query.product_query.through
-
-
-class VariationInline(admin.TabularInline):
-    model = Variation.query_variation.through
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    # inlines = [QueryInline]
+    list_display = ["name", "price", "active"]
+    list_editable = ("active",)
 
 
-# @admin.register(Query)
-# class QueryAdmin(admin.ModelAdmin):
-#     inlines = [VariationInline]
-admin.site.register(Query)
+@admin.register(Query)
+class QueryAdmin(admin.ModelAdmin):
+    list_display = ["name", "required"]
+    list_editable = ("required",)
 
 
 admin.site.register(Variation)

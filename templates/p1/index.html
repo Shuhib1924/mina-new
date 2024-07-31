@@ -1,8 +1,27 @@
 {% extends 'p1/base.html' %}
+{% load static%}
 {% block title %}
 Mina Luna!
 {% endblock %}
 {% block main %}
+  <div
+            x-data="{show:true}"
+            x-show="show"
+            x-init="setTimeout(() => show = false, 500)"
+            x-transition:enter="transition ease-out duration-1000"
+            x-transition:enter-start="opacity-0 transform"
+            x-transition:enter-end="opacity-100 transform"
+            x-transition:leave="transition ease-in duration-1000"
+            x-transition:leave-start="opacity-100 transform"
+            x-transition:leave-end="opacity-0 transform"
+            class="z-50 fixed inset-0 place-items-center grid bg-white h-screen"
+        >
+            <img
+                class="w-1/4"
+                src="{% static 'sc.png'%}"
+                alt=""
+            >
+        </div>
 <main>
     <div class="flex md:flex-row flex-col md:space-x-10">
         {% include "p1/category_bar.html"%}
@@ -26,7 +45,7 @@ Mina Luna!
                             class="-z-10 w-full h-96 object-cover"
                             x-show="state === j"
                             x-transition:enter="transition ease-in-out duration-1000 transform"
-                            x-transition:enter-start="-translate-x-5 opacity-0"
+                            x-transition:enter-start="translate-x-5 opacity-0"
                             x-transition:enter-end="translate-x-0 opacity-100"
                         >
                     </template>
