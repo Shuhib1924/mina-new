@@ -4,24 +4,29 @@
 Mina Luna!
 {% endblock %}
 {% block main %}
-  <div
-            x-data="{show:true}"
-            x-show="show"
-            x-init="setTimeout(() => show = false, 500)"
-            x-transition:enter="transition ease-out duration-1000"
-            x-transition:enter-start="opacity-0 transform"
-            x-transition:enter-end="opacity-100 transform"
-            x-transition:leave="transition ease-in duration-1000"
-            x-transition:leave-start="opacity-100 transform"
-            x-transition:leave-end="opacity-0 transform"
-            class="z-50 fixed inset-0 place-items-center grid bg-white h-screen"
-        >
-            <img
-                class="w-1/4"
-                src="{% static 'sc.png'%}"
-                alt=""
-            >
-        </div>
+<div
+    x-data="{show:true, img:false}"
+    x-show="show"
+    x-init="$nextTick(()=> {img=true}); setTimeout(() => show = false, 500)"
+    x-transition:leave="transition ease-in duration-500"
+    x-transition:leave-start="opacity-100 transform"
+    x-transition:leave-end="opacity-0 transform"
+    class="z-50 fixed inset-0 place-items-center grid bg-white h-screen"
+>
+    <img
+        x-show="img"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 -translate-x-48"
+        x-transition:enter-end="opacity-100 translate-x-0"
+        x-transition:leave="transition ease-in duration-1000"
+        x-transition:leave-start="opacity-100 transform"
+        x-transition:leave-end="opacity-0 transform"
+        class="w-1/4"
+        src="{% static 'sc.png'%}"
+        alt=""
+    >
+</div>
 <main>
     <div class="flex md:flex-row flex-col md:space-x-10">
         {% include "p1/category_bar.html"%}
@@ -101,17 +106,17 @@ Mina Luna!
                     </template>
                 </div>
             </div>
-
-            <h1 class="font-bold text-4xl text-gray-600">Unsere neuen Gerichte</h1>
+            <!-- latest -->
+            <h1 class="font-bold text-4xl text-gray-600">Unsere neuen Gerichte, probiere sie aus!</h1>
             <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {% for p in products %}
+                {% for p in latest_products %}
                 <div
                     class="border-gray-200 hover:border-2 hover:shadow-2xl rounded-xl group hover:boder-gray-700 p-4 border">
-                    <a href="{%url 'detail' p.slug%}">
+                    <a href="{%url 'detail' p.category.slug p.slug%}">
                         <img
                             src="{{p.image.url}}"
                             alt=""
-                            class="group-hover:scale-110 mx-auto my-3 rounded-xl h-24 duration-500 ease-in-out object-contain"
+                            class="group-hover:scale-150 mx-auto my-3 rounded-xl h-24 animate-ping group-hover:animate-none duration-1000 ease-in-out object-contain"
                         >
                     </a>
                     <div class="text-gray-400 text-sm">{{p.category}}</div>
@@ -123,7 +128,36 @@ Mina Luna!
                         <div class="font-bold text-green-400">{{p.price}}€</div>
                         {% endif %}
                         <a
-                            href="{%url 'detail' p.slug%}"
+                            href="{%url 'detail' p.category.slug p.slug%}"
+                            class="bg-green-200 hover:bg-green-500 px-3 py-2 rounded-lg font-bold text-green-700 hover:text-white hover:-translate-y-2 duration-500 ease-in-out"
+                        >Ansehen</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- random -->
+            <h1 class="font-bold text-4xl text-gray-600">Nimm, was dir gefällt!</h1>
+            <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {% for p in random_products %}
+                <div
+                    class="border-gray-200 hover:border-2 hover:shadow-2xl rounded-xl group hover:boder-gray-700 p-4 border">
+                    <a href="{%url 'detail' p.category.slug p.slug%}">
+                        <img
+                            src="{{p.image.url}}"
+                            alt=""
+                            class="group-hover:scale-150 mx-auto my-3 rounded-xl h-24 animate-bounce group-hover:animate-none duration-1000 ease-in-out object-contain"
+                        >
+                    </a>
+                    <div class="text-gray-400 text-sm">{{p.category}}</div>
+                    <div class="font-bold text-slate-700 text-xl">{{p.name}}</div>
+                    <div class="flex justify-between items-center gap-1">
+                        {% if p.price == 0.00 %}
+                        <div class="font-bold text-green-400 invisible">{{p.price}}€</div>
+                        {% else %}
+                        <div class="font-bold text-green-400">{{p.price}}€</div>
+                        {% endif %}
+                        <a
+                            href="{%url 'detail' p.category.slug p.slug%}"
                             class="bg-green-200 hover:bg-green-500 px-3 py-2 rounded-lg font-bold text-green-700 hover:text-white hover:-translate-y-2 duration-500 ease-in-out"
                         >Ansehen</a>
                     </div>

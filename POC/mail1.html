@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Tailwind Table</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body>
+        <div class="mx-auto mt-8 container">
+            <table class="divide-y divide-gray-200 min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th
+                            scope="col"
+                            class="px-6 py-3 font-medium text-gray-500 text-left text-xs uppercase tracking-wider"
+                        >
+                            Column 1
+                        </th>
+                        <th
+                            scope="col"
+                            class="px-6 py-3 font-medium text-gray-500 text-left text-xs uppercase tracking-wider"
+                        >
+                            Column 2
+                        </th>
+                        <th
+                            scope="col"
+                            class="px-6 py-3 font-medium text-gray-500 text-left text-xs uppercase tracking-wider"
+                        >
+                            Column 3
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="odd:bg-green-50 even:bg-white">
+                        <td class="px-6 py-4 font-medium text-gray-900 text-sm whitespace-nowrap">Data 1</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">Data 2</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">Data 3</td>
+                    </tr>
+                    <tr class="odd:bg-green-50 even:bg-white">
+                        <td class="px-6 py-4 font-medium text-gray-900 text-sm whitespace-nowrap">Data 4</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">Data 5</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">Data 6</td>
+                    </tr>
+                    <tr class="odd:bg-green-50 even:bg-white">
+                        <td class="px-6 py-4 font-medium text-gray-900 text-sm whitespace-nowrap">Data 7</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">Data 8</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">Data 9</td>
+                    </tr>
+                    <!-- Continue adding rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </body>
+
+</html>

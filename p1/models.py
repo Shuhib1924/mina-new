@@ -3,6 +3,7 @@ from django.utils import timezone
 from PIL import Image
 import threading
 import datetime
+from django.core.exceptions import ValidationError
 
 
 class Random(models.Model):
@@ -38,13 +39,14 @@ class Screen(models.Model):
 
 
 class Category(models.Model):
+    active = models.BooleanField(default=True)
     name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     image = models.ImageField(upload_to="category/", default="default/logo.png")
     background = models.ImageField(upload_to="category/", default="default/logo.png")
-    rank = models.IntegerField(default=0, null=True)
+    rank = models.IntegerField(default=0)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}"
 
     class Meta:
@@ -68,6 +70,14 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     description = models.TextField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    rank = models.IntegerField(default=0, null=True)
+    menu = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="product_menu",
+    )
 
     def __str__(self) -> str:
         if self.private == "":
@@ -78,6 +88,7 @@ class Product(models.Model):
 
 class Query(models.Model):
     name = models.CharField(max_length=100)
+    rank = models.IntegerField(default=0)
     private = models.CharField(max_length=100, blank=True)
     product_query = models.ManyToManyField(Product, related_name="product_query")
     required = models.BooleanField(default=False)
@@ -98,6 +109,7 @@ class Variation(models.Model):
     private = models.CharField(max_length=100, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=6, default=0.00)
     image = models.ImageField(upload_to="variation_image/")
+    rank = models.IntegerField(default=0, null=True)
     query_variation = models.ManyToManyField(Query, related_name="query_variation")
 
     def __str__(self) -> str:
@@ -129,10 +141,21 @@ class Order(models.Model):
     paypal_email = models.EmailField(max_length=40, null=True)
     paypal_id = models.CharField(max_length=40, null=True)
 
-    form_name = models.CharField(max_length=40, null=True)
     form_pickup_time = models.CharField(max_length=40, null=True)
+    form_name = models.CharField(max_length=40, null=True)
     form_email = models.EmailField(max_length=40, null=True)
     form_phone = models.CharField(max_length=40, null=True)
 
+    order_data = models.TextField(blank=True, null=True)
+    paypal_data = models.TextField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            raise ValidationError("Updates are not allowed.")
+        super(Order, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Deletion is not allowed.")
+
     def __str__(self):
-        return f"DailyID: {self.daily_id} Created:({self.created_date}) - {self.paypal_total} | {self.form_pickup_time}"
+        return f"DailyID: {self.daily_id} Created:({self.created_date}) - {self.paypal_total} | {self.form_pickup_time} | TransactinID - {self.transactionID}"

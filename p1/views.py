@@ -16,13 +16,17 @@ from django.core.exceptions import ObjectDoesNotExist
 import json
 import random
 from pprint import pformat
-
+from django.conf import settings
 import ast
 from django.utils import timezone
 from datetime import datetime, timedelta
 import os
 import time
 from kafka import KafkaProducer
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from premailer import transform
 
 
 def notification(request):
@@ -32,10 +36,13 @@ def notification(request):
 
 def home(request):
     screens = Screen.objects.order_by("rank")
-    products = Product.objects.all().filter(active=True).order_by("-created_date")[:6]
+    latest_products = Product.objects.all().filter(active=True).order_by("-created_date")[:4]
+    all_products = list(Product.objects.all().filter(active=True))
+    random_products = random.sample(all_products, min(8, len(all_products)))
     context = {
-        "products": products,
+        "latest_products": latest_products,
         "screens": screens,
+        "random_products": random_products,
     }
 
     return render(request, "p1/index.html", context)
@@ -43,7 +50,7 @@ def home(request):
 
 def category(request, cslug):
     category = Category.objects.get(slug=cslug)
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=category).order_by('rank')
     product_count = products.count()
     context = {
         "category": category,
@@ -54,20 +61,21 @@ def category(request, cslug):
 
 
 def all_categories(request):
-    all_categories = Category.objects.all().order_by("rank")
+    all_categories = Category.objects.all().filter(active=True).order_by("rank")
     return {"all_categories": all_categories}
 
 
-def detail(request, pslug):
+def detail(request, cslug, pslug):
+    category = Category.objects.get(slug=cslug)
     product = Product.objects.get(slug=pslug)
     # print("product", product)
-    queries = Query.objects.filter(product_query__name=product.name)
+    queries = Query.objects.filter(product_query__name=product.name).order_by('rank')
     # print("queries", queries)
     variations = Variation.objects.filter(
         query_variation__name__in=[i.name for i in queries]
-    )
+    ).order_by('rank')
     # print("variations", variations)
-    all_products = list(Product.objects.all())
+    all_products = list(Product.objects.all().filter(active=True))
     random_product = random.sample(all_products, min(4, len(all_products)))
     context = {
         "product": product,
@@ -284,136 +292,206 @@ daily_id, last_reset_date = load_data()
 
 def order(request):
     try:
-        # data = json.loads(request.body)
-        # transaction_data = data.get("transactionData", {})
-        # # print("transaction_data", transaction_data)
-        # form_data = data.get("formData", {})
-        # # print("form_data", form_data)
-        # # & create order_id
-        # # global daily_id, daily_orders, last_reset_date
-        # global daily_id, last_reset_date
-        # # print(f"before: {daily_id} ")
+        data = json.loads(request.body)
+        print("data", data)
+        transaction_data = data.get("transactionData", {})
+        # print("transaction_data", transaction_data)
+        form_data = data.get("formData", {})
+        # print("form_data", form_data)
+        # & create order_id
+        # global daily_id, daily_orders, last_reset_date
+        global daily_id, last_reset_date
+        # print(f"before: {daily_id} ")
 
-        # # Use a fixed date for testing purposes
-        # current_date = timezone.now().date()
-        # # current_date = timezone.datetime(2024, 8, 3).date()
-        # # print("current_date", current_date)
+        # Use a fixed date for testing purposes
+        current_date = timezone.now().date()
+        # current_date = timezone.datetime(2024, 8, 3).date()
+        # print("current_date", current_date)
 
-        # # Check if a new day has started
-        # if current_date > last_reset_date:
-        #     daily_id = 0
-        #     # daily_orders = []  # Clear the list of orders
-        #     last_reset_date = current_date  # Update last_reset_date to current date
+        # Check if a new day has started
+        if current_date > last_reset_date:
+            daily_id = 0
+            # daily_orders = []  # Clear the list of orders
+            last_reset_date = current_date  # Update last_reset_date to current date
 
-        #     # print(f"after reset: {daily_id} ")
-        # # else:
-        # # print("no reset!")
-        # # Save updated daily_id and last_reset_date
-        # daily_id += 1
-        # # daily_orders.append(daily_id)
-        # save_data(daily_id, last_reset_date)
-        # print(f"after process: {daily_id}")
+            # print(f"after reset: {daily_id} ")
+        # else:
+        # print("no reset!")
+        # Save updated daily_id and last_reset_date
+        daily_id += 1
+        # daily_orders.append(daily_id)
+        save_data(daily_id, last_reset_date)
+        print(f"after process: {daily_id}")
 
-        # # * 1. create order
-        # order = Order(
-        #     # ( transaction data
-        #     daily_id=daily_id,
-        #     orderID=transaction_data["orderID"],
-        #     transactionID=transaction_data["transactionID"],
-        #     paypal_total=float(
-        #         transaction_data["purchase_units"][0]["amount"]["value"]
-        #     ),
-        #     href=transaction_data["links"][0]["href"],
-        #     paypal_first_name=transaction_data["payer"]["name"]["given_name"],
-        #     paypal_last_name=transaction_data["payer"]["name"]["surname"],
-        #     paypal_email=transaction_data["payer"]["email_address"],
-        #     paypal_id=transaction_data["payer"]["payer_id"],
-        #     # ^ form data
-        #     form_name=form_data["name"],
-        #     form_pickup_time=form_data["pickupTime"],
-        #     form_email=form_data["email"],
-        #     form_phone=form_data["phone"],
-        # ).save()
+        # * 1. create order
+        order = Order(
+            # ( transaction data
+            daily_id=daily_id,
+            orderID=transaction_data["orderID"],
+            transactionID=transaction_data["id"],
+            paypal_total=float(
+                transaction_data["purchase_units"][0]["amount"]["value"]
+            ),
+            href=transaction_data["links"][0]["href"],
+            paypal_first_name=transaction_data["payer"]["name"]["given_name"],
+            paypal_last_name=transaction_data["payer"]["name"]["surname"],
+            paypal_email=transaction_data["payer"]["email_address"],
+            # paypal_email=transaction_data["payer"]["phone"],
+            paypal_id=transaction_data["payer"]["payer_id"],
+            # ^ form data
+            form_name=form_data["name"],
+            form_pickup_time=form_data["pickupTime"],
+            form_email=form_data["email"],
+            form_phone=form_data["phone"],
+        )
+        # $ it's not saved yet see below!
         # % 2. print receipt
-
+        try:
+            collected_order = []
+            form_data_order = {
+                "pickupTime": f"{form_data['pickupTime']}",
+                "daily_id" : f"{daily_id}",
+                "currentTime": f"{datetime.now().strftime("%H:%M:%S")}",
+                "name": f"{form_data['name']}",
+                "phone": f"{form_data['phone']}",
+            }
+            collected_order.append({"form_data": form_data_order})
+            order_products = []
+            for item in request.session["cart"]:
+                try:
+                    user = {"user": item["item"][0]["user"]}
+                except:
+                    user = {"user": ""}
+                # print("Q - user", user)
+                try:
+                    product = {
+                        "product": get_object_or_404(Product, id=item["item"][1]["product"])
+                    }
+                except:
+                    product = {"product": ""}
+                # print("Q - product", product)
+                try:
+                    queries = {
+                        "queries": get_list_or_404(
+                            Query,
+                            id__in=item["item"][2]["queries"],
+                        )
+                    }
+                except:
+                    queries = {"queries": ""}
+                # print("Q - queries", queries)
+                try:
+                    variations = {
+                        "variations": get_list_or_404(
+                            Variation,
+                            id__in=item["item"][3]["variations"],
+                        )
+                    }
+                except:
+                    variations = {"variations": ""}
+                # print("Q - variations", variations)
+                try:
+                    item_price = round(
+                        product["product"].price
+                        + sum([vp.price for vp in variations["variations"]]),
+                        2,
+                    )
+                except:
+                    item_price = round(product["product"].price, 2)
+                query_set = []
+                for q in queries["queries"]:
+                    # print(q.query_variation.all())
+                    variation_set = [
+                        v for v in variations["variations"] if v in q.query_variation.all()
+                    ]
+                    # print("variation_set", variation_set)
+                    query_set.append(
+                        {
+                            "query": q.name,
+                            "variation_set": [v.name for v in variation_set],
+                        }
+                    )
+                order_item = {
+                    "user": user["user"],
+                    "product": product["product"].name,
+                    "query_set": query_set,
+                }
+                order_products.append(order_item)
+            collected_order.append({"products": order_products})
+            # print(collected_order)
+            json_order = {"order": collected_order}
+            # print(json.dumps(json_order, indent=4))
+            order.order_data = json.dumps(json_order, indent=4)
+            order.paypal_data = json.dumps(data, indent=4)
+            order.save()
+            print("1. order saved in db is complete")
+            # ^ sending data
+            producer = KafkaProducer(
+                bootstrap_servers=["38.242.156.125:9092"],
+                acks="all",
+                value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+            )
+            producer.send("Mina", value=json_order)
+            producer.flush()
+            producer.close()
+        except Exception as e:
+            print(f'printing error from server: {e}')
+        print("2. printing done")
         # 3. send email
 
         return JsonResponse({"success": "success"})
     except:
-        if request.method == "POST":
-            print(request.POST)
-        return HttpResponse("NO JSON FOUND")
+        # if request.method == "POST":
+        #     print(request.POST)
+        return JsonResponse({"Error": "From Server, No JSON Foundable"})
 
 
 def success(request):
-    producer = KafkaProducer(bootstrap_servers=["38.242.156.125:9092"], acks="all")
-    message = f"""{{
-                'date': {datetime.now()},
-                'message':'message'
-            }}"""
-    try:
-        print()
-        producer.send("Mina", value=message.encode("utf-8"))
-        time.sleep(0.1)
-    except Exception as e:
-        print(f"Transmission Error: {e}")
+    daily_id = "12"
+    pickup = "12:12"
+    email = 'shuhib_s@live.de'
+    subject = f"Ihre Bestellnummer {daily_id}"
+
+    # Prepare context data
+    context = {
+        "daily_id": daily_id,
+        "pickup": pickup,
+        # Add any other context variables you need
+    }
+
+    # Render the HTML content
+    html_content = render_to_string("/email/src/templates/invoice.html", context)
+
+    # Use premailer to inline the CSS
+    inlined_html = transform(html_content)
+
+    # Create plain text version
+    text_content = strip_tags(inlined_html)
+
+    # Create the email
+    email = EmailMultiAlternatives(
+        subject, text_content, settings.EMAIL_HOST_USER, ["shuhib_s@live.de"]
+    )
+    email.attach_alternative(inlined_html, "text/html")
+    email.send()
+
     return HttpResponse("success")
-
-
-def g1(a):
-    a += 1
-    return a
-
-
 def failed(request):
-    x = 1
-    x = g1(x)
-    print("x", x)
-    for item in request.session["cart"]:
-        try:
-            user = {"user": item["item"][0]["user"]}
-        except:
-            user = {"user": ""}
-        # print("Q - user", user)
-        try:
-            product = {
-                "product": get_object_or_404(Product, id=item["item"][1]["product"])
-            }
-        except:
-            product = {"product": ""}
-        # print("Q - product", product)
-        try:
-            queries = {
-                "queries": get_list_or_404(
-                    Query,
-                    id__in=item["item"][2]["queries"],
-                )
-            }
-        except:
-            queries = {"queries": ""}
-        # print("Q - queries", queries)
-        try:
-            variations = {
-                "variations": get_list_or_404(
-                    Variation,
-                    id__in=item["item"][3]["variations"],
-                )
-            }
-        except:
-            variations = {"variations": ""}
-        # print("Q - variations", variations)
-        try:
-            item_price = round(
-                product["product"].price
-                + sum([vp.price for vp in variations["variations"]]),
-                2,
-            )
-        except:
-            item_price = round(product["product"].price, 2)
-        str_product = product["product"].name
-        print(f"""{user['user']}\n{str_product}""")
+    data = """{'transactionData': {'orderID': '1L3444762L105213B', 'id': '1L3444762L105213B', 'status': 'COMPLETED', 'intent': 'CAPTURE', 'create_time': '2024-08-01T12:55:46Z', 'update_time': '2024-08-01T12:55:56Z', 'payer': {'name': {'given_name': 'John', 'surname': 'Doe'}, 'email_address': 'buyer@speed.codes', 'payer_id': '56NTW9BN78UR8', 'address': {'country_code': 'DE'}, 'phone': None}, 'purchase_units': [{'reference_id': 'default', 'amount': {'currency_code': 'EUR', 'value': '14.00'}, 'payee': {'email_address': 'seller@speed.codes', 'merchant_id': 'R9EVPB7E2LKPN'}, 'shipping': {'name': {'full_name': 'John Doe'}, 'address': {'address_line_1': 'Badensche Str. 24', 'admin_area_2': 'Berlin', 'admin_area_1': 'Berlin', 'postal_code': '10715', 'country_code': 'DE'}}, 'payments': {'captures': [{'id': '6FT1977762163820P', 'status': 'COMPLETED', 'amount': {'currency_code': 'EUR', 'value': '14.00'}, 'final_capture': True, 'seller_protection': {'status': 'ELIGIBLE', 'dispute_categories': ['ITEM_NOT_RECEIVED', 'UNAUTHORIZED_TRANSACTION']}, 'create_time': '2024-08-01T12:55:56Z', 'update_time': '2024-08-01T12:55:56Z'}]}}], 'links': [{'href': 'https://api.sandbox.paypal.com/v2/checkout/orders/1L3444762L105213B', 'rel': 'self', 'method': 'GET'}]}, 'formData': {'name': 'rahima', 'pickupTime': '14:55', 'email': 'shuhib_s@live.de', 'phone': '017610000080'}}"""
+    print(json.dumps(data, indent=4))
     return HttpResponse("failed")
 
+def email(request):
+    daily_id = "12"
+    pickup = "12:12"
+    email = 'shuhib_s@live.de'
+    subject = f"Ihre Bestellnummer {daily_id}"
+    context = {
+        "daily_id": daily_id,
+        "pickup": pickup,
+        # Add any other context variables you need
+    }
+    return render(request, 'email/src/templates/invoice.html', context)
 
 # def printing(request):
 #

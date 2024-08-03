@@ -1,7 +1,7 @@
 {% load static%}
 {% for i in notifications%}
-<div class="h-8">
-    <section class="z-40 fixed inset-x-0 bg-green-500 -mx-6 my-4 -mt-4 py-2 font-bold text-center text-white text-xl">
+<div class="h-8 ">
+    <section class=" z-40 fixed inset-x-0 bg-green-500 -mx-6 my-4 -mt-4 py-2 font-bold text-center text-white text-xl">
         {{i.message}}
     </section>
 </div>
@@ -25,16 +25,19 @@
         >
             <!-- <p>Current Date and Time: <span x-text="currentDateTime"></span></p> -->
             <p><span
-                    x-text="open? 'Geöffnet' : 'Geschlossen'"
+                    x-text="status==='Open'? 'Geöffnet' : 'Geschlossen'"
                     :class="{ 'bg-green-500': status === 'Open', 'bg-red-500': status === 'Closed' }"
                     class="hover:opacity-50 px-2 py-1 rounded-md font-black text-2xl text-white"
                 ></span></p>
             <div class="text-gray-600 text-xl">
                 <p x-show="status === 'Open'">Bis wir schließen: <span
-                        class="font-bold underline underline-offset-2"
+                        class="font-bold underline underline-offset-8"
                         x-text="timeUntilClosing"
                     ></span></p>
-                <p x-show="status === 'Closed'">Wir öffnen in: <span x-text="timeUntilOpening"></span></p>
+                <p x-show="status === 'Closed'">Wir öffnen wieder in: <span
+                        class="font-bold underline underline-offset-8"
+                        x-text="timeUntilOpening"
+                    ></span></p>
             </div>
         </div>
         <script>

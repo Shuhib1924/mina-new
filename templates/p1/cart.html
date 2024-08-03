@@ -31,7 +31,7 @@
                              <div class="rounded-xl w-min px-3 py-1 text-lg font-bold text-green-500 bg-green-200">{{ci.0.user}}</div>
                        {% else %}
                        {% endif %}
-                        <a href="{% url 'detail' ci.1.product.slug %}">
+                        <a href="{% url 'detail' ci.1.product.category.slug ci.1.product.slug %}">
                         <div class="text-2xl font-bold text-gray-600">{{ci.1.product.name}}</div>
                         </a>
                         {% if ci.1.product.price != 0.00 %}
@@ -62,7 +62,7 @@
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
                                 fill="currentColor"
-                                class="hover:bg-green-400 size-12 self-center p-2 text-white bg-green-200 rounded-full cursor-pointer"
+                                class="hover:bg-gray-600 size-12 self-center p-2 text-white bg-gray-400 rounded-full cursor-pointer"
                             >
                                 <path
                                     fill-rule="evenodd"
@@ -93,8 +93,8 @@
                 </div>
                 <div
                     onclick="window.location.href='{%url 'checkout'%}'"
-                    class="hover:bg-green-600 rounded-xl px-4 py-2 text-xl font-bold text-center text-white bg-green-400 cursor-pointer">
-                    Bestellung abschließen
+                    class="hover:bg-green-600 rounded-xl animate-pulse px-4 py-2 text-xl font-bold text-center text-white bg-green-400 cursor-pointer">
+                    Hier Bestellen!
                 </div>
             </div>
         </div>

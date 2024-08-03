@@ -26,7 +26,7 @@
                         {% for p in products %}
                         <div
                             class="hover:shadow-xl hover:border-none rounded-xl group p-4 space-y-4 duration-500 border border-gray-300">
-                            <a href="{% url 'detail' p.slug %}">
+                            <a href="{% url 'detail' p.category.slug p.slug %}">
                                 <img
                                     class="group-hover:scale-95 overflow-hidden duration-500 rounded-lg cursor-pointer"
                                     src="{{p.image.url}}"
@@ -40,9 +40,10 @@
                                 {% else %}
                                     <div class="font-bold text-green-500">{{p.price}}€</div>
                                 {% endif %}
-                                <div
-                                    class="hover:border-green-400 hover:bg-white hover:border hover:text-green-400 px-4 py-2 font-bold text-green-500 duration-300 bg-green-100 rounded-lg">
-                                    Ansehen</div>
+                                <a
+                                    href="{%url 'detail' p.category.slug p.slug%}"
+                                    class="hover:border-green-400 animate-bounce hover:bg-white hover:border hover:text-green-400 px-4 py-2 font-bold text-green-500 duration-300 bg-green-100 rounded-lg">
+                                    Ansehen</a>
                             </div>
                         </div>
                         {% endfor %}

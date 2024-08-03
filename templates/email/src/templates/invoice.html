@@ -1,0 +1,123 @@
+---
+title: "Vielen Dank, deine Bestell-Nr. lautet"
+preheader: "Lass es dir Schmecken ;)"
+image: "https://media.speed.codes/file/logo-sm.png"
+bodyClass: w-full
+---
+<script src="https://cdn.tailwindcss.com"></script>
+<x-main>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+        body {
+            font-family: "Varela Round", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+    <div class="bg-slate-50 text-gray-600 w-3/4 mx-auto">
+        <div class="bg-white shadow-lg mx-auto px-8 py-10 rounded-lg max-w-3/4">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center">
+                    <img
+                        class="mr-2 w-64 object-contain"
+                        src="https://media.speed.codes/file/logo-sm.png"
+                        alt="mina-logo.png"
+                    >
+                    <div class="font-semibold  text-lg"></div>
+                </div>
+                <div class="text-end ">
+                    <div class="mb-2 font-bold text-3xl">Rechnung</div>
+                    <div class="font-bold text-lg">Mina Luna</div>
+                    <div class="text-md">Wilhelms-Strauß-Weg 8</div>
+                    <div class="text-md">21009 Hamburg</div>
+                    <div class="text-md">Tel: 040 / 3023 6968</div>
+                    <div class="text-md">Ust-ID: DEXXXXXXXX</div>
+                </div>
+            </div>
+            <div class="my-8 font-bold text-4xl text-center  "> Bestell-Nr.
+                {{daily_id}}
+            </div>
+            <div class="border-gray-300 mb-6 pb-4 border-b-2">
+                <div class="flex justify-between">
+                    <h2 class="mb-2 font-bold  text-md">An: VORNAME NACHNAME</h2>
+                    <h2 class="mb-2 font-bold  text-md">Email: EMAIL</h2>
+                </div>
+                <div class="flex justify-between mb-8">
+                    <h2 class="mb-2 font-bold  text-md">Paypal-Payer-ID: xxxx</h2>
+                    <h2 class="mb-2 font-bold  text-md">Datum: xxxx</h2>
+                </div>
+                <div class="text-center text-xl ">Vielen Dank für Ihre Bestellung!</div>
+                <div class="text-center ">Wir haben Ihre Bestellung entgegen genommen und sie wird fertig gemacht.
+                </div>
+                <div class="flex justify-center">
+                    <!-- <div class="my-4 text-2xl">Datum:<span
+                            class="my-4  font-bold text-2xl underline underline-offset-2">01.01.2024</span>
+                    </div> -->
+                    <div class="my-4  text-2xl">Uhrzeit: <span
+                            class="my-4  font-bold text-2xl underline underline-offset-2"
+                        >{{pickup}} Uhr</span>
+                    </div>
+                </div>
+                <div class="my-4 text-center  italic text-xl">bis dahin...Guten Appetit!
+                </div>
+            </div>
+            <table class="mb-8 w-full text-left">
+                <div class="flex justify-between mb-6 mt-8 text-sm">
+                    <div>Paypal-Transaction-ID: xxxxxxx.</div>
+                    <div> Paypal-Payment-Capture-ID: xxxxxxxx</div>
+                </div>
+                <thead>
+                    <tr class="bg-green-100 text-lg">
+                        <th class="py-2 pl-4 w-4/12 font-bold  text-start uppercase">
+                            Produkt</th>
+                        <th class="py-2 w-6/12 font-bold text-start  uppercase">Variation</th>
+                        <th class="py-2 w-2/12 font-bold text-center  uppercase">Preis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-white even:bg-green-50">
+                        <td class="py-4 w-4/12 pl-4 font-bold  text-start">Product 1</td>
+                        <td class="py-4 w-6/12 text-start ">1x</td>
+                        <td class="py-4 w-2/12 text-center ">100,00€</td>
+                    </tr>
+                    <tr class="odd:bg-white even:bg-green-50">
+                        <td class="py-4 w-4/12 pl-4 font-bold  text-start">Product 1</td>
+                        <td class="py-4 w-6/12 text-start ">1x</td>
+                        <td class="py-4 w-2/12 text-center ">100,00€</td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="border-gray-300 mb-8 pr-6 pb-6 border-b-2">
+                <div class="flex justify-end mb-2">
+                    <div class="mr-2 text-end ">Netto:</div>
+                    <div class="">425,00€</div>
+                </div>
+                <div class="flex justify-end mb-2">
+                    <div class="mr-2 text-end ">Mwst.:</div>
+                    <div class="">25,00€</div>
+
+                </div>
+                <div class="flex justify-end mb-2 text-xl">
+                    <div class="mr-2 text-end ">Total:</div>
+                    <div class="font-bold ">450,00€</div>
+                </div>
+            </div>
+
+            <div class="flex space-x-2 justify-center mb-8 pt-8  text-xl">
+                <div class="">Developed by &nbsp;
+                </div>
+
+                <span class="font-bold">SPEED.CODES</span>
+                <!-- <img
+                    class="w-6"
+                    src="https://media.speed.codes/file/logo_s1.png"
+                    alt=""
+                > -->
+
+            </div>
+        </div>
+    </div>
+</x-main>

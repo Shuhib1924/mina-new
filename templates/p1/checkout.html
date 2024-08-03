@@ -11,6 +11,7 @@
             p_mail: $persist(''),
             p_phone: $persist(''),
             time: '',
+            state: $persist(false),
             warn: false,
             init(){
                 const now = new Date()
@@ -29,6 +30,7 @@
         action="{%url 'order'%}"
         method="POST"
         class="space-y-6 border-2 border-gray-300 p-4 rounded-xl text-gray-600"
+        @submit.prevent="console.log('submitted!')"
     >
         {%csrf_token%}
         <div class="space-y-2">
@@ -59,15 +61,9 @@
                     class="border-2 border-gray-300 bg-green-200 px-2 py-1 rounded-lg text-gray-500"
                 >
             </div>
-            <div
-                x-text="hours < 7 || hours > 20 ? `Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich` : ''"
-                class="font-bold text-gray-500"
-            ></div>
-            <div
-                x-show="warn"
-                x-text="`Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich`"
-                class="font-bold text-gray-500"
-            ></div>
+            <template x-if="warn">
+                <div class="font-bold text-gray-500">Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich</div>
+            </template>
 
         </div>
         <h2 class="text-green-700 text-xl">2. Mail, damit wir die Quitting versenden</h2>
@@ -93,14 +89,36 @@
             required
         >
         <br>
-        <button
-            type="submit"
-            class="border-2 bg-green-500 px-3 py-3 rounded-lg w-full text-white"
-            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 }"
-        >OHNE Paypal</button>
+        <label
+            for="term"
+            class="flex space-x-2 text-gray-500"
+        >
+            <input
+                type="checkbox"
+                id="term"
+                name="term"
+                x-model="state"
+                class="accent-green-400"
+                required
+                x-init="$nextTick(() => { f1(); });"
+            >
+            <h3
+                class="text-gray-500 text-md"
+                x-model="state"
+            > Ich akzeptiere die <span><a
+                        href="#"
+                        class="text-green-700 underline"
+                    >Nutzungsbedingungen & AGB</a></span></h3>
+        </label>
+        <button type="submit">Bestellung abschicken</button>
+        <script>
+            function f1() {
+                const checkbox = document.getElementById('term');
+                console.log(checkbox.checked.toString());
+            }</script>
         <div
             id="paypal-button-container"
-            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 }"
+            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 || state==false}"
         >
             <script
                 src="https://www.paypal.com/sdk/js?client-id=AfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY&currency=EUR"
@@ -131,37 +149,74 @@
                     onApprove: (data, actions) => {
                         return actions.order.capture().then((details) => {
                             const transactionData = {
+                                // Order details
                                 orderID: data.orderID,
-                                transactionID: details.id,
+                                id: details.id,
                                 status: details.status,
+                                intent: details.intent,
+                                create_time: details.create_time,
+                                update_time: details.update_time,
+
+                                // Payer information
                                 payer: {
                                     name: {
                                         given_name: details.payer.name.given_name,
                                         surname: details.payer.name.surname
                                     },
                                     email_address: details.payer.email_address,
-                                    payer_id: details.payer.payer_id
+                                    payer_id: details.payer.payer_id,
+                                    address: details.payer.address,
+                                    phone: details.payer.phone ? {
+                                        phone_type: details.payer.phone.phone_type,
+                                        phone_number: details.payer.phone.phone_number
+                                    } : null
                                 },
+
+                                // Purchase units
                                 purchase_units: details.purchase_units.map(unit => ({
                                     reference_id: unit.reference_id,
                                     amount: {
                                         currency_code: unit.amount.currency_code,
                                         value: unit.amount.value,
-                                        breakdown: unit.amount.breakdown // Include breakdown if available
-                                    }
+                                        breakdown: unit.amount.breakdown
+                                    },
+                                    payee: unit.payee,
+                                    shipping: unit.shipping ? {
+                                        name: unit.shipping.name,
+                                        address: unit.shipping.address
+                                    } : null,
+                                    payments: unit.payments ? {
+                                        captures: unit.payments.captures,
+                                        authorizations: unit.payments.authorizations,
+                                        refunds: unit.payments.refunds
+                                    } : null,
+                                    items: unit.items
                                 })),
-                                create_time: details.create_time,
-                                update_time: details.update_time,
-                                links: details.links // Include links if necessary
+
+                                // Payment source
+                                payment_source: details.payment_source,
+
+                                // Links
+                                links: details.links,
+
+                                // Additional fields that might be available
+                                gross_amount: details.gross_amount,
+                                seller_protection: details.seller_protection,
+                                soft_descriptor: details.soft_descriptor,
+                                invoice_id: details.invoice_id,
+                                custom_id: details.custom_id,
+                                application_context: details.application_context
                             };
                             const formData = {
                                 name: document.getElementById('name').value,
                                 pickupTime: document.getElementById('pickup-time').value,
                                 email: document.getElementById('email').value,
-                                phone: document.getElementById('phone').value
+                                phone: document.getElementById('phone').value,
+                                term: document.getElementById('term').checked.toString()
                             };
                             console.log('Transaction completed by ' + details.payer.name.given_name);
                             console.log('Transaction ID: ' + details.id);
+                            console.log('Full transaction details:', JSON.stringify(transactionData, null, 2));
                             // Collect form data
                             fetch('{% url "order"%}', {
                                 method: 'POST',

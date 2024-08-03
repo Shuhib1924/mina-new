@@ -15,6 +15,8 @@ from .models import (
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     ordering = ("rank",)
+    list_display = ["name", "rank"]
+    list_editable = ("rank",)
 
 
 @admin.register(Product)
@@ -26,14 +28,35 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Query)
 class QueryAdmin(admin.ModelAdmin):
-    list_display = ["name", "required"]
-    list_editable = ("required",)
+    list_display = ["name", "private", "rank", "required"]
+    list_editable = ("required", "rank")
 
 
-admin.site.register(Variation)
-admin.site.register(Order)
-admin.site.register(Notification)
+@admin.register(Variation)
+class VariationAdmin(admin.ModelAdmin):
+    list_display = ["name", "price"]
+    list_editable = ("price",)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    # list_display = ["form_name", "form_phone", "form_pickup_time"]
+
+    # list_editable = ("form_name", "form_phone", "form_pickup_time")
+
+    ordering = ("-created_date",)
+    # readonly_fields = ("paypal_data", "order_data")
+
+
 admin.site.register(Random)
+# class RandomAdmin(admin.ModelAdmin):
+# list_display = ["name", "value"]
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ["message", "status"]
+    list_editable = ("status",)
 
 
 @admin.register(Screen)
