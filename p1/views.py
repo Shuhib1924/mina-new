@@ -386,9 +386,9 @@ def order(request):
             form_data_order = {
                 "pickupTime": f"{form_data['pickupTime']}",
                 "daily_id" : f"{daily_id}",
-                "currentTime": f"{datetime.now().strftime("%H:%M:%S")}",
-                "first_name": f"{transaction_data["payer"]["name"]["given_name"]}",
-                "last_name": f"{transaction_data["payer"]["name"]["surname"]}",
+                "currentTime": f"{datetime.now().strftime('%H:%M:%S')}",
+                "first_name": f"{transaction_data['payer']['name']['given_name']}",
+                "last_name": f"{transaction_data['payer']['name']['surname']}",
                 "phone": f"{form_data['phone']}",
             }
             # & it's NOT saved yet!

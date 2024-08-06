@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SK")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -133,9 +133,9 @@ USE_TZ = False
 
 STATIC_URL = "static/"
 # print("STATIC_URL", STATIC_URL)
-# STATIC_ROOT = BASE_DIR / "static/"
+STATIC_ROOT = BASE_DIR / "static/"
 # print("STATIC_ROOT", STATIC_ROOT)
-STATICFILES_DIRS = [BASE_DIR / "static/"]
+#STATICFILES_DIRS = [BASE_DIR / "static/"]
 # print("STATICFILES_DIRS", STATICFILES_DIRS)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 

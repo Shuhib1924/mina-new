@@ -28,12 +28,12 @@ more-itertools==10.3.0
 packaging==24.0
 pillow==10.3.0
 premailer==3.10.0
-pycparser==2.22
-pypiwin32==223
+pycparser==2.22 
+# pypiwin32==223
 pypng==0.20220715.0
 python-barcode==0.15.1
 python-escpos==3.1
-pywin32==306
+# pywin32==306
 PyYAML==6.0.1
 qrcode==7.4.2
 requests==2.32.3
