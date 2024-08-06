@@ -224,7 +224,7 @@
                     companyCity: document.getElementById('company_city').value,
                     companyUst: document.getElementById('company_ust').value
                 };
-                console.log(formData)
+                //console.log(formData)
 
                 paypal.Buttons({
                     createOrder: (data, actions) => {
@@ -307,9 +307,9 @@
                                 companyCity: document.getElementById('company_city').value,
                                 companyUst: document.getElementById('company_ust').value
                             };
-                            console.log('Transaction completed by ' + details.payer.name.given_name);
-                            console.log('Transaction ID: ' + details.id);
-                            console.log('Full transaction details:', JSON.stringify(transactionData, null, 2));
+                            //console.log('Transaction completed by ' + details.payer.name.given_name);
+                            //console.log('Transaction ID: ' + details.id);
+                            //console.log('Full transaction details:', JSON.stringify(transactionData, null, 2));
                             // Collect form data
                             fetch('{% url "order"%}', {
                                 method: 'POST',

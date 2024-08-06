@@ -234,7 +234,7 @@ def cart(request):
     mwst = round(sum(cart_price) * 19 / 100, 2)
     # print("mwst", mwst)
     request.session["cart_price"] = {"brutto": float(brutto)}
-    print('request.session["cart_price"]', request.session["cart_price"])
+    # print('request.session["cart_price"]', request.session["cart_price"])
     request.session.modified = True
     # print("cart_items", cart_items)
     context = {
@@ -331,7 +331,7 @@ def order(request):
         # & create order_id
         # global daily_id, daily_orders, last_reset_date
         global daily_id, last_reset_date
-        print(f"daily_id before: {daily_id} ")
+        # print(f"daily_id before: {daily_id} ")
 
         # Use a fixed date for testing purposes
         current_date = timezone.now().date()
@@ -351,7 +351,7 @@ def order(request):
         daily_id += 1
         # daily_orders.append(daily_id)
         save_data(daily_id, last_reset_date)
-        print(f"daily_id after process: {daily_id}")
+        # print(f"daily_id after process: {daily_id}")
 
         # * 1. create order
         order = Order(
@@ -575,7 +575,7 @@ def order(request):
             "netto": netto,
             "mwst": mwst,
         }
-        print("cart_items", cart_items)
+        # print("cart_items", cart_items)
 
         html_content = render_to_string("p1/email/invoice.html", context)
 
@@ -591,7 +591,8 @@ def order(request):
         )
         email.attach_alternative(inlined_html, "text/html")
         email.send()
-        return JsonResponse({"success": "success"})
+        print('3. email sended')
+        return JsonResponse({"success": True})
     except:
         return JsonResponse({"Error": "From Server, No JSON Foundable"})
 
