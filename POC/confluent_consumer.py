@@ -155,6 +155,7 @@ def print_message(message):
             #     print(f"Error processing message: {e}")
             dict_message = json.loads(message)
             # print("if its error print this instead the printer \n",message)
+            text4(f"\n\n\n\n", "7:7", "bold", "center")
             text4(f"{dict_message["order"][0]['form_data']['pickupTime']}", "7:7", "bold", "center")
             text4(f"{dict_message["order"][0]['form_data']['currentTime']}", "2:4", "bold", "end")
             text4(f"---------", "5:5", "bold", "center")
@@ -181,7 +182,7 @@ def print_message(message):
 
 
 try:
-    print("Confluent v16 is running")
+    print("Confluent v17 is running")
     while True:
         msg = consumer.poll(1.0)
         if msg is None:

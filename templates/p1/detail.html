@@ -329,12 +329,12 @@
                                                     id="{{v.id}}"
                                                     name="variations"
                                                     value="{{v.id}}"
-                                                    {% if q.single %}
+                                                    {%if q.single%}
                                                     :checked="checkedOptions[0]==='{{v.id}}' "
                                                     @click="checkedOptions[0] = checkedOptions[0] === '{{v.id}}' ? null : '{{v.id}}'; console.log('{{v.id}}')"
                                                     {%else%}
                                                     x-model="checkedOptions"
-                                                    {% endif %}
+                                                    {%endif%}
                                                     type="checkbox"
                                                     class="peer/a hidden"
                                                 >
@@ -374,10 +374,12 @@
                                     </div>
                                 </div>
                                 {% if q.required %}
-                                <h3 class="text-lg text-center text-green-700">Hier müssen sie mindestens eines auswählen!</h3>
+                                <h3 class="text-lg text-center text-green-700">Hier müssen sie mindestens eines
+                                    auswählen!</h3>
                                 {% endif %}
                                 {% if q.single %}
-                                <h3 class="text-lg text-center text-green-700">Sie können hier nur eine Option auswählen</h3>
+                                <h3 class="text-lg text-center text-green-700">Sie können hier nur eine Option auswählen
+                                </h3>
                                 {% endif %}
                                 <div
                                     x-show="state=={{forloop.counter}}"
@@ -576,15 +578,26 @@
 
         </div>
         {% if product.menu %}
-            <div class="group">
-                <a href="{% url 'menu' product.category.slug product.menu.slug %}" class="group-hover:-translate-y-6 group-hover:scale-105 hover:animate-none rounded-2xl justify-evenly relative flex items-center object-center w-full h-56 space-x-4 overflow-hidden duration-1000 bg-black border border-gray-300 cursor-pointer">
-                    <img src="{{product.menu.image.url}}" class=" rounded-xl opacity-60 hover:opacity-100 animate-pulse object-cover w-full h-full" alt="">
-                    <div class="place-items-center absolute inset-0 grid">
-                        <div class=" sm:text-3xl md:text-4xl lg:text-6xl group-hover:hidden animate-ping text-lg font-bold text-center text-white">Noch Leckerer!</div>
-                        <div class=" sm:text-3xl md:text-4xl lg:text-6xl group-hover:block hidden text-2xl font-bold text-center text-white">Hier zum Menu!</div>
-                    </div>
-                </a>
-            </div>
+        <div class="group">
+            <a
+                href="{% url 'menu' product.category.slug product.menu.slug %}"
+                class="group-hover:-translate-y-6 group-hover:scale-105 hover:animate-none rounded-2xl justify-evenly relative flex items-center object-center w-full h-56 space-x-4 overflow-hidden duration-1000 bg-black border border-gray-300 cursor-pointer"
+            >
+                <img
+                    src="{{product.menu.image.url}}"
+                    class=" rounded-xl opacity-60 hover:opacity-100 animate-pulse object-cover w-full h-full"
+                    alt=""
+                >
+                <div class="place-items-center absolute inset-0 grid">
+                    <div
+                        class=" sm:text-3xl md:text-4xl lg:text-6xl group-hover:hidden animate-ping text-lg font-bold text-center text-white">
+                        Noch Leckerer!</div>
+                    <div
+                        class=" sm:text-3xl md:text-4xl lg:text-6xl group-hover:block hidden text-2xl font-bold text-center text-white">
+                        Hier zum Menu!</div>
+                </div>
+            </a>
+        </div>
         {% endif %}
         <h1 class="animate-pulse text-4xl font-bold text-gray-700">Lust auf mehr?</h1>
         <div class=" sm:grid-cols-2 lg:grid-cols-4 grid grid-cols-1 gap-4">
@@ -605,9 +618,11 @@
                     {% else %}
                     <div class="font-bold text-green-500">{{p.price}}€</div>
                     {% endif %}
-                    <div
-                        class="hover:border-green-400 hover:bg-white hover:border hover:text-green-400 px-4 py-2 font-bold text-green-500 duration-300 bg-green-100 rounded-lg">
-                        Ansehen</div>
+                    <a
+                        href="{% url 'detail' p.category.slug p.slug %}"
+                        class="hover:border-green-400 hover:bg-white hover:border hover:text-green-400 px-4 py-2 font-bold text-green-500 duration-300 bg-green-100 rounded-lg"
+                    >
+                        Ansehen</a>
                 </div>
             </div>
             {% endfor %}

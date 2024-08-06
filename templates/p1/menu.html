@@ -605,9 +605,11 @@
                     {% else %}
                     <div class="font-bold text-green-500">{{p.price}}€</div>
                     {% endif %}
-                    <div
-                        class="hover:border-green-400 hover:bg-white hover:border hover:text-green-400 px-4 py-2 font-bold text-green-500 duration-300 bg-green-100 rounded-lg">
-                        Ansehen</div>
+                    <a
+                        href="{% url 'detail' p.category.slug p.slug %}"
+                        class="hover:border-green-400 hover:bg-white hover:border hover:text-green-400 px-4 py-2 font-bold text-green-500 duration-300 bg-green-100 rounded-lg"
+                    >
+                        Ansehen</a>
                 </div>
             </div>
             {% endfor %}

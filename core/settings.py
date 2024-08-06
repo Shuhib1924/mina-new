@@ -135,7 +135,7 @@ STATIC_URL = "static/"
 # print("STATIC_URL", STATIC_URL)
 STATIC_ROOT = BASE_DIR / "static/"
 # print("STATIC_ROOT", STATIC_ROOT)
-#STATICFILES_DIRS = [BASE_DIR / "static/"]
+# STATICFILES_DIRS = [BASE_DIR / "static/"]
 # print("STATICFILES_DIRS", STATICFILES_DIRS)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
