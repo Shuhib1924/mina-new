@@ -1,0 +1,17 @@
+{% extends "p1/base.html" %}
+{% load static %}
+{% block title %}
+Bestellung erfolgreich!
+{% endblock title %}
+{% block main %}
+<main>
+    <div class="flex flex-col items-center justify-center w-2/3 h-screen mx-auto space-y-3 text-center text-gray-600">
+    <h1 class="text-5xl font-black">Nr.{{last_order.daily_id}}</h1>
+        <h1 class=" text-4xl">Hi <span class="font-bold text-green-400">{{last_order.paypal_first_name}} {{last_order.paypal_last_name}}</span>,</h1>
+        <h2 class=" text-2xl">vielen dank für Ihre Bestellung, wir haben dir soeben die auf Ihrem Mail <span class="font-bold text-green-400">{{last_order.paypal_email}}</span> die Rechnung gesendet. </h2>
+        <h2 class="text-2xl">Um {{last_order.form_pickup_time}} Uhr ist Ihre Bestellung für Sie fertig zubereitet.</h2>
+        <h2 class="text-3xl italic">Bis dahin, Guten Appetit  🍔🍕🍟</h2>
+    </div>
+
+</main>
+{% endblock main %}

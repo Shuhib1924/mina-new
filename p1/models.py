@@ -87,11 +87,13 @@ class Product(models.Model):
 
 
 class Query(models.Model):
+    active = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
     rank = models.IntegerField(default=0)
     private = models.CharField(max_length=100, blank=True)
     product_query = models.ManyToManyField(Product, related_name="product_query")
     required = models.BooleanField(default=False)
+    single = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Queries"
@@ -129,8 +131,9 @@ class Variation(models.Model):
 class Order(models.Model):
     daily_id = models.PositiveIntegerField(unique=False)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
-    orderID = models.CharField(max_length=40, null=True)
     transactionID = models.CharField(max_length=40, null=True)
+    orderID = models.CharField(max_length=40, null=True)
+    paymentCaptureID = models.CharField(max_length=40, null=True)
     paypal_total = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, null=True
     )
@@ -142,12 +145,16 @@ class Order(models.Model):
     paypal_id = models.CharField(max_length=40, null=True)
 
     form_pickup_time = models.CharField(max_length=40, null=True)
-    form_name = models.CharField(max_length=40, null=True)
-    form_email = models.EmailField(max_length=40, null=True)
     form_phone = models.CharField(max_length=40, null=True)
+    form_companyName = models.CharField(max_length=40, null=True)
+    form_companyAddress = models.CharField(max_length=40, null=True)
+    form_companyZip = models.CharField(max_length=40, null=True)
+    form_companyCity = models.CharField(max_length=40, null=True)
+    form_companyUst = models.CharField(max_length=40, null=True)
 
     order_data = models.TextField(blank=True, null=True)
     paypal_data = models.TextField(blank=True, null=True)
+    request_meta = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.pk is not None:

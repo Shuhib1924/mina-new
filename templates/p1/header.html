@@ -1,12 +1,12 @@
 {% load static%}
 {% for i in notifications%}
-<div class="h-8 ">
-    <section class=" z-40 fixed inset-x-0 bg-green-500 -mx-6 my-4 -mt-4 py-2 font-bold text-center text-white text-xl">
+<div class=" h-8">
+    <section class=" fixed inset-x-0 z-40 py-2 my-4 -mx-6 -mt-4 text-xl font-bold text-center text-white bg-green-500">
         {{i.message}}
     </section>
 </div>
 {%endfor%}
-<header class="relative flex justify-between items-center">
+<header class="relative flex items-center justify-between">
     <a
         href="{% url 'home'%}"
         class="hover:scale-110 duration-300 cursor-pointer"
@@ -27,15 +27,15 @@
             <p><span
                     x-text="status==='Open'? 'Geöffnet' : 'Geschlossen'"
                     :class="{ 'bg-green-500': status === 'Open', 'bg-red-500': status === 'Closed' }"
-                    class="hover:opacity-50 px-2 py-1 rounded-md font-black text-2xl text-white"
+                    class="hover:opacity-50 px-2 py-1 text-2xl font-black text-white rounded-md"
                 ></span></p>
-            <div class="text-gray-600 text-xl">
-                <p x-show="status === 'Open'">Bis wir schließen: <span
-                        class="font-bold underline underline-offset-8"
+            <div class="text-xl text-gray-600">
+                <p x-show="status === 'Open'">Bis wir schließen in: <span
+                        class="underline-offset-8 font-bold underline"
                         x-text="timeUntilClosing"
                     ></span></p>
                 <p x-show="status === 'Closed'">Wir öffnen wieder in: <span
-                        class="font-bold underline underline-offset-8"
+                        class="underline-offset-8 font-bold underline"
                         x-text="timeUntilOpening"
                     ></span></p>
             </div>
@@ -110,7 +110,7 @@
         <div class="flex space-x-2">
             <a href="https://facebook.com">
                 <svg
-                    class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
                     y="0px"
@@ -123,7 +123,7 @@
             </a>
             <a href="https://twitter.com">
                 <svg
-                    class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
                     y="0px"
@@ -136,7 +136,7 @@
             </a>
             <a href="https://instagram.com">
                 <svg
-                    class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
                     y="0px"
@@ -149,7 +149,7 @@
             </a>
             <a href="https://tiktok.com">
                 <svg
-                    class="bg-green-500 hover:bg-green-700 p-2 rounded-full h-8 hover:-translate-y-2 duration-1000 fill-white"
+                    class="hover:bg-green-700 hover:-translate-y-2 fill-white h-8 p-2 duration-1000 bg-green-500 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
                     y="0px"
@@ -165,9 +165,9 @@
     <!-- !cart -->
     <a
         href="{% url 'cart'%}"
-        class="flex items-center space-x-2 hover:-translate-x-3 duration-300"
+        class="hover:-translate-x-3 flex items-center space-x-2 duration-300"
     >
-        <div class="relative size-12">
+        <div class="size-12 relative">
             <svg
                 class="stroke-gray-500"
                 viewBox="0 0 24 24"
@@ -183,15 +183,15 @@
             </svg>
             <div class="-top-3 -right-3 absolute">
                 <div class="relative">
-                    <div class="bg-green-400 rounded-full animate-ping size-8"></div>
+                    <div class="animate-ping size-8 bg-green-400 rounded-full"></div>
                     <div
-                        class="absolute inset-0 flex justify-center items-center bg-green-500 rounded-full h-full text-lg text-white size-8">
+                        class="size-8 absolute inset-0 flex items-center justify-center h-full text-lg text-white bg-green-500 rounded-full">
                         <div>{{cart_count}}</div>
                     </div>
                 </div>
             </div>
         </div>
-        <p class="font-semibold text-2xl text-gray-500">Korb</p>
+        <p class="text-2xl font-semibold text-gray-500">Korb</p>
     </a>
 </header>
 <hr class="border-slate-300 my-2 border-t-2">

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            defer
+            src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"
+        ></script>
+        <script
+            defer
+            src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"
+        ></script>
+        <script
+            defer
+            src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"
+        ></script>
+        <!-- Alpine Core -->
+        <script
+            defer
+            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+        <title>Document</title>
+        <style>
+            [x-cloak] {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body class="space-y-4 bg-gray-50 mx-auto w-3/4">
+        <div class="h-40"></div>
+        <div
+            x-data="{ show: false }"
+            class="border-gray-300 bg-white shadow mx-auto border rounded-lg divide-y divide-gray-300 max-w-3xl"
+        >
+            <button
+                @click="show = !show"
+                class="flex justify-between items-center px-4 sm:px-6 py-5 focus:ring w-full cursor-pointer |"
+                :aria-expanded="show.toString()"
+                aria-controls="dropdownContent"
+            >
+                <strong>My Awesome Accordion</strong>
+                <div>
+                    <svg
+                        x-show="!show"
+                        class="w-5 h-5 text-gray-600 hover:text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 19l-7-7 7-7"
+                        ></path>
+                    </svg>
+                    <svg
+                        x-show="show"
+                        x-cloak
+                        class="w-5 h-5 text-gray-600 hover:text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                        ></path>
+                    </svg>
+                </div>
+            </button>
+            <div
+                id="dropdownContent"
+                x-show="show"
+                x-transition:enter.duration.1000ms.scale.0.origin.top
+                x-transition:end.duration.1000ms.scale.0.origin.top
+                class="px-4 py-5 sm:p-6"
+                x-cloak
+            >
+                <p class="mb-4">Here is some content for you.</p>
+
+                <a
+                    href="#"
+                    class="text-blue-600"
+                >Check the focus here.</a>
+
+                <img
+                    src="https://i.picsum.photos/id/1068/250/250.jpg?hmac=w2puVW3SYcC2evpvnIsPykb4o38nCj3WdNVV_yxNXxY"
+                    alt="Random Photo"
+                >
+            </div>
+        </div>
+        <div
+            x-data="{ show: false }"
+            class="border-gray-300 bg-white shadow mx-auto border rounded-lg divide-y divide-gray-300 max-w-3xl"
+        >
+            <button
+                @click="show = !show"
+                class="flex justify-between items-center px-4 sm:px-6 py-5 focus:ring w-full cursor-pointer |"
+                :aria-expanded="show.toString()"
+                aria-controls="dropdownContent"
+            >
+                <strong>My Awesome Accordion</strong>
+                <div>
+                    <svg
+                        x-show="!show"
+                        class="w-5 h-5 text-gray-600 hover:text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 19l-7-7 7-7"
+                        ></path>
+                    </svg>
+                    <svg
+                        x-show="show"
+                        x-cloak
+                        class="w-5 h-5 text-gray-600 hover:text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                        ></path>
+                    </svg>
+                </div>
+            </button>
+            <div
+                id="dropdownContent"
+                x-show="show"
+                x-transition
+                class="px-4 py-5 sm:p-6 |"
+                x-cloak
+            >
+                <p class="mb-4">Here is some content for you.</p>
+
+                <a
+                    href="#"
+                    class="text-blue-600"
+                >Check the focus here.</a>
+
+                <img
+                    src="https://i.picsum.photos/id/1068/250/250.jpg?hmac=w2puVW3SYcC2evpvnIsPykb4o38nCj3WdNVV_yxNXxY"
+                    alt="Random Photo"
+                >
+            </div>
+        </div>
+        <div
+            x-data="{ show: false }"
+            class="border-gray-300 bg-white shadow mx-auto border rounded-lg divide-y divide-gray-300 max-w-3xl"
+        >
+            <button
+                @click="show = !show"
+                class="flex justify-between items-center px-4 sm:px-6 py-5 focus:ring w-full cursor-pointer |"
+                :aria-expanded="show.toString()"
+                aria-controls="dropdownContent"
+            >
+                <strong>My Awesome Accordion</strong>
+                <div>
+                    <svg
+                        x-show="!show"
+                        class="w-5 h-5 text-gray-600 hover:text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 19l-7-7 7-7"
+                        ></path>
+                    </svg>
+                    <svg
+                        x-show="show"
+                        x-cloak
+                        class="w-5 h-5 text-gray-600 hover:text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                        ></path>
+                    </svg>
+                </div>
+            </button>
+            <div
+                id="dropdownContent"
+                x-show="show"
+                x-transition
+                class="px-4 py-5 sm:p-6 |"
+                x-cloak
+            >
+                <p class="mb-4">Here is some content for you.</p>
+
+                <a
+                    href="#"
+                    class="text-blue-600"
+                >Check the focus here.</a>
+
+                <img
+                    src="https://i.picsum.photos/id/1068/250/250.jpg?hmac=w2puVW3SYcC2evpvnIsPykb4o38nCj3WdNVV_yxNXxY"
+                    alt="Random Photo"
+                >
+            </div>
+        </div>
+        <div
+            x-data="{ open: false }"
+            class="flex flex-col gap-y-4 mx-auto p-8 w-full max-w-2xl"
+        >
+
+            <div class="font-bold text-center">This is made with Alpine JS, Tailwind CSS and Material Symbols</div>
+
+            <div class="border-2 border-gray-300 rounded overflow-hidden">
+                <div
+                    x-on:click="open == 1 ? open = false : open = 1"
+                    class="flex justify-between items-center p-4 cursor-pointer"
+                >
+                    <div class="font-bold">What is Alpine JS?</div>
+                    <div
+                        class="material-symbols-outlined"
+                        x-text="open == 1 ? 'do_not_disturb_on' : 'add_circle'"
+                    ></div>
+                </div>
+                <div
+                    x-transition
+                    x-show="open == 1"
+                    class="border-gray-300 p-4 border-t"
+                >Your new, lightweight, JavaScript framework</div>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded overflow-hidden">
+                <div
+                    x-on:click="open == 2 ? open = false : open = 2"
+                    class="flex justify-between items-center p-4 cursor-pointer"
+                >
+                    <div class="font-bold">What is Tailwind CSS?</div>
+                    <div
+                        class="material-symbols-outlined"
+                        x-text="open == 2 ? 'do_not_disturb_on' : 'add_circle'"
+                    ></div>
+                </div>
+                <div
+                    x-transition
+                    x-show="open == 2"
+                    class="border-gray-300 p-4 border-t"
+                >Tailwind is an easy to use CSS framework for quick UI development</div>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded overflow-hidden">
+                <div
+                    x-on:click="open == 3 ? open = false : open = 3"
+                    class="flex justify-between items-center p-4 cursor-pointer"
+                >
+                    <div class="font-bold">What is Material Symbols?</div>
+                    <div
+                        class="material-symbols-outlined"
+                        x-text="open == 3 ? 'do_not_disturb_on' : 'add_circle'"
+                    ></div>
+                </div>
+                <div
+                    x-transition
+                    x-show="open == 3"
+                    class="border-gray-300 p-4 border-t"
+                >Material Symbols is a library of icons for use in digital products and interfaces</div>
+            </div>
+
+        </div>
+        <section
+            x-data="{ active: null }"
+            class="space-y-4 mx-auto p-4 max-w-screen-md"
+        >
+
+            <!-- Question 1 -->
+            <!-- You could use template with x-for to loop through and build the accordions alternatively -->
+            <div
+                x-data="{
+            id: 1,
+            get expanded() {
+              return this.active === this.id
+            },
+            set expanded(value) {
+              this.active = value ? this.id : null
+            }
+          }"
+                class="border border-black"
+                role="region"
+            >
+                <h2>
+                    <button
+                        @click="expanded = !expanded"
+                        class="flex justify-between items-center px-6 py-3 w-full font-bold text-lg"
+                        :aria-expanded="expanded"
+                    >
+                        <span>Question 1</span>
+                        <span
+                            x-show="expanded"
+                            class="ml-4"
+                            aria-hidden="true"
+                        >&minus;</span>
+                        <span
+                            x-show="!expanded"
+                            class="ml-4"
+                            aria-hidden="true"
+                        >&plus;</span>
+
+                    </button>
+                </h2>
+                <div
+                    x-show="expanded"
+                    x-collapse
+                >
+                    <div class="px-6 pb-4">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic eaque odit molestiae eveniet enim
+                        quam
+                        velit aperiam! Porro enim hic illum itaque molestiae minus animi optio, doloribus rerum impedit
+                        aliquid.
+                        Temporibus, excepturi reprehenderit quos quia incidunt dolore dignissimos voluptatem inventore
+                        est magni
+                        labore perspiciatis quis harum hic fuga aliquid nesciunt libero corrupti. Sequi, provident cum.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div
+                x-data="{
+            id: 2,
+            get expanded() {
+              return this.active === this.id
+            },
+            set expanded(value) {
+              this.active = value ? this.id : null
+            }
+          }"
+                class="border border-black"
+                role="region"
+            >
+                <h2>
+                    <button
+                        @click="expanded = !expanded"
+                        class="flex justify-between items-center px-6 py-3 w-full font-bold text-lg"
+                        :aria-expanded="expanded"
+                    >
+                        <span>Question 2</span>
+                        <span
+                            x-show="expanded"
+                            class="ml-4"
+                            aria-hidden="true"
+                        >&minus;</span>
+                        <span
+                            x-show="!expanded"
+                            class="ml-4"
+                            aria-hidden="true"
+                        >&plus;</span>
+
+                    </button>
+                </h2>
+                <div
+                    x-show="expanded"
+                    x-collapse
+                >
+                    <div class="px-6 pb-4">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic eaque odit molestiae eveniet enim
+                        quam
+                        velit aperiam! Porro enim hic illum itaque molestiae minus animi optio, doloribus rerum impedit
+                        aliquid.
+                        Temporibus, excepturi reprehenderit quos quia incidunt dolore dignissimos voluptatem inventore
+                        est magni
+                        labore perspiciatis quis harum hic fuga aliquid nesciunt libero corrupti. Sequi, provident cum.
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div
+            x-data="{
+                search: '',
+                open: false,
+                items: ['Bitcoin', 'Ethereum', 'Siacoin'],
+
+                get filteredItems() {
+                    return this.items.filter(
+                        i => i.toLowerCase().startsWith(this.search.toLowerCase())
+                    )
+                }
+            }"
+            class="relative flex flex-col justify-center items-center bg-gray-50 py-6 sm:py-12 min-h-screen overflow-hidden"
+        >
+            <input
+                x-on:click="open = !open"
+                type="search"
+                x-model="search"
+                placeholder="Search Here..."
+                class="shadow shadow-gray-100 focus:shadow-lg focus:shadow-slate-200 px-4 py-3 rounded w-1/2 font-thin focus:outline-none duration-100"
+            >
+
+            <ul
+                x-show="open"
+                x-on:click.outside="open = !open"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate"
+                x-transition:enter-end="opacity-100 translate"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 translate"
+                x-transition:leave-end="opacity-0 translate"
+                class="w-1/2"
+            >
+                <template
+                    x-for="item in filteredItems"
+                    :key="item"
+                >
+                    <li
+                        class="bg-white mt-2 p-4 w-full text-gray-700"
+                        x-text="item"
+                    ></li>
+                </template>
+            </ul>
+
+        </div>
+    </body>
+
+</html>

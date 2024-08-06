@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Document</title>
+        <script src="https://unpkg.com/alpinejs"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body>
+        <div x-data="{ selectedOption: [] }">
+            <div>
+                <input
+                    type="checkbox"
+                    value="item1"
+                    :checked="selectedOption[0] === 'item1'"
+                    @click="selectedOption[0] = selectedOption[0] === 'item1' ? null : 'item1'"
+                    id="item1"
+                >
+                <label for="item1">item1</label>
+            </div>
+
+            <div>
+                <input
+                    type="checkbox"
+                    value="item2"
+                    :checked="selectedOption[0] === 'item2'"
+                    @click="selectedOption[0] = selectedOption[0] === 'item2' ? null : 'item2'"
+                    id="item2"
+                >
+                <label for="item2">item2</label>
+            </div>
+
+            <div>
+                <input
+                    type="checkbox"
+                    value="item3"
+                    :checked="selectedOption[0] === 'item3'"
+                    @click="selectedOption[0] = selectedOption[0] === 'item3' ? null : 'item3'"
+                    id="item3"
+                >
+                <label for="item3">item3</label>
+            </div>
+
+            <div>
+                <input
+                    type="checkbox"
+                    value="item4"
+                    :checked="selectedOption[0] === 'item4'"
+                    @click="selectedOption[0] = selectedOption[0] === 'item4' ? null : 'item4'"
+                    id="item4"
+                >
+                <label for="item4">item4</label>
+            </div>
+
+            <button
+                type="submit"
+                :disabled="!selectedOption[0]"
+                :class="{ 'opacity-50 cursor-not-allowed': !selectedOption[0] }"
+            >
+                Submit
+            </button>
+
+            <p>Selected option: <span x-text="selectedOption[0]"></span></p>
+            <p>length: <span x-text="!selectedOption[0]"></span></p>
+        </div>
+    </body>
+
+</html>

@@ -1,114 +1,283 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'p1/base.html' %}
+{% load static %}
+{% block title %}Bestellung{% endblock %}
 
-    <head>
-        <meta charset="UTF-8">
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        >
-        <script
-            src="https://www.paypal.com/sdk/js?client-id=AfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY&currency=EUR"
-        ></script>
-        <script>console.log('test2')</script>
-
-        <title>Document</title>
-    </head>
-
-    <body>
-        n3
-
-
-        <h2>PayPal Payment</h2>
-
-        <label for="input1">Input 1:</label>
-        <input
-            type="text"
-            id="input1"
-            required
-        ><br><br>
-
-        <label for="input2">Input 2:</label>
-        <input
-            type="text"
-            id="input2"
-            required
-        ><br><br>
-
-        <div id="paypal-button-container"></div>
-
-        <script>
-            paypal.Buttons({
-                createOrder: function (data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: '10.00' // Specify the amount here
-                            }
-                        }]
-                    });
-                },
-                onApprove: function (data, actions) {
-                    return actions.order.capture().then(function (details) {
-                        // Transaction code can be found in details.id
-                        const transactionData = {
-                            orderID: data.orderID,
-                            transactionID: details.id,
-                            status: details.status,
-                            payer: {
-                                name: {
-                                    given_name: details.payer.name.given_name,
-                                    surname: details.payer.name.surname
-                                },
-                                email_address: details.payer.email_address,
-                                payer_id: details.payer.payer_id
-                            },
-                            purchase_units: details.purchase_units.map(unit => ({
-                                reference_id: unit.reference_id,
-                                amount: {
-                                    currency_code: unit.amount.currency_code,
-                                    value: unit.amount.value,
-                                    breakdown: unit.amount.breakdown // Include breakdown if available
-                                }
-                            })),
-                            create_time: details.create_time,
-                            update_time: details.update_time,
-                            links: details.links // Include links if necessary
-                        };
-                        console.log('Transaction completed by ' + details.payer.name.given_name);
-                        console.log('Transaction ID: ' + details.id); // This is your transaction code
-
-                        const input1 = document.getElementById('input1').value;
-                        const input2 = document.getElementById('input2').value;
-                        // You can also send the transaction ID to your backend if needed
-                        fetch('{% url "order"%}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': '{{ csrf_token }}'
-                            },
-                            body: JSON.stringify({
-                                transactionData: transactionData,
-                                input1: input1,
-                                input2: input2,
-                            }),
-                        }).then(response => response.json())
-                            .then(result => {
-                                if (result.success) {
-                                    window.location.href = "{% url 'success' %}";
-                                } else {
-                                    window.location.href = "{% url 'failed' %}";
-                                }
-                            });
-                    });
-                },
-                onError: function (err) {
-                    console.error(err);
+{% block main %}
+<script src="{% static 'mina/persist.min.js'%}"></script>
+<main class="flex flex-col items-center py-12">
+    <form
+        x-data="{
+            p_name: $persist(''),
+            p_mail: $persist(''),
+            p_phone: $persist(''),
+            time: '',
+            state: $persist(false),
+            warn: false,
+            init(){
+                const now = new Date()
+                this.time = `${now.getHours()}:${now.getMinutes()}`
+            },
+            check(){
+                const hours = this.time.split(':')[0];
+                if(hours < 7 || hours > 19){
+                    this.warn = true;
+                    this.time = '';
+                } else{
+                    this.warn = false;
                 }
-            }).render('#paypal-button-container');
-        </script>
-    </body>
+            }
+        }"
+        action="{%url 'order'%}"
+        method="POST"
+        class="space-y-6 border-2 border-gray-300 p-4 rounded-xl text-gray-600"
+        @submit.prevent="console.log('submitted!')"
+    >
+        {%csrf_token%}
+        <div class="space-y-2">
+            <h1 class="font-bold text-4xl text-gray-700">Bestellung</h1>
+            <h3 class="text-gray-500 text-xl">vervollständigen Sie folgende Informationenen</h3>
+        </div>
+        <h2 class="text-green-700 text-xl">1. Wer und wann holen Sie es ab?</h2>
+        <hr class="border-gray-400">
+        <div class="space-y-2">
+            <div class="flex space-x-4">
+                <input
+                    x-model="p_name"
+                    name="name"
+                    type="text"
+                    id="name"
+                    placeholder="Name..."
+                    class="border-2 border-gray-300 px-3 py-2 rounded-lg w-full text-lg"
+                    required
+                >
+                <input
+                    :value="time"
+                    x-model="time"
+                    @change="check()"
+                    type="time"
+                    name="pickup-time"
+                    id="pickup-time"
+                    required
+                    class="border-2 border-gray-300 bg-green-200 px-2 py-1 rounded-lg text-gray-500"
+                >
+            </div>
+            <template x-if="warn">
+                <div class="font-bold text-gray-500">Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich</div>
+            </template>
 
+        </div>
+        <h2 class="text-green-700 text-xl">2. Mail, damit wir die Quitting versenden</h2>
+        <hr class="border-gray-400">
+        <input
+            type="email"
+            id="email"
+            name="email"
+            x-model="p_mail"
+            placeholder="Rechnungsmail"
+            class="border-2 border-gray-300 px-3 py-3 rounded-lg w-full text-xl"
+            required
+        >
+        <h2 class="text-green-700 text-xl">3. Nummer, damit wir Sie erreichen</h2>
+        <hr class="border-gray-400">
+        <input
+            x-model="p_phone"
+            type="tel"
+            name="phone"
+            id="phone"
+            placeholder="Format: 017612345678*"
+            class="border-2 border-gray-300 px-3 py-3 rounded-lg w-full text-xl"
+            required
+        >
+        <br>
 
+        <label
+            for="term"
+            class="flex space-x-2 text-gray-500"
+        >
+            <input
+                type="checkbox"
+                id="term"
+                name="term"
+                x-model="state"
+                class="accent-green-400"
+                required
+                x-init="$nextTick(() => { f1(); });"
+            >
+            <h3
+                class="text-gray-500 text-md"
+                x-model="state"
+            > Ich akzeptiere die <span><a
+                        href="{% url 'agb' %}"
+                        class="text-green-700 underline"
+                    >Nutzungsbedingungen & AGB</a></span>
+            </h3>
+        </label>
+        <script>
+            function f1() {
+                const checkbox = document.getElementById('term');
+                console.log(checkbox.checked.toString());
+            }</script>
+        <div
+            id="paypal-button-container"
+            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 || state==false}"
+        >
+            <script
+                src="https://www.paypal.com/sdk/js?client-id=AfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY&currency=EUR"
+            ></script>
+            <script>
+                brutto = '{{brutto}}'.replace(",", ".");
+                /*
+                function collectFormData() {
+                    return {
+                        name: document.getElementById('name').value,
+                        pickupTime: document.getElementById('pickup-time').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value
+                    };
+                };
+                */
 
-</html>
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: brutto // Set your payment amount here
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then((details) => {
+                            const transactionData = {
+                                // Order details
+                                orderID: data.orderID,
+                                id: details.id,
+                                status: details.status,
+                                intent: details.intent,
+                                create_time: details.create_time,
+                                update_time: details.update_time,
+
+                                // Payer information
+                                payer: {
+                                    name: {
+                                        given_name: details.payer.name.given_name,
+                                        surname: details.payer.name.surname
+                                    },
+                                    email_address: details.payer.email_address,
+                                    payer_id: details.payer.payer_id,
+                                    address: details.payer.address,
+                                    phone: details.payer.phone ? {
+                                        phone_type: details.payer.phone.phone_type,
+                                        phone_number: details.payer.phone.phone_number
+                                    } : null
+                                },
+
+                                // Purchase units
+                                purchase_units: details.purchase_units.map(unit => ({
+                                    reference_id: unit.reference_id,
+                                    amount: {
+                                        currency_code: unit.amount.currency_code,
+                                        value: unit.amount.value,
+                                        breakdown: unit.amount.breakdown
+                                    },
+                                    payee: unit.payee,
+                                    shipping: unit.shipping ? {
+                                        name: unit.shipping.name,
+                                        address: unit.shipping.address
+                                    } : null,
+                                    payments: unit.payments ? {
+                                        captures: unit.payments.captures,
+                                        authorizations: unit.payments.authorizations,
+                                        refunds: unit.payments.refunds
+                                    } : null,
+                                    items: unit.items
+                                })),
+
+                                // Payment source
+                                payment_source: details.payment_source,
+
+                                // Links
+                                links: details.links,
+
+                                // Additional fields that might be available
+                                gross_amount: details.gross_amount,
+                                seller_protection: details.seller_protection,
+                                soft_descriptor: details.soft_descriptor,
+                                invoice_id: details.invoice_id,
+                                custom_id: details.custom_id,
+                                application_context: details.application_context
+                            };
+                            const formData = {
+                                name: document.getElementById('name').value,
+                                pickupTime: document.getElementById('pickup-time').value,
+                                email: document.getElementById('email').value,
+                                phone: document.getElementById('phone').value,
+                                term: document.getElementById('term').checked.toString()
+                            };
+                            console.log('Transaction completed by ' + details.payer.name.given_name);
+                            console.log('Transaction ID: ' + details.id);
+                            console.log('Full transaction details:', JSON.stringify(transactionData, null, 2));
+                            // Collect form data
+                            fetch('{% url "order"%}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify({
+                                    transactionData: transactionData,
+                                    formData: formData,
+                                }),
+                            }).then(response => response.json())
+                                .then(result => {
+                                    if (result.success) {
+                                        console.log('ok')
+                                        window.location.href = "{% url 'success' %}";
+                                    } else {
+                                        console.log('error')
+                                        window.location.href = "{% url 'failed' %}";
+                                    }
+                                });
+                            // Combine PayPal details and form data
+                            // const postData = {
+                            //     paypalDetails: details,
+                            //     formData: formData
+                            // };
+
+                            // Create a form element
+                            // const form = document.createElement('form');
+                            // form.method = 'POST';
+                            // form.action = "{% url 'order' %}";
+
+                            // Create input for CSRF token
+                            // const csrfInput = document.createElement('input');
+                            // csrfInput.type = 'hidden';
+                            // csrfInput.name = 'csrfmiddlewaretoken';
+                            // csrfInput.value = '{% csrf_token %}';
+                            // form.appendChild(csrfInput);
+
+                            // Create input for data
+                            // const dataInput = document.createElement('input');
+                            // dataInput.type = 'hidden';
+                            // dataInput.name = 'data';
+                            // dataInput.value = JSON.stringify(postData);
+                            // form.appendChild(dataInput);
+
+                            // Append form to body, submit it, and remove it
+                            // document.body.appendChild(form);
+                            // form.submit();
+                            // document.body.removeChild(form);
+                        });
+                    },
+                    onError: (err) => {
+                        console.error('An error occurred during the transaction', err);
+                        //window.location.href = "{% url 'failed' %}"; // Redirect to failed page
+                    }
+                }).render('#paypal-button-container'); // Display PayPal button
+            </script>
+        </div>
+    </form>
+</main>
+
+{% endblock %}

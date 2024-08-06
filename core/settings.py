@@ -57,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "livereload.middleware.LiveReloadScript",
+    # "p1.middleware.MenuRedirect",
 ]
 
 
@@ -140,7 +141,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_URL = "media/"
 # print("MEDIA_URL", MEDIA_URL)
-MEDIA_ROOT = BASE_DIR / "static/media/"
+MEDIA_ROOT = BASE_DIR / "media/"
 # print("MEDIA_ROOT", MEDIA_ROOT)
 
 # Default primary key field type
@@ -158,27 +159,28 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL")
 EMAIL_HOST_PASSWORD = env("PW")
 
+
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "Library Admin",
+    "site_title": "Speed.Codes Admin",
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "Library",
+    "site_header": "Speed.Codes",
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_brand": "Library",
+    "site_brand": "Speed.Codes",
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "logo.png",
+    "site_logo": "sc.png",
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
-    "login_logo": None,
+    "login_logo": "logo.png",
     # Logo to use for login form in dark themes (defaults to login_logo)
-    "login_logo_dark": None,
+    "login_logo_dark": "logo.png",
     # CSS classes that are applied to the logo above
     # "site_logo_classes": "img-circle",
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to the library",
+    "welcome_sign": "Welcome to Mina",
     # Copyright on the footer
-    "copyright": "Acme Library Ltd",
+    "copyright": "Speed.Codes Ltd",
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
     "search_model": ["auth.User", "auth.Group"],

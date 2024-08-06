@@ -4,15 +4,19 @@
 
 {% block main %}
 <script src="{% static 'mina/persist.min.js'%}"></script>
-<main class="flex flex-col items-center py-12">
+<main class=" flex flex-col items-center py-12 mx-auto">
     <form
         x-data="{
-            p_name: $persist(''),
-            p_mail: $persist(''),
             p_phone: $persist(''),
             time: '',
-            state: $persist(false),
+            term: $persist(false),
             warn: false,
+            accordion: $persist(false),
+            company_name: $persist(''),
+            company_address: $persist(''),
+            company_zip: $persist(''),
+            company_city: $persist(''),
+            company_ust: $persist(''),
             init(){
                 const now = new Date()
                 this.time = `${now.getHours()}:${now.getMinutes()}`
@@ -29,66 +33,154 @@
         }"
         action="{%url 'order'%}"
         method="POST"
-        class="space-y-6 border-2 border-gray-300 p-4 rounded-xl text-gray-600"
+        class="sm:w-9/12 bg-gray-50 md:w-6/12 rounded-xl w-11/12 p-4 space-y-6 text-gray-600 border-2 border-gray-300"
         @submit.prevent="console.log('submitted!')"
     >
         {%csrf_token%}
         <div class="space-y-2">
-            <h1 class="font-bold text-4xl text-gray-700">Bestellung</h1>
-            <h3 class="text-gray-500 text-xl">vervollständigen Sie folgende Informationenen</h3>
+            <h1 class="mb-5 text-4xl font-bold text-center text-gray-700">Bestellung</h1>
+            <h3 class="text-xl text-center text-gray-500">Sie brauchen keine Anmeldung, wir kümmern uns um alles 😉</h3>
         </div>
-        <h2 class="text-green-700 text-xl">1. Wer und wann holen Sie es ab?</h2>
+        <h2 class="mb-5 text-xl text-green-500">Wann möchten sie es abholen?</h2>
+        <h3 class="text-md animate-pulse w-5/6 mb-5 text-gray-500">Optional, können Sie uns Ihre Nummer geben, damit
+            wir sie
+            bezüglich Ihrer Bestellung erreichen können</h3>
         <hr class="border-gray-400">
-        <div class="space-y-2">
-            <div class="flex space-x-4">
-                <input
-                    x-model="p_name"
-                    name="name"
-                    type="text"
-                    id="name"
-                    placeholder="Name..."
-                    class="border-2 border-gray-300 px-3 py-2 rounded-lg w-full text-lg"
-                    required
-                >
+        <div class="space-x-2">
+            <div class="flex gap-3">
                 <input
                     :value="time"
-                    x-model="time"
                     @change="check()"
+                    x-model="time"
                     type="time"
-                    name="pickup-time"
-                    id="pickup-time"
+                    name="time"
+                    id="time"
                     required
-                    class="border-2 border-gray-300 bg-green-200 px-2 py-1 rounded-lg text-gray-500"
+                    class="p-2 text-xl text-white bg-green-400 rounded-lg shadow-xl"
+                >
+                <input
+                    x-model="p_phone"
+                    type="tel"
+                    name="p_phone"
+                    id="p_phone"
+                    placeholder="017610000080*"
+                    class="w-full p-2 text-xl border-2 border-gray-300 rounded-lg"
                 >
             </div>
             <template x-if="warn">
                 <div class="font-bold text-gray-500">Bestellungen sind nur innerhalb von 07:00 - 20:00 möglich</div>
             </template>
-
         </div>
-        <h2 class="text-green-700 text-xl">2. Mail, damit wir die Quitting versenden</h2>
+        <h2 class="text-xl text-green-500">Sie erhalten die Rechnung per Mail, wie von Zauberhand 🪄 </h2>
         <hr class="border-gray-400">
-        <input
-            type="email"
-            id="email"
-            name="email"
-            x-model="p_mail"
-            placeholder="Rechnungsmail"
-            class="border-2 border-gray-300 px-3 py-3 rounded-lg w-full text-xl"
-            required
-        >
-        <h2 class="text-green-700 text-xl">3. Nummer, damit wir Sie erreichen</h2>
-        <hr class="border-gray-400">
-        <input
-            x-model="p_phone"
-            type="tel"
-            name="phone"
-            id="phone"
-            placeholder="Format: 017612345678*"
-            class="border-2 border-gray-300 px-3 py-3 rounded-lg w-full text-xl"
-            required
-        >
+
         <br>
+        <div class="rounded-xl w-full overflow-hidden bg-white shadow-lg">
+            <div class="">
+                <button
+                    class="hover:bg-green-600 flex justify-between w-full p-8 text-white transition-colors duration-300 ease-in-out bg-green-400 cursor-pointer"
+                    @click="accordion !== false ? accordion = false : accordion = true"
+                >
+                    <span class="text-2xl font-bold">Sind Sie ein Unternehmer?</span>
+                    <!-- Chevron Down -->
+                    <div>
+                        <svg
+                            :class="accordion == true ? 'hidden' : 'block-inline'"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-8"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                            />
+                        </svg>
+                        <!-- Chevron Up -->
+                        <svg
+                            :class="accordion == true ? 'block-inline' : 'hidden'"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-8"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                            />
+                        </svg>
+                    </div>
+                </button>
+                <div
+                    class="max-h-0 space-y-4 overflow-hidden transition-all duration-500 ease-in-out"
+                    x-ref="r1"
+                    :style="accordion == true ? 'max-height: '+ $refs.r1.scrollHeight + 'px' : '' "
+                >
+                    <div class="text-bold mx-6 my-4 text-xl text-gray-600">Damit es steuerlich richtig
+                        abgeführt wird,
+                        brauchen
+                        wir die Unternehmensdaten</div>
+                    <div class="text-md animate-pulse w-5/6 mx-6 my-4 text-gray-500">einmal schreiben und
+                        es ist
+                        sofort
+                        gespeichert</div>
+                    <div
+                        class="place-items-start sm:place-items-center sm:grid-cols-2 grid grid-cols-1 gap-3 py-6 mx-6 my-4">
+                        <label for="company-name"> Name:
+                        </label>
+                        <input
+                            id="company_name"
+                            name="company_name"
+                            x-model="company_name"
+                            type="text"
+                            class="p-2 border rounded-md"
+                        >
+                        <label for="company_address"> Anschrift:
+                        </label>
+                        <input
+                            id="company_address"
+                            name="company_address"
+                            x-model="company_address"
+                            type="text"
+                            class="p-2 border rounded-md"
+                        >
+                        <label for="company-zip"> PLZ:
+                        </label>
+                        <input
+                            id="company_zip"
+                            name="company_zip"
+                            x-model="company_zip"
+                            type="text"
+                            class="p-2 border rounded-md"
+                        >
+                        <label for="company-city"> Ort:
+                        </label>
+                        <input
+                            id="company_city"
+                            name="company_city"
+                            x-model="company_city"
+                            type="text"
+                            class="p-2 border rounded-md"
+                        >
+                        <label for="company-ust"> Ust-ID:
+                        </label>
+                        <input
+                            id="company_ust"
+                            name="company_ust"
+                            x-model="company_ust"
+                            type="text"
+                            class="p-2 border rounded-md"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
         <label
             for="term"
             class="flex space-x-2 text-gray-500"
@@ -97,44 +189,42 @@
                 type="checkbox"
                 id="term"
                 name="term"
-                x-model="state"
+                x-model="term"
                 class="accent-green-400"
                 required
                 x-init="$nextTick(() => { f1(); });"
             >
-            <h3
-                class="text-gray-500 text-md"
-                x-model="state"
-            > Ich akzeptiere die <span><a
-                        href="#"
+            <h3 class="text-md text-gray-500"> Ich akzeptiere die <span><a
+                        href="{% url 'agb' %}"
                         class="text-green-700 underline"
-                    >Nutzungsbedingungen & AGB</a></span></h3>
+                    >Nutzungsbedingungen & AGB</a></span>
+            </h3>
         </label>
-        <button type="submit">Bestellung abschicken</button>
         <script>
             function f1() {
                 const checkbox = document.getElementById('term');
-                console.log(checkbox.checked.toString());
+                //console.log(checkbox.checked.toString());
             }</script>
         <div
             id="paypal-button-container"
-            :class="{'pointer-events-none opacity-50' : p_phone.length==0 || p_mail.length==0 || p_name.length==0 || state==false}"
+            :class="{'pointer-events-none opacity-50' : term==false || time.length == 0 }"
         >
             <script
                 src="https://www.paypal.com/sdk/js?client-id=AfI1HwjRFulrVZuJ1HXjQgGUxEixc-oggTBfdycCrML47plbdt9AY5pVNSnPOKHrcTLLZvqTxYJlLELY&currency=EUR"
             ></script>
             <script>
                 brutto = '{{brutto}}'.replace(",", ".");
-                /*
-                function collectFormData() {
-                    return {
-                        name: document.getElementById('name').value,
-                        pickupTime: document.getElementById('pickup-time').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value
-                    };
+                const formData = {
+                    pickupTime: document.getElementById('time').value,
+                    phone: document.getElementById('p_phone').value,
+                    term: document.getElementById('term').checked.toString(),
+                    companyName: document.getElementById('company_name').value,
+                    companyAddress: document.getElementById('company_address').value,
+                    companyZip: document.getElementById('company_zip').value,
+                    companyCity: document.getElementById('company_city').value,
+                    companyUst: document.getElementById('company_ust').value
                 };
-                */
+                console.log(formData)
 
                 paypal.Buttons({
                     createOrder: (data, actions) => {
@@ -208,11 +298,14 @@
                                 application_context: details.application_context
                             };
                             const formData = {
-                                name: document.getElementById('name').value,
-                                pickupTime: document.getElementById('pickup-time').value,
-                                email: document.getElementById('email').value,
-                                phone: document.getElementById('phone').value,
-                                term: document.getElementById('term').checked.toString()
+                                pickupTime: document.getElementById('time').value,
+                                phone: document.getElementById('p_phone').value,
+                                term: document.getElementById('term').checked.toString(),
+                                companyName: document.getElementById('company_name').value,
+                                companyAddress: document.getElementById('company_address').value,
+                                companyZip: document.getElementById('company_zip').value,
+                                companyCity: document.getElementById('company_city').value,
+                                companyUst: document.getElementById('company_ust').value
                             };
                             console.log('Transaction completed by ' + details.payer.name.given_name);
                             console.log('Transaction ID: ' + details.id);

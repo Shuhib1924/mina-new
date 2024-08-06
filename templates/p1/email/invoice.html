@@ -1,143 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        >
-        <link
-            rel="preconnect"
-            href="https://fonts.googleapis.com"
-        >
-        <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossorigin
-        >
-        <link
-            href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
-            rel="stylesheet"
-        >
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
-
-            body {
-                font-family: "Varela Round", sans-serif;
-                font-weight: 400;
-                font-style: normal;
-            }
-        </style>
-
-        <title>Rechnung</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-
-    <body class="text-gray-600">
-        <div class="bg-white shadow-lg mx-auto px-8 py-10 rounded-lg max-w-2xl">
-            <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center">
-                    <img
-                        class="mr-2 w-64 object-contain"
-                        src="https://media.speed.codes/file/logo-sm.png"
-                        alt="mina-logo.png"
-                    >
-                    <div class="font-semibold  text-lg"></div>
-                </div>
-                <div class="text-end ">
-                    <div class="mb-2 font-bold text-3xl">Rechnung</div>
-                    <div class="font-bold text-lg">Mina Luna</div>
-                    <div class="text-md">Wilhelms-Strauß-Weg 8</div>
-                    <div class="text-md">21009 Hamburg</div>
-                    <div class="text-md">Tel: 040 / 3023 6968</div>
-                    <div class="text-md">Ust-ID: DEXXXXXXXX</div>
-                </div>
-            </div>
-            <div class="my-8 font-bold text-4xl text-center  "> Bestell-Nr.
-                {12}</div>
-            <div class="border-gray-300 mb-4 pb-4 border-b-2">
-                <div class="flex justify-between">
-                    <h2 class="mb-2 font-bold  text-md">An: VORNAME NACHNAME</h2>
-                    <h2 class="mb-2 font-bold  text-md">Email: EMAIL</h2>
-                </div>
-                <div class="flex justify-between">
-                    <h2 class="mb-2 font-bold  text-md">Paypal-Payer-ID: xxxx</h2>
-                    <h2 class="mb-2 font-bold  text-md">Datum: xxxx</h2>
-
-                </div>
-                <div class="text-center text-lg">Vielen Dank für Ihre Bestellung!</div>
-                <div class="">Wir haben Ihre Bestellung entgegen genommen und sie wird fertig gemacht.
-                </div>
-                <div class="flex justify-center">
-                    <!-- <div class="my-4 text-2xl">Datum:<span
-                            class="my-4  font-bold text-2xl underline underline-offset-2">01.01.2024</span>
-                    </div> -->
-                    <div class="my-4  text-2xl">Uhrzeit: <span
-                            class="my-4  font-bold text-2xl underline underline-offset-2"
-                        >13:00 Uhr</span>
-                    </div>
-                </div>
-                <div class="my-4 text-center  italic text-xl">bis dahin...Guten Appetit!
-                </div>
-            </div>
-            <table class="mb-8 w-full text-left">
-                <div class="flex justify-between mb-6 mt-8 text-sm">
-                    <div>Paypal-Transaction-ID: xxxxxxx.</div>
-                    <div> Paypal-Payment-Capture-ID: xxxxxxxx</div>
-                </div>
-                <thead>
-                    <tr class="bg-green-100 text-lg">
-                        <th class="py-2 pl-4 w-4/12 font-bold  text-start uppercase">
-                            Produkt</th>
-                        <th class="py-2 w-6/12 font-bold text-start  uppercase">Variation</th>
-                        <th class="py-2 w-2/12 font-bold text-center  uppercase">Preis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="odd:bg-white even:bg-green-50">
-                        <td class="py-4 w-4/12 pl-4 font-bold  text-start">Product 1</td>
-                        <td class="py-4 w-6/12 text-start ">1x</td>
-                        <td class="py-4 w-2/12 text-center ">100,00€</td>
-                    </tr>
-                    <tr class="odd:bg-white even:bg-green-50">
-                        <td class="py-4 w-4/12 pl-4 font-bold  text-start">Product 1</td>
-                        <td class="py-4 w-6/12 text-start ">1x</td>
-                        <td class="py-4 w-2/12 text-center ">100,00€</td>
-                    </tr>
-                    <tr>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="border-gray-300 mb-8 pr-6 pb-6 border-b-2">
-                <div class="flex justify-end mb-2">
-                    <div class="mr-2 text-end ">Netto:</div>
-                    <div class="">425,00€</div>
-                </div>
-                <div class="flex justify-end mb-2">
-                    <div class="mr-2 text-end ">Mwst.:</div>
-                    <div class="">25,00€</div>
-
-                </div>
-                <div class="flex justify-end mb-2 text-xl">
-                    <div class="mr-2 text-end ">Total:</div>
-                    <div class="font-bold ">450,00€</div>
-                </div>
-            </div>
-
-            <div class="flex space-x-2 justify-center mb-8 pt-8  text-xl">
-                <div class="">Developed by
-                </div>
-
-                <span class="font-bold">SPEED.CODES</span>
-                <img
-                    class="size-6"
-                    src="https://media.speed.codes/file/logo_s1.png"
-                    alt=""
-                >
-
-            </div>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+  <meta charset="utf-8">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings xmlns:o="urn:schemas-microsoft-com:office:office">
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <style>
+    td,th,div,p,a,h1,h2,h3,h4,h5,h6 {font-family: "Segoe UI", sans-serif; mso-line-height-rule: exactly;}
+  </style>
+  <![endif]-->
+  <title>Vielen Dank, deine Bestellung ist Nr. {{daily_id}}</title>
+  <style>
+    .w-6 {
+      width: 24px !important
+    }
+    .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+      --tw-space-x-reverse: 0 !important;
+      margin-right: calc(8px * var(--tw-space-x-reverse)) !important;
+      margin-left: calc(8px * calc(1 - var(--tw-space-x-reverse))) !important
+    }
+    .underline {
+      text-decoration: underline !important
+    }
+    .odd-bg-white:nth-child(odd) {
+      background-color: #fffffe !important
+    }
+    .even-bg-green-50:nth-child(even) {
+      background-color: #f0fdf4 !important
+    }
+  </style>
+</head>
+<body style="font-family: 'Varela Round', sans-serif; font-weight: 400; font-style: normal; margin: 0; width: 100%; background-color: #f8fafc; padding: 0; color: #4b5563; -webkit-font-smoothing: antialiased; word-break: break-word">
+  <div style="display: none">
+    Vielen Dank für ihre Bestellung, hier ist Ihre Rechnung 📑
+    &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847;
+  </div>
+  <div role="article" aria-roledescription="email" aria-label="Vielen Dank, deine Bestell-Nr. lautet" lang="en">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap')
+    </style>
+    <div style="color: #4b5563;">
+      <div style="margin-left: auto; margin-right: auto; max-width: 75%; border-radius: 8px; background-color: #fffffe; padding: 40px 32px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)">
+        <div style="margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between">
+          <div style="display: flex; align-items: center">
+            <img src="https://media.speed.codes/file/logo-sm.png" alt="mina-logo.png" style="max-width: 100%; vertical-align: middle; margin-right: 8px; width: 256px; object-fit: contain">
+            <div style="font-size: 18px; font-weight: 600"></div>
+          </div>
+          <div style="text-align: end">
+            <div style="margin-bottom: 8px; font-size: 30px; font-weight: 700">Rechnung</div>
+            <div style="font-size: 18px; font-weight: 700;">Mina Luna</div>
+            <div>Wilhelms-Strauß-Weg 8</div>
+            <div>21009 Hamburg</div>
+            <div>Tel: 040 / 3023 6968</div>
+            <div>Ust-ID: DEXXXXXXXX</div>
+          </div>
         </div>
-    </body>
-
+        <div style="margin-top: 32px; margin-bottom: 32px; text-align: center; font-size: 36px; font-weight: 700"> Bestell-Nr.
+          {{daily_id}}
+        </div>
+        <div style="margin-bottom: 24px; border-bottom-width: 2px; border-color: #d1d5db; padding-bottom: 16px">
+          <div style="display: flex; justify-content: space-between;">
+            <h2 style="margin-bottom: 8px; font-weight: 700;">An: {{first_name}} {{last_name}}</h2>
+            <h2 style="margin-bottom: 8px; font-weight: 700;">Email: {{email}}</h2>
+          </div>
+          <div style="margin-bottom: 32px; display: flex; justify-content: space-between">
+            <h2 style="margin-bottom: 8px; font-weight: 700;">Paypal-Payer-ID: {{payer_id}}</h2>
+            <h2 style="margin-bottom: 8px; font-weight: 700;">Datum: {{date}}</h2>
+          </div>
+          <div style="margin-bottom: 32px; ">
+            <h2 style="margin-bottom: -14px; font-weight: 700;">{{company_name}}</h2>
+            <h2 style="margin-bottom: -14px; font-weight: 700;">{{company_address}}</h2>
+            <h2 style="margin-bottom: -14px; font-weight: 700;">{{company_zip}}</h2>
+            <h2 style="margin-bottom: -14px; font-weight: 700;">{{company_city}}</h2>
+            <h2 style="margin-bottom: -14px; font-weight: 700;">{{company_ust}}</h2>
+          </div>
+          <div style="text-align: center; font-size: 20px">Vielen Dank für Ihre Bestellung!</div>
+          <div style="text-align: center;">Wir haben Ihre Bestellung entgegen genommen und sie wird fertig gemacht.
+          </div>
+          <div style="display: flex; justify-content: center">
+            <div style="margin-top: 16px; margin-bottom: 16px; font-size: 24px">Uhrzeit: <span style="margin-top: 16px; margin-bottom: 16px; font-size: 24px; font-weight: 700; text-underline-offset: 2px; text-decoration: underline">{{pickup}} Uhr</span>
+            </div>
+          </div>
+          <div style="margin-top: 16px; margin-bottom: 16px; text-align: center; font-size: 20px; font-style: italic">bis dahin...Guten Appetit!
+          </div>
+        </div>
+        <table style="margin-bottom: 32px; width: 100%; text-align: left" cellpadding="0" cellspacing="0" role="none">
+          <div style="margin-bottom: 24px; margin-top: 32px; display: flex; justify-content: space-between; font-size: 18px">
+            <div>Rechnung-Nr. / Paypal-Transaction-ID: {{transaction_id}}</div>
+            <div> Paypal-Payment-Capture-ID: {{capture_id}}</div>
+          </div>
+          <thead>
+            <tr style="background-color: #dcfce7; font-size: 18px">
+              <th style="width: 33.333333%; padding-top: 8px; padding-bottom: 8px; padding-left: 16px; text-align: start; font-weight: 700; text-transform: uppercase">
+                Produkt</th>
+              <th style="width: 50%; padding-top: 8px; padding-bottom: 8px; text-align: start; font-weight: 700; text-transform: uppercase">Variation</th>
+              <th style="width: 16.666667%; padding-top: 8px; padding-bottom: 8px; text-align: center; font-weight: 700; text-transform: uppercase">Preis</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for ci in cart_items%}
+            <tr class="odd-bg-white even-bg-green-50" style="background-color: #f0fdf4;">
+              <td style="width: 33.333333%; padding-top: 16px; padding-bottom: 16px; padding-left: 16px; text-align: start; font-weight: 700;">
+              <div>
+                {{ci.1.product.name}}
+                {% if ci.0.user != '' %}
+                  (für {{ci.0.user}})
+                {% endif %}
+              </div>
+              {% if ci.1.product.price != 0.00 %}
+                        <div class="">{{ci.1.product.price}}€</div>
+              {% endif %}
+              </td>
+              <td style="width: 50%; padding-top: 16px; padding-bottom: 16px; text-align: start;">
+              {% for q in ci.2.queries %}
+                <div style="display: flex;">
+                 <div style="margin-right: 0.25rem; ">{{q.name}}: </div>
+                  <span>
+                    {% for v in ci.3.variations %}
+                    {% if q in v.query_variation.all %}
+                      {{v.name}}
+                        {% if v.price != 0.00 %}
+                          <span style="font-weight: 700; ">(+{{v.price}}€)</span>, <br>
+                        {% else %}
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                  </span>
+                </div>
+              {% endfor %}
+              </td>
+              <td style="width: 16.666667%; padding-top: 16px; padding-bottom: 16px; text-align: center;">{{ci.4.item_price}}€</td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+        <div style="margin-bottom: 32px; border-bottom-width: 2px; border-color: #d1d5db; padding-bottom: 24px; padding-right: 24px">
+          <div style="margin-bottom: 8px; display: flex; justify-content: flex-end">
+            <div style="margin-right: 8px; text-align: end;">Netto:</div>
+            <div>{{netto}}€</div>
+          </div>
+          <div style="margin-bottom: 8px; display: flex; justify-content: flex-end;">
+            <div style="margin-right: 8px; text-align: end;">Mwst.:</div>
+            <div>{{mwst}}€</div>
+          </div>
+          <div style="margin-bottom: 8px; display: flex; justify-content: flex-end; font-size: 20px;">
+            <div style="margin-right: 8px; text-align: end;">Total:</div>
+            <div style="font-weight: 700;">{{brutto}}€</div>
+          </div>
+        </div>
+        <div class="space-x-2" style="margin-bottom: 32px; display: flex; justify-content: center; padding-top: 32px; font-size: 20px">
+          <div>Developed by &nbsp;
+          </div> <span style="font-weight: 700; margin-right: calc(8px * 0); margin-left: calc(8px * calc(1 - 0));">SPEED.CODES</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 </html>

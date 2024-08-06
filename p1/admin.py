@@ -28,8 +28,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Query)
 class QueryAdmin(admin.ModelAdmin):
-    list_display = ["name", "private", "rank", "required"]
-    list_editable = ("required", "rank")
+    list_display = ["name", "private", "rank", "required", "single", "active"]
+    list_editable = ("required", "rank", "single", "active")
 
 
 @admin.register(Variation)

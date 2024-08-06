@@ -153,13 +153,14 @@ def print_message(message):
             #         print("\n")
             # except Exception as e:
             #     print(f"Error processing message: {e}")
-            dict_message=json.loads(message)
+            dict_message = json.loads(message)
+            # print("if its error print this instead the printer \n",message)
             text4(f"{dict_message["order"][0]['form_data']['pickupTime']}", "7:7", "bold", "center")
             text4(f"{dict_message["order"][0]['form_data']['currentTime']}", "2:4", "bold", "end")
             text4(f"---------", "5:5", "bold", "center")
             text4(f"{dict_message["order"][0]['form_data']['daily_id']}", "5:5", "bold", "center")
             text4(f"---------", "5:5", "bold", "center")
-            text4(f"{dict_message["order"][0]['form_data']['name']}", "4:4", "bold", "center")
+            text4(f"{dict_message["order"][0]['form_data']['first_name']} {dict_message["order"][0]['form_data']['last_name']}", "4:4", "bold", "center")
             text4(f"{dict_message["order"][0]['form_data']['phone']}", "3:4", "bold", "center")
             for i in dict_message["order"][1]["products"]:
                 text4(f'{i["user"].upper()}', "3:5", "bold", "start")
